@@ -50,6 +50,7 @@ defmodule Ecom.Mixfile do
       {:comeonin, "~> 4.1"},
       {:argon2_elixir, "~> 1.2"},
       {:guardian, "~> 1.0"},
+      {:bodyguard, "~> 2.2"},
     ]
   end
 
