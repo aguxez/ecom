@@ -7,6 +7,7 @@
 1. Users context with password hashing using Argon2.
 2. Users can login and logout using Guardian.
 3. Users can register, using a simple client-side verification and one server-side.
+4. Users get recognized between admin and normal.
 
 ### Notes:
 #### Unable to encode value
