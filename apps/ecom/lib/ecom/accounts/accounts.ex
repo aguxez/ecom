@@ -17,7 +17,7 @@ defmodule Ecom.Accounts do
       [%User{}, ...]
 
   """
-  def list_user do
+  def list_users do
     Repo.all(User)
   end
 

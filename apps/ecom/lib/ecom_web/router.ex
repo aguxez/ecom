@@ -24,18 +24,21 @@ defmodule EcomWeb.Router do
   scope "/", EcomWeb do
     pipe_through [:browser, :authorized]
 
-    get "/", PageController, :index
+    get("/", PageController, :index)
 
     # Sessions
-    resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources("/sessions", SessionController, only: [:new, :create, :delete])
 
     # Registrations
-    resources "/register", RegistrationController, only: [:new, :create]
+    resources("/register", RegistrationController, only: [:new, :create])
   end
 
   scope "/", EcomWeb do
     pipe_through [:browser, :authorized, :ensure_auth]
 
-    get "/secret", PageController, :secret
+    get("/secret", PageController, :secret)
+
+    # Admin panel
+    resources("/site_settings", AdminController, only: [:index])
   end
 end

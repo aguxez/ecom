@@ -9,6 +9,9 @@ defmodule Ecom.Accounts.User do
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
+  # Authorization 'behaviour'
+  @behaviour Bodyguard.Policy
+
   schema "users" do
     field :email,           :string
     field :username,        :string
@@ -31,6 +34,8 @@ defmodule Ecom.Accounts.User do
     |> validate_length(:password, min: 8)
     |> validate_length(:password_confirmation, min: 8)
     |> validate_confirmation(:password)
+    |> unique_constraint(:email)
+    |> unique_constraint(:username)
     |> put_pass_hash()
   end
 
@@ -38,4 +43,13 @@ defmodule Ecom.Accounts.User do
     change(changeset, Comeonin.Argon2.add_hash(password, hash_key: :password_digest))
   end
   defp put_pass_hash(changeset), do: changeset
+
+  # Bodyguard callback
+
+  # Admins can do anything
+  def authorize(_, %User{is_admin: true}, _), do: :ok
+
+  # Testing users can't go to a page
+  def authorize(:admin_panel, %User{is_admin: false}, _),
+    do: {:error, :unauthorized}
 end
