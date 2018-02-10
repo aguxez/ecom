@@ -16,12 +16,14 @@ import "react-phoenix";
 
 import "./custom.js";
 
+// import { BrowserRouter } from "react-router-dom";
+
 import Home from "./components/Home";
-import Session from "./components/Session";
+import Header from "./components/Header";
 import Admin from "./components/Admin";
 
 window.Components = {
-  Home, Session, Admin,
+  Home, Header, Admin,
 }
 
 document.addEventListener("DOMContentLoaded", () => {
