@@ -18,9 +18,10 @@ import "./custom.js";
 
 import Home from "./components/Home";
 import Session from "./components/Session";
+import Admin from "./components/Admin";
 
 window.Components = {
-  Home, Session,
+  Home, Session, Admin,
 }
 
 document.addEventListener("DOMContentLoaded", () => {

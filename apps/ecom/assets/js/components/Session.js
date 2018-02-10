@@ -17,6 +17,7 @@ export default class Session extends Component {
         <div className="grid-x grid-margin-x">
           <div className="text-center cell">
             {
+              // Login-logout section
               user ? (
                 <div>
                   <h3>Sesión iniciada como <strong>{user.username}</strong></h3>
@@ -38,6 +39,17 @@ export default class Session extends Component {
                   <h4><a href="/register/new">Registrarse</a></h4>
                 </div>
               )
+              // End login-logout section
+            }
+
+            {
+              // If 'user' exists and is admin
+              user && user.overall &&
+              <div>
+                <h4>
+                  <a href="/site_settings/"> Admin panel </a>
+                </h4>
+              </div>
             }
           </div>
         </div>
