@@ -6,10 +6,6 @@ export default class Header extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   render() {
     let user = this.props.current_user;
 
@@ -34,11 +30,13 @@ export default class Header extends Component {
                         Cerrar sesión
                       </Link>
                     </h4>
+
+                    <h4><Link to={"/account"}>Cuenta</Link></h4>
                   </div>
                 ) : (
                   <div>
-                    <h4><a href="/sessions/new">Iniciar sesión</a></h4>
-                    <h4><a href="/register/new">Registrarse</a></h4>
+                    <h4><Link to={"/sessions/new"}>Iniciar sesión</Link></h4>
+                    <h4><Link to={"/register/new"}>Registrarse</Link></h4>
                   </div>
                 )
                 // End login-logout section
