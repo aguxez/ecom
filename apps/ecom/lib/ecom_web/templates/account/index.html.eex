@@ -1,0 +1,23 @@
+<h2>Actualiza tu contraseña</h2>
+<%= form_for @changeset, account_path(@conn, :update, @user.id), fn f -> %>
+  <div>
+    <%= label f, :password do %>
+      Contraseña actual (Requerida)
+      <%= password_input f, :password, required: true, autoFocus: true %>
+    <% end %>
+
+    <%= label f, :new_password do %>
+      Nueva contraseña
+      <%= password_input f, :new_password %>
+    <% end %>
+
+    <%= label f, :new_password_confirmation do %>
+      Confirmar contraseña
+      <%= password_input f, :new_password_confirmation %>
+    <% end %>
+
+    <%= submit "Actualizar", class: "button success" %>
+  </div>
+<% end %>
+
+<%= react_component("Components.Account", %{user: @user}) %>

@@ -40,5 +40,9 @@ defmodule EcomWeb.Router do
 
     # Admin panel
     resources("/site_settings", AdminController, only: [:index])
+
+    # User account
+    post("/account/:id", AccountController, :update)
+    resources("/account", AccountController, only: [:index, :update])
   end
 end

@@ -22,7 +22,7 @@
 
     <!-- We're going to render this part of the 'head' with React -->
     <!-- Passing 'current_user' as a 'prop' to the Component -->
-    <%= react_component("Components.Header", %{current_user: current_user(@conn), csrf_token: get_csrf_token()}) %>
+    <%= react_component("Components.Header", %{current_user: current_user(@conn, "basic"), csrf_token: get_csrf_token()}) %>
   </head>
 
   <body>
