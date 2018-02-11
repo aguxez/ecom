@@ -23,6 +23,9 @@ defmodule EcomWeb do
       import Plug.Conn
       import EcomWeb.Router.Helpers
       import EcomWeb.Gettext
+
+      # Global helpers
+      import EcomWeb.Helpers
     end
   end
 
@@ -40,6 +43,9 @@ defmodule EcomWeb do
       import EcomWeb.Router.Helpers
       import EcomWeb.ErrorHelpers
       import EcomWeb.Gettext
+
+      # Global helpers
+      import EcomWeb.Helpers
 
       import ReactPhoenix.ClientSide
     end

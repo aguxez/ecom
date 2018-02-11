@@ -28,10 +28,11 @@ defmodule EcomWeb.AdminControllerTest do
     end
 
     test "path exists", %{conn: conn} do
-      get(conn, admin_path(conn, :index))
+      conn = get(conn, admin_path(conn, :index))
 
-      assert conn.status == 200
-      assert html_response(conn, 200) =~ "Panel de administrador"
+      assert conn.status == 401 # since we're not allowed
+      assert conn.path_info == ["site_settings"]
+      assert conn.request_path == "/site_settings"
     end
 
     test "can be accessed by admins", %{user: user} do
@@ -44,6 +45,7 @@ defmodule EcomWeb.AdminControllerTest do
         |> Changeset.change(is_admin: false)
         |> Repo.update!()
 
+      assert {:error, :unauthorized} = Bodyguard.permit(User, :admin_panel, normal_user)
       refute :ok == Bodyguard.permit(User, :admin_panel, normal_user)
     end
   end
