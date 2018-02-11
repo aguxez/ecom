@@ -6,6 +6,8 @@ defmodule EcomWeb.AccountController do
   alias Ecom.Accounts
   alias Ecom.Accounts.User
 
+  plug :scrub_params, "user" when action in [:update]
+
   def index(conn, _params) do
     user = current_user(conn, [:id])
     changeset = User.changeset(%User{}, %{})
@@ -26,11 +28,11 @@ defmodule EcomWeb.AccountController do
       else
         false ->
           conn
-          |> put_flash(:alert, "Contraseña actual incorrecta")
+          |> put_flash(:warning, "Contraseña actual incorrecta")
           |> redirect(to: account_path(conn, :index))
         {:error, changeset} ->
           conn
-          |> put_flash(:warning, "No se pudo actualizar tu cuenta")
+          |> put_flash(:alert, "No se pudo actualizar tu cuenta")
           |> render("index.html", changeset: changeset, user: user)
       end
   end

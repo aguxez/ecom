@@ -19,5 +19,3 @@
     <%= submit "Actualizar", class: "button success" %>
   </div>
 <% end %>
-
-<%= react_component("Components.Account", %{user: @user}) %>
