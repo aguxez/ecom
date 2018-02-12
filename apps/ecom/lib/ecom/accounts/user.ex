@@ -5,7 +5,7 @@ defmodule Ecom.Accounts.User do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User}
+  alias Ecom.Accounts.{User, Product}
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
@@ -21,6 +21,8 @@ defmodule Ecom.Accounts.User do
     # Virtuals
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
+
+    has_many :product, Product
 
     timestamps()
   end
