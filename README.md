@@ -8,6 +8,8 @@
 2. Users can login and logout using Guardian.
 3. Users can register, using a simple client-side verification and one server-side.
 4. Users get recognized between admin and normal.
+5. Admin can add product
+6. Spanish and English supported based on Locale
 
 ### Notes:
 #### Unable to encode value
@@ -20,9 +22,12 @@ Solution: Add `@derive {Poison.Encoder, except: [:__meta__]}` or the field that 
 
 #### Foundation 6 way to initialize JS.
 
-`var Foundation = require('foundation-sites/dist/js/foundation');` then 
+`var Foundation = require('foundation-sites/dist/js/foundation');` then
 ```js
 $(document).ready($ => {
   $(document).foundation();
 })
 ```
+
+#### Gettext
+All configuration is given through `config :gettext, opts`, not `config :my_app, MyApp.Gettext`
