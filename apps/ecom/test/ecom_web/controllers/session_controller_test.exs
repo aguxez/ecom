@@ -26,7 +26,7 @@ defmodule EcomWeb.SessionControllerTest do
   test "shows the login form", %{conn: conn} do
     conn = get(conn, session_path(conn, :new))
 
-    assert html_response(conn, 200) =~ "Inicia Sesión"
+    assert html_response(conn, 200) =~ "Iniciar sesión"
   end
 
   test "creates a new user session for a valid user", %{conn: conn} do
