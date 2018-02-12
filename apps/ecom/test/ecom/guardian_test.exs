@@ -4,6 +4,7 @@ defmodule Ecom.GuardianTest do
   use Ecom.DataCase
 
   alias Ecom.Accounts
+  alias Ecom.Repo
 
   @usr %{email: "some@emaile", username: "agu", password: "m2481369", password_confirmation: "m2481369"}
 
@@ -31,6 +32,8 @@ defmodule Ecom.GuardianTest do
     end
 
     test "returns {:ok %User{}} tuple", %{user: user} do
+      # Preloading association
+      user = Repo.preload(user, :products)
       assert Ecom.Guardian.resource_from_claims(%{"sub" => "User:#{user.id}"}) == {:ok, %{user | password_confirmation: nil}}
     end
 

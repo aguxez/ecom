@@ -70,9 +70,19 @@ defmodule Ecom.AccountsTest do
     @invalid_attrs %{name: nil}
 
     def product_fixture(attrs \\ %{}) do
+      attr = %{
+        email: "some@email.com",
+        username: "test_user",
+        password: "24813699",
+        password_confirmation: "24813699"
+      }
+
+      {:ok, user} = Accounts.create_user(attr)
+
       {:ok, product} =
         attrs
         |> Enum.into(@valid_attrs)
+        |> Map.merge(%{user_id: user.id})
         |> Accounts.create_product()
 
       product
@@ -89,7 +99,8 @@ defmodule Ecom.AccountsTest do
     end
 
     test "create_product/1 with valid data creates a product" do
-      assert {:ok, %Product{} = product} = Accounts.create_product(@valid_attrs)
+      # 'product_fixture' calls Accounts.create_product/1
+      assert {:ok, %Product{} = product} = {:ok, product_fixture()}
       assert product.name == "some name"
     end
 
