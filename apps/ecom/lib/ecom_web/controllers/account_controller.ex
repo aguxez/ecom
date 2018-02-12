@@ -23,16 +23,16 @@ defmodule EcomWeb.AccountController do
          {:ok, %User{}} <- Accounts.update_user(user, attrs)
       do
         conn
-        |> put_flash(:success, "Cuenta actualizada correctamente")
+        |> put_flash(:success, gettext("Account updated successfully"))
         |> redirect(to: account_path(conn, :index))
       else
         false ->
           conn
-          |> put_flash(:warning, "Contraseña actual incorrecta")
+          |> put_flash(:warning, gettext("Incorrect password"))
           |> redirect(to: account_path(conn, :index))
         {:error, changeset} ->
           conn
-          |> put_flash(:alert, "No se pudo actualizar tu cuenta")
+          |> put_flash(:alert, gettext("There was a problem updating your account"))
           |> render("index.html", changeset: changeset, user: user)
       end
   end

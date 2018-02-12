@@ -5,7 +5,7 @@ defmodule EcomWeb.FallbackController do
 
   def call(conn, {:error, :unauthorized}) do
     conn
-    |> put_flash(:alert, "No autorizado")
+    |> put_flash(:alert, gettext("Not authorized"))
     |> redirect(to: page_path(conn, :index))
   end
 end

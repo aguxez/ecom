@@ -18,7 +18,46 @@ msgstr ""
 msgid "You've been logged-out"
 msgstr ""
 
-#, elixir-format, fuzzy
 #: lib/ecom_web/controllers/session_controller.ex:65
 msgid "Your username or password are incorrect!"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/account_controller.ex:26
+msgid "Account updated successfully"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/account_controller.ex:31
+msgid "Incorrect password"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/fallback_controller.ex:8
+msgid "Not authorized"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/product_controller.ex:30
+msgid "Product created successfully"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/product_controller.ex:34
+msgid "There was a problem trying to add your product"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/account_controller.ex:35
+msgid "There was a problem updating your account"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/registration_controller.ex:26
+msgid "There were some problems trying to create your account"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/controllers/registration_controller.ex:21
+msgid "Your account has been created!"
 msgstr ""

@@ -27,11 +27,11 @@ defmodule EcomWeb.ProductController do
     case Accounts.create_product(params) do
       {:ok, %Product{}} ->
         conn
-        |> put_flash(:success, "Producto añadido satisfactoriamente")
+        |> put_flash(:success, gettext("Product created successfully"))
         |> redirect(to: page_path(conn, :index))
       {:error, changeset} ->
         conn
-        |> put_flash(:alert, "Hubo un problema al intentar añadir tu producto")
+        |> put_flash(:alert, gettext("There was a problem trying to add your product"))
         |> render("new.html", changeset: changeset)
     end
   end

@@ -18,12 +18,12 @@ defmodule EcomWeb.RegistrationController do
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:success, "Cuenta creada satisfactoriamente")
+        |> put_flash(:success, gettext("Your account has been created!"))
         |> Ecom.Guardian.Plug.sign_in(user)
         |> redirect(to: page_path(conn, :index))
       {:error, changeset} ->
         conn
-        |> put_flash(:alert, "Hubieron unos problemas al intentar registrar tu cuenta")
+        |> put_flash(:alert, gettext("There were some problems trying to create your account"))
         |> render("new.html", changeset: changeset)
     end
   end
