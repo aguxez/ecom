@@ -36,7 +36,7 @@ defmodule EcomWeb.SessionController do
     if checkpw(plain_password, user.password_digest) do
       # If 'plain_password' matches 'password_digest'
       conn
-      |> put_flash(:success, "¡Sesión iniciada satisfactoriamente!")
+      |> put_flash(:success, gettext("Logged-in!"))
       |> Ecom.Guardian.Plug.sign_in(user)
       |> redirect(to: page_path(conn, :index))
     else
@@ -56,12 +56,12 @@ defmodule EcomWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> put_flash(:success, "Sesión cerrada satisfactoriamente")
+    |> put_flash(:success, gettext("You've been logged-out"))
     |> Ecom.Guardian.Plug.sign_out()
     |> redirect(to: page_path(conn, :index))
   end
 
   defp wrong_creds do
-    "¡Nombre de usuario o contraseña incorrectos!"
+    gettext("Your username or password are incorrect!")
   end
 end
