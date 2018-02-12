@@ -15,23 +15,31 @@
             <!-- START SIGN UP FORM -->
             <div class="small-12 cell">
 
-              <%= label f, :email, "Correo" %>
-              <%= email_input f, :email %>
-              <%= error_tag f, :email %>
+              <%= label f, :email do %>
+                <%= gettext("Email") %>
+                <%= email_input f, :email %>
+                <%= error_tag f, :email %>
+              <% end %>
 
-              <%= label f, :username, "Nombre de usuario" %>
-              <%= text_input f, :username %>
-              <%= error_tag f, :username %>
+              <%= label f, :username do %>
+                <%= gettext("Username") %>
+                <%= text_input f, :username %>
+                <%= error_tag f, :username %>
+              <% end %>
 
-              <%= label f, :password, "Contraseña" %>
-              <%= password_input f, :password, minLength: 8 %>
-              <%= error_tag f, :password %>
+              <%= label f, :password do %>
+                <%= gettext("Password") %>
+                <%= password_input f, :password, minLength: 8 %>
+                <%= error_tag f, :password %>
+              <% end %>
 
-              <%= label f, :password_confirmation, "Confirmar contraseña" %>
-              <%= password_input f, :password_confirmation, minLength: 8 %>
-              <%= error_tag f, :password_confirmation %>
+              <%= label f, :password_confirmation do %>
+                <%= gettext("Confirm password") %>
+                <%= password_input f, :password_confirmation, minLength: 8 %>
+                <%= error_tag f, :password_confirmation %>
+              <% end %>
 
-              <%= submit "Enviar", id: "submit", class: "button success text-center cell" %>
+              <%= submit gettext("Send"), id: "submit", class: "button success text-center cell" %>
 
             </div>
 

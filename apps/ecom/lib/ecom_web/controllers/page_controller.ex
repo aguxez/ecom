@@ -7,7 +7,8 @@ defmodule EcomWeb.PageController do
 
   def index(conn, _params) do
     token = Plug.CSRFProtection.get_csrf_token()
+    current_path = current_path(conn)
 
-    render(conn, "index.html", csrf_token: token)
+    render(conn, "index.html", csrf_token: token, current_path: current_path)
   end
 end

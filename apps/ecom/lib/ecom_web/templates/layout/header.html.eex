@@ -1,7 +1,7 @@
 <div class="grid-container">
   <div class="grid-x grid-margin-x">
-    <div class="text-center cell">
 
+    <div class="text-center cell">
       <!-- LOGGED-IN USER -->
       <%= if @user !== nil do %>
         <div>
@@ -10,30 +10,32 @@
           </h4>
 
           <h5>
-            <%= link "Home", to: "/" %>
+            <%= link gettext("Home"), to: "/" %>
           </h5>
 
           <h5>
-            <%= link "Cerrar Sesion", to: session_path(@conn, :delete, @user.id), method: :delete %>
+            <%= link gettext("Logout"), to: session_path(@conn, :delete, @user.id), method: :delete %>
           </h5>
 
           <h5>
-            <%= link "Account", to: account_path(@conn, :index) %>
+            <%= link gettext("Account"), to: account_path(@conn, :index) %>
           </h5>
         </div>
       <% else %>
         <div>
           <h5>
-            <%= link "Iniciar sesión", to: session_path(@conn, :new) %>
+            <%= link gettext("Login"), to: session_path(@conn, :new) %>
           </h5>
 
           <h5>
-            <%= link "Registrarse", to: registration_path(@conn, :new) %>
+            <%= link gettext("Sign-up"), to: registration_path(@conn, :new) %>
           </h5>
         </div>
       <% end %>
       <!-- END LOGGED-IN USER -->
+    </div>
 
+    <div class="text-center cell">
       <!-- ADMIN SECTION -->
       <%= if @user !== nil && @user.overall do %>
         <div>
@@ -47,7 +49,21 @@
         </div>
       <% end %>
       <!-- END ADMIN SECTION -->
-
     </div>
+
+    <div class="cell">
+      <!-- CHANGE LANGUAGE -->
+      <ul class="dropdown menu align-center" data-dropdown-menu>
+        <li>
+          <%= link String.upcase(Gettext.get_locale()), to: "#" %>
+          <ul class="menu">
+            <li> <%= link "EN", to: @current_path <> "?lang=en" %> </li>
+            <li> <%= link "ES", to: @current_path <> "?lang=es" %> </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- END CHANGE LANGUAGE -->
+    </div>
+
   </div>
 </div>

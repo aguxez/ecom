@@ -22,42 +22,118 @@ msgstr ""
 msgid "Your username or password are incorrect!"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/account_controller.ex:26
 msgid "Account updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/account_controller.ex:31
 msgid "Incorrect password"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/fallback_controller.ex:8
 msgid "Not authorized"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/product_controller.ex:30
 msgid "Product created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/product_controller.ex:34
 msgid "There was a problem trying to add your product"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/account_controller.ex:35
 msgid "There was a problem updating your account"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/registration_controller.ex:26
 msgid "There were some problems trying to create your account"
 msgstr ""
 
-#, elixir-format
 #: lib/ecom_web/controllers/registration_controller.ex:21
 msgid "Your account has been created!"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:47
+msgid "Add product"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:43
+msgid "Admin panel"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:21
+msgid "Account"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:13
+msgid "Home"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:27
+#: lib/ecom_web/templates/session/new.html.eex:6
+#: lib/ecom_web/templates/session/new.html.eex:24
+msgid "Login"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:17
+msgid "Logout"
+msgstr ""
+
+#: lib/ecom_web/templates/layout/header.html.eex:31
+msgid "Sign-up"
+msgstr ""
+
+#: lib/ecom_web/templates/account/index.html.eex:15
+msgid "Confirm new password"
+msgstr ""
+
+#: lib/ecom_web/templates/account/index.html.eex:5
+msgid "Current password (Required)"
+msgstr ""
+
+#: lib/ecom_web/templates/account/index.html.eex:10
+msgid "New password"
+msgstr ""
+
+#: lib/ecom_web/templates/account/index.html.eex:19
+msgid "Update"
+msgstr ""
+
+#: lib/ecom_web/templates/account/index.html.eex:1
+msgid "Update your password"
+msgstr ""
+
+#: lib/ecom_web/templates/product/new.html.eex:5
+msgid "Add a product"
+msgstr ""
+
+#: lib/ecom_web/templates/registration/new.html.eex:37
+msgid "Confirm password"
+msgstr ""
+
+#: lib/ecom_web/templates/registration/new.html.eex:19
+msgid "Email"
+msgstr ""
+
+#: lib/ecom_web/templates/product/new.html.eex:10
+msgid "Name"
+msgstr ""
+
+#: lib/ecom_web/templates/registration/new.html.eex:31
+#: lib/ecom_web/templates/session/new.html.eex:18
+msgid "Password"
+msgstr ""
+
+#: lib/ecom_web/templates/registration/new.html.eex:42
+msgid "Send"
+msgstr ""
+
+#: lib/ecom_web/templates/product/new.html.eex:14
+msgid "Upload product"
+msgstr ""
+
+#: lib/ecom_web/templates/registration/new.html.eex:25
+#: lib/ecom_web/templates/session/new.html.eex:11
+msgid "Username"
 msgstr ""

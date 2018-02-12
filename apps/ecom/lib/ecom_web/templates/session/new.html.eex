@@ -3,21 +3,25 @@
   <div class="grid-container">
     <div class="grid-x grid-margin-x">
       <div class="text-center cell">
-        <h1>Inicia Sesión</h1>
+        <h1> <%= gettext("Login") %> </h1>
       </div>
 
       <div class="small-6 cell">
-        <label>Nombre de usuario</label>
-        <%= text_input f, :username, required: true, autoFocus: true %>
+        <%= label f, :username do %>
+          <%= gettext("Username") %>
+          <%= text_input f, :username, required: true, autoFocus: true %>
+        <% end %>
       </div>
 
       <div class="small-6 cell">
-        <label>Contraseña</label>
-        <%= password_input f, :password, required: true, minlength: 8 %>
+        <%= label f, :password do %>
+          <%= gettext("Password") %>
+          <%= password_input f, :password, required: true, minlength: 8 %>
+        <% end %>
       </div>
 
       <div class="text-center cell">
-        <%= submit "Iniciar sesión", class: "button success" %>
+        <%= submit gettext("Login"), class: "button success" %>
       </div>
     </div>
   </div>

@@ -1,21 +1,21 @@
-<h2>Actualiza tu contraseña</h2>
+<h2> <%= gettext("Update your password") %> </h2>
 <%= form_for @changeset, account_path(@conn, :update, @user.id), fn f -> %>
   <div>
     <%= label f, :password do %>
-      Contraseña actual (Requerida)
+      <%= gettext("Current password (Required)") %>
       <%= password_input f, :password, required: true, autoFocus: true %>
     <% end %>
 
     <%= label f, :new_password do %>
-      Nueva contraseña
+      <%= gettext("New password") %>
       <%= password_input f, :new_password %>
     <% end %>
 
     <%= label f, :new_password_confirmation do %>
-      Confirmar contraseña
+      <%= gettext("Confirm new password") %>
       <%= password_input f, :new_password_confirmation %>
     <% end %>
 
-    <%= submit "Actualizar", class: "button success" %>
+    <%= submit gettext("Update"), class: "button success" %>
   </div>
 <% end %>
