@@ -1,0 +1,18 @@
+<%= form_for @changeset, product_path(@conn, :create), fn f -> %>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <div class="text-center cell">
+        <h3>Añade un producto</h3>
+      </div>
+
+      <div>
+        <%= label f, :name do %>
+          Nombre
+          <%= text_input f, :name %>
+        <% end %>
+
+        <%= submit "Subir producto", class: "button success" %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -22,7 +22,7 @@ defmodule Ecom.Accounts.User do
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 
-    has_many :product, Product
+    has_many :products, Product
 
     timestamps()
   end
@@ -51,7 +51,9 @@ defmodule Ecom.Accounts.User do
   # Admins can do anything
   def authorize(_, %User{is_admin: true}, _), do: :ok
 
-  # Testing users can't go to a page
+  # Users can't go to a page
   def authorize(:admin_panel, %User{is_admin: false}, _),
     do: {:error, :unauthorized}
+
+  def authorize(_, _, _), do: {:error, :unauthorized}
 end

@@ -6,7 +6,7 @@ defmodule Ecom.Accounts do
   import Ecto.Query, warn: false
 
   alias Ecom.Repo
-  alias Ecom.Accounts.User
+  alias Ecom.Accounts.{User, Product}
 
   @doc """
   Returns the list of users.
@@ -20,7 +20,7 @@ defmodule Ecom.Accounts do
   def list_users do
     User
     |> Repo.all()
-    |> Repo.preload(:product)
+    |> Repo.preload(:products)
   end
 
   @doc """
@@ -40,7 +40,7 @@ defmodule Ecom.Accounts do
   def get_user!(id) do
     User
     |> Repo.get!(id)
-    |> Repo.preload(:product)
+    |> Repo.preload(:products)
   end
 
   @doc """
@@ -108,8 +108,6 @@ defmodule Ecom.Accounts do
     User.changeset(user, %{})
   end
 
-  alias Ecom.Accounts.Product
-
   @doc """
   Returns the list of products.
 
@@ -154,6 +152,7 @@ defmodule Ecom.Accounts do
   def create_product(attrs \\ %{}) do
     %Product{}
     |> Product.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:user, with: &User.changeset/2)
     |> Repo.insert()
   end
 
@@ -172,6 +171,7 @@ defmodule Ecom.Accounts do
   def update_product(%Product{} = product, attrs) do
     product
     |> Product.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:user, with: &User.changeset/2)
     |> Repo.update()
   end
 
