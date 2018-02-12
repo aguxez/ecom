@@ -14,7 +14,7 @@ export default class Header extends Component {
         <div className="grid-container">
           <div className="grid-x grid-margin-x">
             <div className="text-center cell">
-              <Link to={"/"}>Home</Link>
+              <Link to="/">Home</Link>
 
               {
                 // Login-logout section
@@ -31,12 +31,12 @@ export default class Header extends Component {
                       </Link>
                     </h4>
 
-                    <h4><Link to={"/account"}>Cuenta</Link></h4>
+                    <h4><Link to="/account">Cuenta</Link></h4>
                   </div>
                 ) : (
                   <div>
-                    <h4><Link to={"/sessions/new"}>Iniciar sesión</Link></h4>
-                    <h4><Link to={"/register/new"}>Registrarse</Link></h4>
+                    <h4><Link to="/sessions/new">Iniciar sesión</Link></h4>
+                    <h4><Link to="/register/new">Registrarse</Link></h4>
                   </div>
                 )
                 // End login-logout section
@@ -48,6 +48,9 @@ export default class Header extends Component {
                 <div>
                   <h4>
                     <Link to="/site_settings/">Admin panel</Link>
+                  </h4>
+                  <h4>
+                    <Link to="/products/new">Añadir producto</Link>
                   </h4>
                 </div>
               }

@@ -6,6 +6,7 @@
   </ul>
 
   <div class="tabs-content" data-tabs-content="example-tabs">
+    <!-- MAIN INTERFACE, MEMBERS, ETC... -->
     <div class="tabs-panel is-active" id="panel1">
       <h4> <%= @users_amount %> usuarios registrados.</h4>
 
@@ -16,5 +17,6 @@
         <% end %>
       </h3>
     </div>
+    <!-- END MAIN INTERFACE -->
   </div>
 </div>

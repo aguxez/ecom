@@ -44,5 +44,8 @@ defmodule EcomWeb.Router do
     # User account
     post("/account/:id", AccountController, :update)
     resources("/account", AccountController, only: [:index, :update])
+
+    # Products
+    resources("/products", ProductsController, only: [:index, :create])
   end
 end
