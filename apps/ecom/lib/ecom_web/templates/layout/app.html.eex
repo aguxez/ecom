@@ -20,9 +20,7 @@
 
     <link rel="apple-touch-icon" href="images/logo.png">
 
-    <!-- We're going to render this part of the 'head' with React -->
-    <!-- Passing 'current_user' as a 'prop' to the Component -->
-    <%= react_component("Components.Header", %{current_user: current_user(@conn, "basic"), csrf_token: get_csrf_token()}) %>
+    <%= render("header.html", conn: @conn, user: current_user(@conn, "basic")) %>
   </head>
 
   <body>

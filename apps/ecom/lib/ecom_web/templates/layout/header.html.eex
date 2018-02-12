@@ -1,0 +1,53 @@
+<div class="grid-container">
+  <div class="grid-x grid-margin-x">
+    <div class="text-center cell">
+
+      <!-- LOGGED-IN USER -->
+      <%= if @user !== nil do %>
+        <div>
+          <h4>
+            Logged-in as <strong> <%= @user.username %> </strong>
+          </h4>
+
+          <h5>
+            <%= link "Home", to: "/" %>
+          </h5>
+
+          <h5>
+            <%= link "Cerrar Sesion", to: session_path(@conn, :delete, @user.id), method: :delete %>
+          </h5>
+
+          <h5>
+            <%= link "Account", to: account_path(@conn, :index) %>
+          </h5>
+        </div>
+      <% else %>
+        <div>
+          <h5>
+            <%= link "Iniciar sesión", to: session_path(@conn, :new) %>
+          </h5>
+
+          <h5>
+            <%= link "Registrarse", to: registration_path(@conn, :new) %>
+          </h5>
+        </div>
+      <% end %>
+      <!-- END LOGGED-IN USER -->
+
+      <!-- ADMIN SECTION -->
+      <%= if @user !== nil && @user.overall do %>
+        <div>
+          <h5>
+            <%= link gettext("Admin panel"), to: admin_path(@conn, :index) %>
+          </h5>
+
+          <h5>
+            <%= link gettext("Add product"), to: product_path(@conn, :new) %>
+          </h5>
+        </div>
+      <% end %>
+      <!-- END ADMIN SECTION -->
+
+    </div>
+  </div>
+</div>
