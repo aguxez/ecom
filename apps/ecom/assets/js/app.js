@@ -8,14 +8,13 @@ import "react-phoenix";
 import "./custom.js";
 
 import Home from "./components/Home";
-import Header from "./components/Header";
 import Admin from "./components/Admin";
 
 // Way to call 'Foundation'
 var Foundation = require('foundation-sites/dist/js/foundation');
 
 window.Components = {
-  Home, Header, Admin,
+  Home, Admin,
 }
 
 // Quill initialization
