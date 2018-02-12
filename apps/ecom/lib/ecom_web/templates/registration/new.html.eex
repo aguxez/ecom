@@ -1,10 +1,10 @@
 <!-- form start -->
-<%= form_for @changeset, registration_path(@conn, :create), fn f -> %>
+<%= form_for @changeset, registration_path(@conn, :create), [], fn f -> %>
   <div class="grid-container">
     <div class="grid-x grid-margin-x">
       <!-- TOP TEXT -->
       <div class="text-center cell">
-        Registrate
+        <h3>Registrate</h3>
       </div>
       <!-- END TOP TEXT -->
 
@@ -17,15 +17,19 @@
 
               <%= label f, :email, "Correo" %>
               <%= email_input f, :email %>
+              <%= error_tag f, :email %>
 
               <%= label f, :username, "Nombre de usuario" %>
               <%= text_input f, :username %>
+              <%= error_tag f, :username %>
 
               <%= label f, :password, "Contraseña" %>
               <%= password_input f, :password, minLength: 8 %>
+              <%= error_tag f, :password %>
 
               <%= label f, :password_confirmation, "Confirmar contraseña" %>
               <%= password_input f, :password_confirmation, minLength: 8 %>
+              <%= error_tag f, :password_confirmation %>
 
               <%= submit "Enviar", id: "submit", class: "button success text-center cell" %>
 

@@ -23,7 +23,6 @@ defmodule EcomWeb.ProductController do
   def create(conn, %{"product" => product_params}) do
     user = current_user(conn, [:id])
     params = Map.merge(product_params, %{"user_id" => user.id})
-    IO.inspect(params)
 
     case Accounts.create_product(params) do
       {:ok, %Product{}} ->
