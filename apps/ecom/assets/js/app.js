@@ -1,12 +1,3 @@
-// Brunch automatically concatenates all files in your
-// watched paths. Those paths can be configured at
-// config.paths.watched in "brunch-config.js".
-//
-// However, those files will only be executed if
-// explicitly imported. The only exception are files
-// in vendor, which are never wrapped in imports and
-// therefore are always executed.
-
 // Import dependencies
 //
 // If you no longer want to use a dependency, remember
@@ -16,23 +7,22 @@ import "react-phoenix";
 
 import "./custom.js";
 
-// import { BrowserRouter } from "react-router-dom";
-
 import Home from "./components/Home";
 import Header from "./components/Header";
 import Admin from "./components/Admin";
+
+// Way to call 'Foundation'
+var Foundation = require('foundation-sites/dist/js/foundation');
 
 window.Components = {
   Home, Header, Admin,
 }
 
+// Quill initialization
 document.addEventListener("DOMContentLoaded", () => {
   var quill = new Quill("#editor", { theme: "snow" })
 })
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
-
-// import socket from "./socket"
+$(document).ready($ => {
+  $(document).foundation();
+})

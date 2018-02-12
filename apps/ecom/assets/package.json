@@ -17,7 +17,8 @@
     "react": "^16.2.0",
     "react-phoenix": "file:../../../deps/react_phoenix",
     "react-router-dom": "^4.2.2",
-    "sass-brunch": "^2.10.4"
+    "sass-brunch": "^2.10.4",
+    "script-loader": "^0.7.2"
   },
   "devDependencies": {
     "babel-brunch": "6.1.1",

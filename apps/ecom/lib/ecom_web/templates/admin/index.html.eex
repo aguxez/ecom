@@ -1,1 +1,20 @@
-<%= react_component("Components.Admin") %>
+<div>
+  <ul class="tabs" data-tabs id="example-tabs">
+    <li class="tabs-title is-active">
+      <a href="#panel1" aria-selected="true"><strong>Interfaz</strong></a>
+    </li>
+  </ul>
+
+  <div class="tabs-content" data-tabs-content="example-tabs">
+    <div class="tabs-panel is-active" id="panel1">
+      <h4> <%= @users_amount %> usuarios registrados.</h4>
+
+      <h2> Ultimos miembros</h2>
+      <h3>
+        <%= for u <- @latest_users do %>
+          <%= u.username %> //
+        <% end %>
+      </h3>
+    </div>
+  </div>
+</div>

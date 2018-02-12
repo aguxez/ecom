@@ -17,3 +17,12 @@ Solution: Add `@derive {Poison.Encoder, except: [:__meta__]}` or the field that 
 
 #### Using spread syntax with babel
 `yarn add babel-plugin-transform-object-rest-spread --save-dev` then on `.brunch-config.js` on `plugins/babel`: `"plugins": ["transform-object-rest-spread"]`
+
+#### Foundation 6 way to initialize JS.
+
+`var Foundation = require('foundation-sites/dist/js/foundation');` then 
+```js
+$(document).ready($ => {
+  $(document).foundation();
+})
+```

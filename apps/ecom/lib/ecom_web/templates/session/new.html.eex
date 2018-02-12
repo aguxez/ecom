@@ -8,7 +8,7 @@
 
       <div class="small-6 cell">
         <label>Nombre de usuario</label>
-        <%= text_input f, :username, required: true %>
+        <%= text_input f, :username, required: true, autoFocus: true %>
       </div>
 
       <div class="small-6 cell">

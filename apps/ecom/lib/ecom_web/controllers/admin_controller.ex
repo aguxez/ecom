@@ -3,7 +3,11 @@ defmodule EcomWeb.AdminController do
 
   use EcomWeb, :controller
 
+  import Ecto.Query, only: [from: 2]
+
+  alias Ecom.Accounts
   alias Ecom.Accounts.User
+  alias Ecom.Repo
 
   plug Bodyguard.Plug.Authorize,
     policy: User,
@@ -12,6 +16,10 @@ defmodule EcomWeb.AdminController do
     fallback: EcomWeb.FallbackController
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    users_amount = length(Accounts.list_users())
+
+    latest_users = Repo.all(from u in User, order_by: u.inserted_at)
+
+    render(conn, "index.html", users_amount: users_amount, latest_users: latest_users)
   end
 end

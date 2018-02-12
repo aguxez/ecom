@@ -8,7 +8,6 @@ if (window.location.href.match(/\/register\/new/)) {
 
   let password, password_confirm;
 
-
   password_field.addEventListener('change', event => {
     password = event.target.value;
   });
@@ -22,3 +21,7 @@ if (window.location.href.match(/\/register\/new/)) {
     }
   });
 };
+
+//////////////////////////////////////////
+///////////END FORM VALIDATION////////////
+//////////////////////////////////////////
