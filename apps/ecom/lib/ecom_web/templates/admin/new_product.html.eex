@@ -1,4 +1,4 @@
-<%= form_for @changeset, product_path(@conn, :create), fn f -> %>
+<%= form_for @changeset, admin_path(@conn, :create_product), fn f -> %>
   <div class="grid-container">
     <div class="grid-x grid-margin-x">
       <div class="text-center cell">

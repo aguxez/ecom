@@ -6,7 +6,7 @@ defmodule EcomWeb.AdminController do
   import Ecto.Query, only: [from: 2]
 
   alias Ecom.Accounts
-  alias Ecom.Accounts.{User}
+  alias Ecom.Accounts.{User, Product}
   alias Ecom.Repo
 
   plug Bodyguard.Plug.Authorize,
@@ -26,5 +26,44 @@ defmodule EcomWeb.AdminController do
       latest_users: latest_users,
       products: products
     )
+  end
+
+  def delete(conn, %{"id" => id}) do
+    product = Accounts.get_product!(id)
+
+    case Accounts.delete_product(product) do
+      {:ok, %Product{}} ->
+        conn
+        |> put_flash(:success, gettext("Product deleted successfully"))
+        |> redirect(to: admin_path(conn, :index))
+      {:error, _} ->
+        conn
+        |> put_flash(:warning, gettext("There was a problem trying to delete your product"))
+        |> redirect(to: admin_path(conn, :index))
+    end
+  end
+
+  # Products
+  def new_product(conn, _params) do
+    changeset = Accounts.change_product(%Product{})
+
+    render(conn, "new_product.html", changeset: changeset)
+  end
+
+  def create_product(conn, %{"product" => product_params}) do
+    user = current_user(conn, [:id])
+
+    params = Map.merge(product_params, %{"user_id" => user.id})
+
+    case Accounts.create_product(params) do
+      {:ok, %Product{}} ->
+        conn
+        |> put_flash(:success, gettext("Product created successfully"))
+        |> redirect(to: page_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:alert, gettext("There was a problem trying to add your product"))
+        |> render("new.html", changeset: changeset)
+    end
   end
 end

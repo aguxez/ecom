@@ -30,14 +30,20 @@
           <tr>
             <th> <%= gettext("Name") %> </th>
             <th> <%= gettext("Description (Without formatting)") %> </th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <%= for product <- @products do %>
             <tr>
-              <td> <%= link product.name, to: public_product_path(@conn, :show, product.id) %> </td>
+              <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
               <td> <%= product.description %> </td>
+              <td>
+                <%= link to: admin_path(@conn, :delete, product.id), method: :delete do %>
+                  <%= content_tag(:span, "", class: "fas fa-trash-alt") %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>

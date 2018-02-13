@@ -32,22 +32,33 @@ defmodule EcomWeb.Router do
 
     # Registrations
     resources("/register", RegistrationController, only: [:new, :create])
-
-    # Show products
-    get("/public/product/:id", PublicProductController, :show)
   end
 
   scope "/", EcomWeb do
     pipe_through [:browser, :authorized, :ensure_auth]
 
-    # Admin panel
-    resources("/site_settings", AdminController, only: [:index])
-
     # User account
     post("/account/:id", AccountController, :update)
     resources("/account", AccountController, only: [:index, :update])
+  end
+
+  scope "/site_settings", EcomWeb do
+    pipe_through [:browser, :authorized, :ensure_auth]
+
+    # Admin panel
+    resources("/", AdminController, only: [:index, :delete])
+
+    get("/product/new", AdminController, :new_product)
+    post("/product", AdminController, :create_product)
+  end
+
+  scope "/pub", EcomWeb do
+    pipe_through [:browser, :authorized, :ensure_auth]
+
+    # Everything that needs to be shown to the public regarding data will be on pub
+    pipe_through [:browser, :authorized]
 
     # Products
-    resources("/products", ProductController, only: [:new, :create])
+    resources("/product", ProductController, only: [:show])
   end
 end

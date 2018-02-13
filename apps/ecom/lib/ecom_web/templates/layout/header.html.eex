@@ -44,7 +44,7 @@
           </h5>
 
           <h5>
-            <%= link gettext("Add product"), to: product_path(@conn, :new) %>
+            <%= link gettext("Add product"), to: admin_path(@conn, :new_product) %>
           </h5>
         </div>
       <% end %>
