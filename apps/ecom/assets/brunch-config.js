@@ -19,13 +19,18 @@ exports.config = {
     // This option sets where we should place non-css and non-js assets in.
     // By default, we set this to "/assets/static". Files in this directory
     // will be copied to `paths.public`, which is "priv/static" by default.
-    assets: /^(static)/
+    assets: [
+      /^(static)/,
+      // /^(node_modules\/font-awesome)/
+    ]
   },
 
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["static", "css", "js", "vendor"],
+    watched: [
+      "static", "css", "js", "vendor",
+    ],
     // Where to compile files to
     public: "../priv/static"
   },
@@ -43,9 +48,14 @@ exports.config = {
         includePaths: [
           'node_modules/foundation-sites/scss',
           'node_modules/normalize-scss/sass',
-          'trumbowyg/dist/ui/icons.svg'
+          'node_modules/font-awesome/scss',
         ]
       }
+    },
+    copycat: {
+      'fonts': [
+        'node_modules/font-awesome/fonts'
+      ]
     }
   },
 

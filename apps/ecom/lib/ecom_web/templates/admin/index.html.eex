@@ -41,7 +41,7 @@
               <td> <%= product.description %> </td>
               <td>
                 <%= link to: admin_path(@conn, :delete, product.id), method: :delete do %>
-                  <%= content_tag(:span, "", class: "fas fa-trash-alt") %>
+                  <%= content_tag(:span, "", class: "fa fa-trash") %>
                 <% end %>
               </td>
             </tr>
