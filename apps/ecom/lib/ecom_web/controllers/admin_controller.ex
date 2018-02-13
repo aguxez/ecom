@@ -9,6 +9,8 @@ defmodule EcomWeb.AdminController do
   alias Ecom.Accounts.{User, Product}
   alias Ecom.Repo
 
+  action_fallback EcomWeb.FallbackController
+
   plug Bodyguard.Plug.Authorize,
     policy: User,
     action: :admin_panel,
@@ -51,15 +53,17 @@ defmodule EcomWeb.AdminController do
   end
 
   def create_product(conn, %{"product" => product_params}) do
-    user = current_user(conn, [:id])
+    user = current_user(conn, "everything")
 
     params = Map.merge(product_params, %{"user_id" => user.id})
 
-    case Accounts.create_product(params) do
-      {:ok, %Product{}} ->
-        conn
-        |> put_flash(:success, gettext("Product created successfully"))
-        |> redirect(to: page_path(conn, :index))
+    with :ok <- Bodyguard.permit(Product, :create_products, user),
+         {:ok, %Product{}} <- Accounts.create_product(params) do
+
+      conn
+      |> put_flash(:success, gettext("Product created successfully"))
+      |> redirect(to: page_path(conn, :index))
+    else
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))

@@ -63,6 +63,8 @@ defmodule Ecom.Mixfile do
       {:guardian, "~> 1.0"},
       {:bodyguard, "~> 2.2"},
       {:earmark, "~> 1.2"},
+      {:arc, "~> 0.8.0"},
+      {:arc_ecto, "~> 0.7.0"},
 
       {:credo, "~> 0.8.10", only: [:test, :dev]},
       {:coverex, "~> 1.4", only: [:test]},

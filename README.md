@@ -1,6 +1,6 @@
 # Ecom
 
-## Template to start building an Ecommerce on Elixir, Phoenix and React.
+### Template to start building an Ecommerce on Elixir and Phoenix.
 
 ### Done
 
@@ -8,9 +8,9 @@
 2. Users can login and logout using Guardian.
 3. Users can register, using a simple client-side verification and one server-side.
 4. Users get recognized between admin and normal.
-5. Admin can add product
-6. Spanish and English supported based on Locale
-7. Support for Markdown
+5. Admin can add/delete/edit product.
+6. Spanish and English supported based on Locale.
+7. Support for Markdown.
 
 ### Notes:
 #### Unable to encode value
@@ -35,3 +35,6 @@ All configuration is given through `config :gettext, opts`, not `config :my_app,
 
 #### Use SimpleMDE
 As default text editor.
+
+#### Image uploads
+At the beginning they're handled locally, if you're planning to use a Cloud Storage Service, further configuration is required.

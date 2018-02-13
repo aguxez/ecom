@@ -9,7 +9,7 @@ config :gettext, default_locale: "es", locales: ~w(en es)
 
 config :ecom, Ecom.Auth.Pipeline,
   module: Ecom.Guardian,
-  error_handler: Ecom.AuthErrorHandler
+  error_handler: EcomWeb.AuthErrorHandler
 
 # General application configuration
 config :ecom,

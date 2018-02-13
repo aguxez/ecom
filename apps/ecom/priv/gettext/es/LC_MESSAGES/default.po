@@ -34,11 +34,11 @@ msgstr "Contraseña actual incorrecta"
 msgid "Not authorized"
 msgstr "No autorizado"
 
-#: lib/ecom_web/controllers/product_controller.ex:31
+#: lib/ecom_web/controllers/admin_controller.ex:64
 msgid "Product created successfully"
 msgstr "Producto creado satisfactoriamente"
 
-#: lib/ecom_web/controllers/product_controller.ex:35
+#: lib/ecom_web/controllers/admin_controller.ex:69
 msgid "There was a problem trying to add your product"
 msgstr "Hubo un problema al intentar crear tu producto"
 
@@ -104,7 +104,7 @@ msgstr "Actualizar"
 msgid "Update your password"
 msgstr "Actualiza tu contraseña"
 
-#: lib/ecom_web/templates/product/new.html.eex:5
+#: lib/ecom_web/templates/admin/new_product.html.eex:5
 msgid "Add a product"
 msgstr "Añadir un producto"
 
@@ -116,8 +116,8 @@ msgstr "Confirmar contraseña"
 msgid "Email"
 msgstr "Correo"
 
-#: lib/ecom_web/templates/admin/index.html.eex:30
-#: lib/ecom_web/templates/product/new.html.eex:10
+#: lib/ecom_web/templates/admin/index.html.eex:31
+#: lib/ecom_web/templates/admin/new_product.html.eex:10
 msgid "Name"
 msgstr "Nombre"
 
@@ -130,7 +130,7 @@ msgstr "Contraseña"
 msgid "Send"
 msgstr "Enviar"
 
-#: lib/ecom_web/templates/product/new.html.eex:19
+#: lib/ecom_web/templates/admin/new_product.html.eex:19
 msgid "Upload product"
 msgstr "Subir producto"
 
@@ -139,27 +139,35 @@ msgstr "Subir producto"
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#, elixir-format
 #: lib/ecom_web/templates/admin/index.html.eex:4
 msgid "Dashboard"
 msgstr "Interfaz"
 
-#, elixir-format
-#: lib/ecom_web/templates/admin/index.html.eex:31
+#: lib/ecom_web/templates/admin/index.html.eex:32
 msgid "Description (Without formatting)"
 msgstr "Descripción (Sin formato)"
 
-#, elixir-format
 #: lib/ecom_web/views/error_view.ex:9
 msgid "Internal server error"
 msgstr "Error interno del servidor"
 
-#, elixir-format
 #: lib/ecom_web/views/error_view.ex:5
 msgid "Page not found"
 msgstr "Página no encontrada"
 
-#, elixir-format
 #: lib/ecom_web/templates/admin/index.html.eex:8
 msgid "Products"
 msgstr "Productos"
+
+#: lib/ecom_web/controllers/admin_controller.ex:39
+msgid "Product deleted successfully"
+msgstr "Producto eliminado satisfactoriamente"
+
+#: lib/ecom_web/controllers/admin_controller.ex:43
+msgid "There was a problem trying to delete your product"
+msgstr "Hubo un problema tratando de eliminar tu producto"
+
+#, elixir-format
+#: lib/ecom_web/controllers/auth_error_handler.ex:8
+msgid "Please login first"
+msgstr "Por favor, inicia sesión primero"
