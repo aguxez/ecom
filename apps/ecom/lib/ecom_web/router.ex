@@ -32,6 +32,9 @@ defmodule EcomWeb.Router do
 
     # Registrations
     resources("/register", RegistrationController, only: [:new, :create])
+
+    # Show products
+    get("/public/product/:id", PublicProductController, :show)
   end
 
   scope "/", EcomWeb do

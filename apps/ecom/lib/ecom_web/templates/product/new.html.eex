@@ -5,14 +5,18 @@
         <h3> <%= gettext("Add a product") %> </h3>
       </div>
 
-      <div>
+      <div class="small-12 cell">
         <%= label f, :name do %>
           <%= gettext("Name") %>
           <%= text_input f, :name %>
         <% end %>
-
-        <%= submit gettext("Upload product"), class: "button success" %>
       </div>
+
+      <div class="small-12 cell">
+        <%= textarea f, :description, id: "product-edit" %>
+      </div>
+
+      <%= submit gettext("Upload product"), class: "button success" %>
     </div>
   </div>
 <% end %>

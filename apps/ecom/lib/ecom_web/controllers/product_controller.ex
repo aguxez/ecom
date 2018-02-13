@@ -15,13 +15,14 @@ defmodule EcomWeb.ProductController do
     fallback: EcomWeb.FallbackController
 
   def new(conn, _params) do
-    changeset = Product.changeset(%Product{}, %{})
+    changeset = Accounts.change_product(%Product{})
 
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"product" => product_params}) do
     user = current_user(conn, [:id])
+
     params = Map.merge(product_params, %{"user_id" => user.id})
 
     case Accounts.create_product(params) do

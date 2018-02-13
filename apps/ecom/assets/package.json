@@ -18,11 +18,12 @@
     "react-phoenix": "file:../../../deps/react_phoenix",
     "react-router-dom": "^4.2.2",
     "sass-brunch": "^2.10.4",
-    "script-loader": "^0.7.2"
+    "script-loader": "^0.7.2",
+    "simplemde": "^1.11.2"
   },
   "devDependencies": {
     "babel-brunch": "6.1.1",
-    "brunch": "2.10.9",
+    "brunch": "^2.10.12",
     "clean-css-brunch": "2.10.0",
     "uglify-js-brunch": "2.10.0"
   }

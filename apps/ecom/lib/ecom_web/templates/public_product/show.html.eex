@@ -1,0 +1,5 @@
+<h3>
+  <%= @product.name %>
+</h3>
+
+<%= markdown(@product.description) %>

@@ -24,6 +24,21 @@ defmodule Ecom.Accounts.Product do
     product
     |> cast(attrs, [:name, :user_id, :description])
     |> validate_required([:name, :user_id, :description])
+    |> strip_unsafe_body(attrs)
+  end
+
+  # Saving Markdown
+  defp strip_unsafe_body(product, %{"description" => nil}) do
+    product
+  end
+
+  defp strip_unsafe_body(product, %{"description" => description}) do
+    {:safe, clean_desc} = Phoenix.HTML.html_escape(description)
+    put_change(product, :description, clean_desc)
+  end
+
+  defp strip_unsafe_body(product, _) do
+    product
   end
 
   def authorize(:create_products, %User{is_admin: true}, _), do: :ok

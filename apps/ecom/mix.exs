@@ -62,9 +62,10 @@ defmodule Ecom.Mixfile do
       {:argon2_elixir, "~> 1.2"},
       {:guardian, "~> 1.0"},
       {:bodyguard, "~> 2.2"},
+      {:earmark, "~> 1.2"},
 
       {:credo, "~> 0.8.10", only: [:test, :dev]},
-      {:coverex, "~> 1.4", only: [:test]}
+      {:coverex, "~> 1.4", only: [:test]},
     ]
   end
 

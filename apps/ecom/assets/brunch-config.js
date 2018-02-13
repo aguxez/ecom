@@ -42,7 +42,8 @@ exports.config = {
       options: {
         includePaths: [
           'node_modules/foundation-sites/scss',
-          'node_modules/normalize-scss/sass'
+          'node_modules/normalize-scss/sass',
+          'trumbowyg/dist/ui/icons.svg'
         ]
       }
     }
