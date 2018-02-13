@@ -44,7 +44,7 @@ defmodule Ecom.GuardianTest do
     end
 
     test "returns {:error, :no_result} tuple" do
-      assert Ecom.Guardian.resource_from_claims(%{"sub" => "User:99999"}) == {:error, :no_result}
+      assert Ecom.Guardian.resource_from_claims(%{"sub" => "User:15951"}) == {:error, :no_result}
     end
 
     test "returns {:error, :invalid_claims} tuple" do

@@ -14,7 +14,18 @@ defmodule Ecom.Mixfile do
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: Coverex.Task, ignore_modules: modules_to_ignore()]
+    ]
+  end
+
+  defp modules_to_ignore do
+    [
+      Ecom, EcomWeb.Accounts, Ecom.Application, Ecom.Auth.Pipeline, Ecom.DataCase,
+      Ecom.Guardian.Plug, Ecom.Repo, EcomWeb, EcomWeb.ChannelCase, EcomWeb.ConnCase,
+      EcomWeb.Endpoint, EcomWeb.ErrorView, EcomWeb.Gettext, EcomWeb.Helpers,
+      EcomWeb.Locale, EcomWeb.PageView, EcomWeb.ProductView, EcomWeb.RegistrationView,
+      EcomWeb.Router, EcomWeb.Router.Helpers, EcomWeb.SessionView, EcomWeb.UserSocker, Poison.Encoder.Ecom.Accounts.User
     ]
   end
 
@@ -53,6 +64,7 @@ defmodule Ecom.Mixfile do
       {:bodyguard, "~> 2.2"},
 
       {:credo, "~> 0.8.10", only: [:test, :dev]},
+      {:coverex, "~> 1.4", only: [:test]}
     ]
   end
 

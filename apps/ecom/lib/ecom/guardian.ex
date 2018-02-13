@@ -19,7 +19,7 @@ defmodule Ecom.Guardian do
       {uid, ""} -> {:ok, Accounts.get_user!(uid)}
       _         -> {:error, :invalid_id}
     end
-  catch
+  rescue
     Ecto.NoResultsError -> {:error, :no_result}
   end
 

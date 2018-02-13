@@ -4,6 +4,6 @@ defmodule EcomWeb.PageControllerTest do
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
     # Just the main react "div"
-    assert html_response(conn, 200) =~ "data-react-class"
+    assert html_response(conn, 200) =~ "LOGGED-IN USER"
   end
 end
