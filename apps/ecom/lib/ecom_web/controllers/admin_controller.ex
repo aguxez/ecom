@@ -6,7 +6,7 @@ defmodule EcomWeb.AdminController do
   import Ecto.Query, only: [from: 2]
 
   alias Ecom.Accounts
-  alias Ecom.Accounts.User
+  alias Ecom.Accounts.{User}
   alias Ecom.Repo
 
   plug Bodyguard.Plug.Authorize,
@@ -17,9 +17,14 @@ defmodule EcomWeb.AdminController do
 
   def index(conn, _params) do
     users_amount = length(Accounts.list_users())
+    products = Accounts.list_products()
 
     latest_users = Repo.all(from u in User, order_by: u.inserted_at)
 
-    render(conn, "index.html", users_amount: users_amount, latest_users: latest_users)
+    render(conn, "index.html",
+      users_amount: users_amount,
+      latest_users: latest_users,
+      products: products
+    )
   end
 end

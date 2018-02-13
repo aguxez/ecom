@@ -10,15 +10,15 @@
 msgid ""
 msgstr ""
 
-#: lib/ecom_web/controllers/session_controller.ex:39
+#: lib/ecom_web/controllers/session_controller.ex:42
 msgid "Logged-in!"
 msgstr ""
 
-#: lib/ecom_web/controllers/session_controller.ex:59
+#: lib/ecom_web/controllers/session_controller.ex:62
 msgid "You've been logged-out"
 msgstr ""
 
-#: lib/ecom_web/controllers/session_controller.ex:65
+#: lib/ecom_web/controllers/session_controller.ex:68
 msgid "Your username or password are incorrect!"
 msgstr ""
 
@@ -34,11 +34,11 @@ msgstr ""
 msgid "Not authorized"
 msgstr ""
 
-#: lib/ecom_web/controllers/product_controller.ex:30
+#: lib/ecom_web/controllers/product_controller.ex:31
 msgid "Product created successfully"
 msgstr ""
 
-#: lib/ecom_web/controllers/product_controller.ex:34
+#: lib/ecom_web/controllers/product_controller.ex:35
 msgid "There was a problem trying to add your product"
 msgstr ""
 
@@ -116,6 +116,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: lib/ecom_web/templates/admin/index.html.eex:30
 #: lib/ecom_web/templates/product/new.html.eex:10
 msgid "Name"
 msgstr ""
@@ -129,11 +130,36 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: lib/ecom_web/templates/product/new.html.eex:14
+#: lib/ecom_web/templates/product/new.html.eex:19
 msgid "Upload product"
 msgstr ""
 
 #: lib/ecom_web/templates/registration/new.html.eex:25
 #: lib/ecom_web/templates/session/new.html.eex:11
 msgid "Username"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:4
+msgid "Dashboard"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:31
+msgid "Description (Without formatting)"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/views/error_view.ex:9
+msgid "Internal server error"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/views/error_view.ex:5
+msgid "Page not found"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:8
+msgid "Products"
 msgstr ""

@@ -1,11 +1,15 @@
 <div>
-  <ul class="tabs" data-tabs id="example-tabs">
+  <ul class="tabs" data-tabs id="dash-tabs">
     <li class="tabs-title is-active">
-      <a href="#panel1" aria-selected="true"><strong>Interfaz</strong></a>
+      <a href="#panel1" aria-selected="true"><strong> <%= gettext("Dashboard") %> </strong></a>
+    </li>
+
+    <li class="tabs-title">
+      <a href="#panel2"><strong> <%= gettext("Products") %> </strong></a>
     </li>
   </ul>
 
-  <div class="tabs-content" data-tabs-content="example-tabs">
+  <div class="tabs-content" data-tabs-content="dash-tabs">
     <!-- MAIN INTERFACE, MEMBERS, ETC... -->
     <div class="tabs-panel is-active" id="panel1">
       <p class="stat"> <%= @users_amount %> usuarios registrados.</p>
@@ -18,5 +22,28 @@
       </h3>
     </div>
     <!-- END MAIN INTERFACE -->
+
+    <!-- PRODUCT INTERFACE -->
+    <div class="tabs-panel" id="panel2">
+      <table class="unstriped">
+        <thead>
+          <tr>
+            <th> <%= gettext("Name") %> </th>
+            <th> <%= gettext("Description (Without formatting)") %> </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <%= for product <- @products do %>
+            <tr>
+              <td> <%= link product.name, to: public_product_path(@conn, :show, product.id) %> </td>
+              <td> <%= product.description %> </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- END PRODUCT INTERFACE -->
+
   </div>
 </div>
