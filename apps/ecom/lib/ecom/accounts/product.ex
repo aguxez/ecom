@@ -10,7 +10,6 @@ defmodule Ecom.Accounts.Product do
   # Authorization Behaviour
   @behaviour Bodyguard.Policy
 
-
   schema "products" do
     field :name, :string
 

@@ -23,7 +23,10 @@ defmodule EcomWeb.SessionController do
     |> Repo.get_by(username: username)
     |> sign_in(password, conn)
   end
-  def create(conn, _), do: failed_login(conn)
+
+  def create(conn, _) do
+    failed_login(conn)
+  end
 
 
   # If 'user' doesn't exist
@@ -61,7 +64,6 @@ defmodule EcomWeb.SessionController do
     |> redirect(to: page_path(conn, :index))
   end
 
-  defp wrong_creds do
-    gettext("Your username or password are incorrect!")
-  end
+  defp wrong_creds,
+    do: gettext("Your username or password are incorrect!")
 end

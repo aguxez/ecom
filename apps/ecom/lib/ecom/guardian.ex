@@ -15,14 +15,12 @@ defmodule Ecom.Guardian do
   end
 
   def resource_from_claims(%{"sub" => "User:" <> id}) do
-    try do
-      case Integer.parse(id) do
-        {uid, ""} -> {:ok, Accounts.get_user!(uid)}
-        _         -> {:error, :invalid_id}
-      end
-    rescue
-      Ecto.NoResultsError -> {:error, :no_result}
+    case Integer.parse(id) do
+      {uid, ""} -> {:ok, Accounts.get_user!(uid)}
+      _         -> {:error, :invalid_id}
     end
+  catch
+    Ecto.NoResultsError -> {:error, :no_result}
   end
 
   def resource_from_claims(_) do

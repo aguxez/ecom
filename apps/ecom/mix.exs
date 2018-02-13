@@ -43,7 +43,7 @@ defmodule Ecom.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.11", override: true},
+      {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
 
       {:react_phoenix, "~> 0.5.1"},
@@ -51,6 +51,8 @@ defmodule Ecom.Mixfile do
       {:argon2_elixir, "~> 1.2"},
       {:guardian, "~> 1.0"},
       {:bodyguard, "~> 2.2"},
+
+      {:credo, "~> 0.8.10", only: [:test, :dev]},
     ]
   end
 
