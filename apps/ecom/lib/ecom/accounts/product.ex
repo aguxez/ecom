@@ -12,6 +12,7 @@ defmodule Ecom.Accounts.Product do
 
   schema "products" do
     field :name, :string
+    field :description, :string
 
     belongs_to :user, User
 
@@ -21,8 +22,8 @@ defmodule Ecom.Accounts.Product do
   @doc false
   def changeset(%Product{} = product, attrs) do
     product
-    |> cast(attrs, [:name, :user_id])
-    |> validate_required([:name, :user_id])
+    |> cast(attrs, [:name, :user_id, :description])
+    |> validate_required([:name, :user_id, :description])
   end
 
   def authorize(:create_products, %User{is_admin: true}, _), do: :ok
