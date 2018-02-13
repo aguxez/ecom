@@ -1,7 +1,6 @@
 defmodule EcomWeb.LayoutViewTest do
   use EcomWeb.ConnCase, async: true
 
-  alias EcomWeb.LayoutView
   alias Ecom.Accounts.User
   alias Ecom.Repo
 
