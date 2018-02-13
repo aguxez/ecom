@@ -16,11 +16,8 @@ window.Components = {
   Admin,
 }
 
-// Quill initialization
-document.addEventListener("DOMContentLoaded", () => {
-  var quill = new Quill("#editor", { theme: "snow" })
-})
-
 $(document).ready($ => {
+  // Foundation
   $(document).foundation();
+
 })
