@@ -24,7 +24,8 @@
       render("header.html",
         conn: @conn,
         user: current_user(@conn, "basic"),
-        current_path: Phoenix.Controller.current_path(@conn, %{}))
+        current_path: Phoenix.Controller.current_path(@conn, %{})
+      )
     %>
   </head>
 
