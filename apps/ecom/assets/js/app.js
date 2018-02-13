@@ -7,16 +7,10 @@ import "react-phoenix";
 
 import "./custom.js";
 
-import Admin from "./components/Admin";
-
 var SimpleMDE = require("simplemde/dist/simplemde.min.js");
 
 // Way to import 'Foundation'
 import "foundation-sites/dist/js/foundation";
-
-window.Components = {
-  Admin,
-}
 
 $(document).ready($ => {
   // Foundation
