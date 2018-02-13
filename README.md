@@ -10,6 +10,7 @@
 4. Users get recognized between admin and normal.
 5. Admin can add product
 6. Spanish and English supported based on Locale
+7. Support for Markdown
 
 ### Notes:
 #### Unable to encode value
@@ -31,3 +32,6 @@ $(document).ready($ => {
 
 #### Gettext
 All configuration is given through `config :gettext, opts`, not `config :my_app, MyApp.Gettext`
+
+#### Use SimpleMDE
+As default text editor.
