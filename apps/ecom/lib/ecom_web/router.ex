@@ -53,9 +53,7 @@ defmodule EcomWeb.Router do
   end
 
   scope "/pub", EcomWeb do
-    pipe_through [:browser, :authorized, :ensure_auth]
-
-    # Everything that needs to be shown to the public regarding data will be on pub
+    # Everything that needs to be shown to the public will be on '/pub'
     pipe_through [:browser, :authorized]
 
     # Products
