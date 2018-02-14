@@ -53,7 +53,7 @@ defmodule EcomWeb.AdminController do
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))
-        |> render("new.html", changeset: changeset)
+        |> render("new_product.html", changeset: changeset)
     end
   end
 

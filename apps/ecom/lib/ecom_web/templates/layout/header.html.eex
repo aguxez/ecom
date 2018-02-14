@@ -57,8 +57,10 @@
         <li>
           <%= link String.upcase(Gettext.get_locale()), to: "#" %>
           <ul class="menu">
-            <li> <%= link "EN", to: @current_path <> "?lang=en" %> </li>
-            <li> <%= link "ES", to: @current_path <> "?lang=es" %> </li>
+            <!-- <li> <%= link "EN", to: @current_path <> "?lang=en" %> </li> -->
+            <!-- <li> <%= link "ES", to: @current_path <> "?lang=es" %> </li> -->
+            <li> <%= link "EN", to: page_path(@conn, :index) <> "?lang=en" %> </li>
+            <li> <%= link "ES", to: page_path(@conn, :index) <> "?lang=es" %> </li>
           </ul>
         </li>
       </ul>

@@ -3,9 +3,13 @@ defmodule EcomWeb.PageController do
 
   use EcomWeb, :controller
 
+  alias Ecom.Accounts
+
   action_fallback EcomWeb.FallbackController
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    products = Accounts.list_products()
+
+    render(conn, "index.html", products: products)
   end
 end

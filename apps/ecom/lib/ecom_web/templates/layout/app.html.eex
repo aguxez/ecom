@@ -31,10 +31,10 @@
     <div class="grid-container">
       <%
         secondary = get_flash(@conn, :secondary)
-        primary = get_flash(@conn, :primary)
-        success = get_flash(@conn, :success)
-        warning = get_flash(@conn, :warning)
-        alert = get_flash(@conn, :alert)
+        primary   = get_flash(@conn, :primary)
+        success   = get_flash(@conn, :success)
+        warning   = get_flash(@conn, :warning)
+        alert     = get_flash(@conn, :alert)
       %>
 
       <br />
