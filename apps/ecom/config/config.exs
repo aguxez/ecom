@@ -5,7 +5,14 @@
 # is restricted to this project.
 use Mix.Config
 
-config :gettext, default_locale: "es", locales: ~w(en es)
+# Arc
+config :arc,
+  storage: Arc.Storage.Local
+
+# Gettext
+config :gettext,
+  default_locale: "es",
+  locales: ~w(en es)
 
 config :ecom, Ecom.Auth.Pipeline,
   module: Ecom.Guardian,

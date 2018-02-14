@@ -1,5 +1,6 @@
-<h3>
-  <%= @product.name %>
-</h3>
+<div>
+  <h3> <%= @product.name %> </h3>
+  <h3> <%= img_tag(EcomWeb.Uploaders.Image.url({@product.image, @product})) %> </h3>
+</div>
 
 <%= markdown(@product.description) %>

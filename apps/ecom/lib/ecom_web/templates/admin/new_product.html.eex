@@ -1,4 +1,4 @@
-<%= form_for @changeset, admin_path(@conn, :create_product), fn f -> %>
+<%= form_for @changeset, admin_path(@conn, :create_product), [multipart: true], fn f -> %>
   <div class="grid-container">
     <div class="grid-x grid-margin-x">
       <div class="text-center cell">
@@ -14,6 +14,13 @@
 
       <div class="small-12 cell">
         <%= textarea f, :description, id: "product-edit" %>
+      </div>
+
+      <div class="small-12 cell">
+        <%= label f, :image do %>
+          <%= file_input f, :image %>
+          <%= error_tag f, :image %>
+        <% end %>
       </div>
 
       <%= submit gettext("Upload product"), class: "button success" %>

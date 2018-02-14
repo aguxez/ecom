@@ -2,6 +2,7 @@ defmodule Ecom.Accounts.Product do
   @moduledoc false
 
   use Ecto.Schema
+  use Arc.Ecto.Schema
 
   import Ecto.Changeset
 
@@ -13,6 +14,7 @@ defmodule Ecom.Accounts.Product do
   schema "products" do
     field :name, :string
     field :description, :string
+    field :image, EcomWeb.Uploaders.Image.Type
 
     belongs_to :user, User
 
@@ -23,6 +25,7 @@ defmodule Ecom.Accounts.Product do
   def changeset(%Product{} = product, attrs) do
     product
     |> cast(attrs, [:name, :user_id, :description])
+    |> cast_attachments(attrs, [:image])
     |> validate_required([:name, :user_id, :description])
     |> strip_unsafe_desc(attrs)
   end

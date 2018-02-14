@@ -11,6 +11,7 @@
 5. Admin can add/delete/edit product.
 6. Spanish and English supported based on Locale.
 7. Support for Markdown.
+8. Support for adding pictures to Products
 
 ### Notes:
 #### Unable to encode value
@@ -38,3 +39,6 @@ As default text editor.
 
 #### Image uploads
 At the beginning they're handled locally, if you're planning to use a Cloud Storage Service, further configuration is required.
+
+#### Attachments
+Arc_ecto provides the `cast_attachments` function. The attachment should be casted only on that function and not on `cast`
