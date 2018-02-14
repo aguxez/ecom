@@ -14,7 +14,12 @@
 8. Support for adding pictures to Products
 
 ### Being worked ATM
-- [ ] Shopping cart
+**Shopping cart**
+
+### TODO
+- [ ] Payments
+- [ ] Shipping
+- [ ] Flexible configuration
 
 ### Notes:
 #### Unable to encode value
