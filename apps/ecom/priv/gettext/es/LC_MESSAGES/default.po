@@ -34,11 +34,11 @@ msgstr "Contraseña actual incorrecta"
 msgid "Not authorized"
 msgstr "No autorizado"
 
-#: lib/ecom_web/controllers/admin_controller.ex:64
+#: lib/ecom_web/controllers/admin_controller.ex:50
 msgid "Product created successfully"
 msgstr "Producto creado satisfactoriamente"
 
-#: lib/ecom_web/controllers/admin_controller.ex:69
+#: lib/ecom_web/controllers/admin_controller.ex:55
 msgid "There was a problem trying to add your product"
 msgstr "Hubo un problema al intentar crear tu producto"
 
@@ -116,7 +116,7 @@ msgstr "Confirmar contraseña"
 msgid "Email"
 msgstr "Correo"
 
-#: lib/ecom_web/templates/admin/index.html.eex:31
+#: lib/ecom_web/templates/admin/index.html.eex:32
 #: lib/ecom_web/templates/admin/new_product.html.eex:10
 msgid "Name"
 msgstr "Nombre"
@@ -130,7 +130,7 @@ msgstr "Contraseña"
 msgid "Send"
 msgstr "Enviar"
 
-#: lib/ecom_web/templates/admin/new_product.html.eex:19
+#: lib/ecom_web/templates/admin/new_product.html.eex:36
 msgid "Upload product"
 msgstr "Subir producto"
 
@@ -143,7 +143,7 @@ msgstr "Nombre de usuario"
 msgid "Dashboard"
 msgstr "Interfaz"
 
-#: lib/ecom_web/templates/admin/index.html.eex:32
+#: lib/ecom_web/templates/admin/index.html.eex:33
 msgid "Description (Without formatting)"
 msgstr "Descripción (Sin formato)"
 
@@ -159,15 +159,39 @@ msgstr "Página no encontrada"
 msgid "Products"
 msgstr "Productos"
 
-#: lib/ecom_web/controllers/admin_controller.ex:39
+#: lib/ecom_web/controllers/admin_controller.ex:69
 msgid "Product deleted successfully"
 msgstr "Producto eliminado satisfactoriamente"
 
-#: lib/ecom_web/controllers/admin_controller.ex:43
+#: lib/ecom_web/controllers/admin_controller.ex:73
 msgid "There was a problem trying to delete your product"
 msgstr "Hubo un problema tratando de eliminar tu producto"
 
-#, elixir-format
-#: lib/ecom_web/controllers/auth_error_handler.ex:8
+#: lib/ecom_web/auth_error_handler.ex:8
 msgid "Please login first"
 msgstr "Por favor, inicia sesión primero"
+
+#, elixir-format
+#: lib/ecom_web/templates/product/show.html.eex:22
+msgid "Add to cart"
+msgstr "Añadir a carrito"
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:46
+msgid "Are you sure?"
+msgstr "¿Está seguro?"
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/new_product.html.eex:30
+msgid "Available quantity"
+msgstr "Cantidad disponible"
+
+#, elixir-format
+#: lib/ecom_web/templates/layout/header.html.eex:56
+msgid "Cart"
+msgstr "Carrito"
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:31
+msgid "ID"
+msgstr "ID"

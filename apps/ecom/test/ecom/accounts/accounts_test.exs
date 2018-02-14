@@ -65,8 +65,8 @@ defmodule Ecom.AccountsTest do
   describe "products" do
     alias Ecom.Accounts.Product
 
-    @valid_attrs %{name: "some name", description: "some description"}
-    @update_attrs %{name: "some updated name", description: "some updated desc"}
+    @valid_attrs %{name: "some name", description: "some description", quantity: 10}
+    @update_attrs %{name: "some updated name", description: "some updated desc", quantity: 11}
     @invalid_attrs %{name: nil}
 
     def product_fixture(attrs \\ %{}) do

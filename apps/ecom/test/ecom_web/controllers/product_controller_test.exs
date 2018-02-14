@@ -18,7 +18,8 @@ defmodule EcomWeb.ProductControllerTest do
     attrs = %{
       name: "some name",
       description: "some description",
-      user_id: user.id
+      user_id: user.id,
+      quantity: Enum.random(1..100)
     }
 
     {:ok, product} = Accounts.create_product(attrs)

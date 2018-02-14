@@ -34,11 +34,11 @@ msgstr ""
 msgid "Not authorized"
 msgstr ""
 
-#: lib/ecom_web/controllers/admin_controller.ex:64
+#: lib/ecom_web/controllers/admin_controller.ex:50
 msgid "Product created successfully"
 msgstr ""
 
-#: lib/ecom_web/controllers/admin_controller.ex:69
+#: lib/ecom_web/controllers/admin_controller.ex:55
 msgid "There was a problem trying to add your product"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: lib/ecom_web/templates/admin/index.html.eex:31
+#: lib/ecom_web/templates/admin/index.html.eex:32
 #: lib/ecom_web/templates/admin/new_product.html.eex:10
 msgid "Name"
 msgstr ""
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: lib/ecom_web/templates/admin/new_product.html.eex:19
+#: lib/ecom_web/templates/admin/new_product.html.eex:36
 msgid "Upload product"
 msgstr ""
 
@@ -143,7 +143,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: lib/ecom_web/templates/admin/index.html.eex:32
+#: lib/ecom_web/templates/admin/index.html.eex:33
 msgid "Description (Without formatting)"
 msgstr ""
 
@@ -159,15 +159,39 @@ msgstr ""
 msgid "Products"
 msgstr ""
 
-#: lib/ecom_web/controllers/admin_controller.ex:39
+#: lib/ecom_web/controllers/admin_controller.ex:69
 msgid "Product deleted successfully"
 msgstr ""
 
-#: lib/ecom_web/controllers/admin_controller.ex:43
+#: lib/ecom_web/controllers/admin_controller.ex:73
 msgid "There was a problem trying to delete your product"
 msgstr ""
 
-#, elixir-format
-#: lib/ecom_web/controllers/auth_error_handler.ex:8
+#: lib/ecom_web/auth_error_handler.ex:8
 msgid "Please login first"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/product/show.html.eex:22
+msgid "Add to cart"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:46
+msgid "Are you sure?"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/new_product.html.eex:30
+msgid "Available quantity"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/layout/header.html.eex:56
+msgid "Cart"
+msgstr ""
+
+#, elixir-format
+#: lib/ecom_web/templates/admin/index.html.eex:31
+msgid "ID"
 msgstr ""

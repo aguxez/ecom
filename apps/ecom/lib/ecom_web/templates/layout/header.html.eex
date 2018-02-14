@@ -53,7 +53,7 @@
 
     <div class="cell">
       <!-- CART -->
-      <h5> <%= link "Cart", to: cart_path(@conn, :index) %> </h5>
+      <h5> <%= link gettext("Cart"), to: cart_path(@conn, :index) %> </h5>
       <!-- END CART -->
 
       <!-- CHANGE LANGUAGE -->

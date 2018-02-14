@@ -61,6 +61,7 @@ defmodule EcomWeb.AdminControllerTest do
       assert redirected_to(conn) == session_path(conn, :new)
     end
 
+    @tag :skip
     test "admin can create new product", %{admin: user, conn: conn} do
       attrs = %{name: "some name", description: "some description"}
       conn =
