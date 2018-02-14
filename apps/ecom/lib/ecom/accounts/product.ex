@@ -15,6 +15,7 @@ defmodule Ecom.Accounts.Product do
     field :name, :string
     field :description, :string
     field :image, EcomWeb.Uploaders.Image.Type
+    field :quantity, :integer
 
     belongs_to :user, User
 
@@ -24,9 +25,9 @@ defmodule Ecom.Accounts.Product do
   @doc false
   def changeset(%Product{} = product, attrs) do
     product
-    |> cast(attrs, [:name, :user_id, :description])
+    |> cast(attrs, [:name, :user_id, :description, :quantity])
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:name, :user_id, :description])
+    |> validate_required([:name, :user_id, :description, :quantity])
     |> strip_unsafe_desc(attrs)
   end
 

@@ -9,17 +9,27 @@
         <%= label f, :name do %>
           <%= gettext("Name") %>
           <%= text_input f, :name %>
+          <%= error_tag f, :name %>
         <% end %>
       </div>
 
       <div class="small-12 cell">
         <%= textarea f, :description, id: "product-edit" %>
+        <%= error_tag f, :description %>
       </div>
 
       <div class="small-12 cell">
         <%= label f, :image do %>
           <%= file_input f, :image %>
           <%= error_tag f, :image %>
+        <% end %>
+      </div>
+
+      <div class="small-12 cell">
+        <%= label f, :quantity do %>
+          <%= gettext("Available quantity") %>
+          <%= number_input f, :quantity, value: "1", min: "1" %>
+          <%= error_tag f, :quantity %>
         <% end %>
       </div>
 
