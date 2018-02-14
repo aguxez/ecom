@@ -28,6 +28,7 @@
       <table class="unstriped">
         <thead>
           <tr>
+            <th> <%= gettext("ID") %> </th>
             <th> <%= gettext("Name") %> </th>
             <th> <%= gettext("Description (Without formatting)") %> </th>
             <th></th>
@@ -37,6 +38,7 @@
         <tbody>
           <%= for product <- @products do %>
             <tr>
+              <td> <%=product.id %> </td>
               <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
               <td> <%= product.description %> </td>
               <td>
