@@ -13,6 +13,9 @@
 7. Support for Markdown.
 8. Support for adding pictures to Products
 
+### Being worked ATM
+- [ ] Shopping cart
+
 ### Notes:
 #### Unable to encode value
 When `Poison` throws an encoding error such as `unable to encode value {nil, "users"}`, it's because the Struct or whatever you're trying to encode has private data such as `__meta__`.
