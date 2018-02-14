@@ -52,6 +52,10 @@
     </div>
 
     <div class="cell">
+      <!-- CART -->
+      <h5> <%= link "Cart", to: cart_path(@conn, :index) %> </h5>
+      <!-- END CART -->
+
       <!-- CHANGE LANGUAGE -->
       <ul class="dropdown menu align-center" data-dropdown-menu>
         <li>

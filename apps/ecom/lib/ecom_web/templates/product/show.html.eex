@@ -14,4 +14,12 @@
       Cantidad: <strong> <%= @product.quantity %> </strong>
     </p>
   </div>
+
+  <div>
+    <%= form_tag cart_path(@conn, :add_to_cart) do %>
+      <%= content_tag :input, "", type: "hidden", value: @product.id, name: "product" %>
+
+      <%= submit gettext("Add to cart"), class: "button success" %>
+    <% end %>
+  </div>
 </div>

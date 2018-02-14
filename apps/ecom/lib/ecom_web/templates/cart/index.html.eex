@@ -1,0 +1,17 @@
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= for product <- @products do %>
+        <tr>
+          <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

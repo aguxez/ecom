@@ -58,7 +58,12 @@ defmodule EcomWeb.Router do
     # Everything that needs to be shown to the public will be on '/pub'
     pipe_through [:browser, :authorized]
 
+    # Root goes to "/product"
+    get("/", ProductController, :index)
+
     # Products
-    resources("/product", ProductController, only: [:show])
+    resources("/product", ProductController, only: [:index, :show])
+    resources("/cart", CartController, only: [:index])
+    post("/cart", CartController, :add_to_cart)
   end
 end
