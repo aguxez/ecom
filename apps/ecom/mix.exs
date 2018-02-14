@@ -65,6 +65,7 @@ defmodule Ecom.Mixfile do
       {:earmark, "~> 1.2"},
       {:arc, "~> 0.8.0"},
       {:arc_ecto, "~> 0.7.0"},
+      {:sobelow, "~> 0.6.8"},
 
       {:credo, "~> 0.8.10", only: [:test, :dev]},
       {:coverex, "~> 1.4", only: [:test]},
