@@ -20,6 +20,10 @@ defmodule Cart.SingleCart do
     GenServer.call(via_tuple(name), :show)
   end
 
+  def remove_from_cart(name, product) do
+    GenServer.cast(via_tuple(name), {:remove, product})
+  end
+
   # priv
   defp via_tuple(name) do
     {:via, Registry, {SingleCartReg, name}}
@@ -41,5 +45,11 @@ defmodule Cart.SingleCart do
 
   def handle_call(:show, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_cast({:remove, product}, state) do
+    new_state = Enum.reject(state, &(&1 == product))
+
+    {:noreply, new_state}
   end
 end
