@@ -1,4 +1,6 @@
 defmodule EcomWeb.Uploaders.Image do
+  @moduledoc false
+
   use Arc.Definition
 
   # Include ecto support (requires package arc_ecto installed):
@@ -26,7 +28,7 @@ defmodule EcomWeb.Uploaders.Image do
 
   # Override the storage directory:
   def storage_dir(_version, {_file, scope}) do
-    "../../uploads/user/image/#{scope.user_id}"
+    "../uploads/user/image/#{scope.user_id}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded

@@ -46,11 +46,12 @@ defmodule EcomWeb.Router do
     pipe_through [:browser, :authorized, :ensure_auth]
 
     # Admin panel
-    resources("/", AdminController, only: [:index, :delete])
+    resources("/", AdminController, only: [:index])
 
     get("/product/new", AdminController, :new_product)
     get("/product/:id/edit", AdminController, :edit_product)
     post("/product", AdminController, :create_product)
+    delete("/product/:id", AdminController, :delete_product)
   end
 
   scope "/pub", EcomWeb do

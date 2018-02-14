@@ -13,7 +13,7 @@ defmodule EcomWeb.Endpoint do
 
   # Uploads
   plug Plug.Static,
-    at: "/uploads", from: "apps/ecom/lib/uploads", gzip: false
+    at: "/uploads", from: "../uploads", gzip: false
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

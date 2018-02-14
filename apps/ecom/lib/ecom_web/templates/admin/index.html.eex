@@ -40,7 +40,7 @@
               <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
               <td> <%= product.description %> </td>
               <td>
-                <%= link to: admin_path(@conn, :delete, product.id),
+                <%= link to: admin_path(@conn, :delete_product, product.id),
                     method: :delete, data: [confirm: gettext("Are you sure?")] do %>
 
                   <%= content_tag(:span, "", class: "fa fa-trash") %>

@@ -8,6 +8,7 @@ defmodule EcomWeb.AdminController do
   alias Ecom.Accounts
   alias Ecom.Accounts.{User, Product}
   alias Ecom.Repo
+  alias EcomWeb.Uploaders.Image
 
   action_fallback EcomWeb.FallbackController
 
@@ -30,21 +31,6 @@ defmodule EcomWeb.AdminController do
     )
   end
 
-  def delete(conn, %{"id" => id}) do
-    product = Accounts.get_product!(id)
-
-    case Accounts.delete_product(product) do
-      {:ok, %Product{}} ->
-        conn
-        |> put_flash(:success, gettext("Product deleted successfully"))
-        |> redirect(to: admin_path(conn, :index))
-      {:error, _} ->
-        conn
-        |> put_flash(:warning, gettext("There was a problem trying to delete your product"))
-        |> redirect(to: admin_path(conn, :index))
-    end
-  end
-
   # Products
   def new_product(conn, _params) do
     changeset = Accounts.change_product(%Product{})
@@ -58,16 +44,43 @@ defmodule EcomWeb.AdminController do
     params = Map.merge(product_params, %{"user_id" => user.id})
 
     with :ok <- Bodyguard.permit(Product, :create_products, user),
-         {:ok, %Product{}} <- Accounts.create_product(params) do
+         {:ok, %Product{} = product} <- Accounts.create_product(params) do
 
       conn
       |> put_flash(:success, gettext("Product created successfully"))
-      |> redirect(to: page_path(conn, :index))
+      |> redirect(to: product_path(conn, :show, product.id))
     else
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))
         |> render("new.html", changeset: changeset)
+    end
+  end
+
+  def delete_product(conn, %{"id" => id}) do
+    product = Accounts.get_product!(id)
+
+    # HACK: to get img_path, not what I'd like to do.
+    # TODO: Refactor this and the default folder of the uploads
+    "/" <> img_path =
+      {product.image, product}
+      |> Image.url()
+      |> String.split("?v=")
+      |> Enum.at(0)
+
+    IO.inspect(img_path)
+
+    case Accounts.delete_product(product) do
+      {:ok, %Product{}} ->
+        File.rm(img_path)
+
+        conn
+        |> put_flash(:success, gettext("Product deleted successfully"))
+        |> redirect(to: admin_path(conn, :index))
+      {:error, _} ->
+        conn
+        |> put_flash(:warning, gettext("There was a problem trying to delete your product"))
+        |> redirect(to: admin_path(conn, :index))
     end
   end
 end
