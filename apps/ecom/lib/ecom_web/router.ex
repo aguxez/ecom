@@ -51,6 +51,7 @@ defmodule EcomWeb.Router do
     get("/product/new", AdminController, :new_product)
     get("/product/:id/edit", AdminController, :edit_product)
     post("/product", AdminController, :create_product)
+    put("/product/:id", AdminController, :update_product)
     delete("/product/:id", AdminController, :delete_product)
   end
 

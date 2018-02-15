@@ -18,6 +18,8 @@ defmodule EcomWeb.AdminController do
     user: &Guardian.Plug.current_resource/1,
     fallback: EcomWeb.FallbackController
 
+  plug :scrub_params, "product" when action in [:create_product, :update_product]
+
   def index(conn, _params) do
     users_amount = length(Accounts.list_users())
     products = Accounts.list_products()
@@ -54,6 +56,28 @@ defmodule EcomWeb.AdminController do
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))
         |> render("new_product.html", changeset: changeset)
+    end
+  end
+
+  def edit_product(conn, %{"id" => id}) do
+    product = Accounts.get_product!(id)
+    changeset = Accounts.change_product(product)
+
+    render(conn, "edit_product.html", changeset: changeset, product: product)
+  end
+
+  def update_product(conn, %{"id" => id, "product" => product_params}) do
+    product = Accounts.get_product!(id)
+
+    case Accounts.update_product(product, product_params) do
+      {:ok, %Product{} = product} ->
+        conn
+        |> put_flash(:success, gettext("Product updated successfully"))
+        |> redirect(to: product_path(conn, :show, product.id))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:alert, "There were some problems updating your product")
+        |> render("edit_product.html", changeset: changeset)
     end
   end
 

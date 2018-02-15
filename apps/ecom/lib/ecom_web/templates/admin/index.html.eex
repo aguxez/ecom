@@ -24,34 +24,44 @@
     <!-- END MAIN INTERFACE -->
 
     <!-- PRODUCT INTERFACE -->
-    <div class="tabs-panel" id="panel2">
-      <table class="unstriped">
-        <thead>
-          <tr>
-            <th> <%= gettext("ID") %> </th>
-            <th> <%= gettext("Name") %> </th>
-            <th> <%= gettext("Description (Without formatting)") %> </th>
-            <th></th>
-          </tr>
-        </thead>
+    <div class="table-scroll">
+      <div class="tabs-panel" id="panel2">
+        <table class="unstriped">
+          <thead>
+            <tr>
+              <th> <%= gettext("ID") %> </th>
+              <th> <%= gettext("Name") %> </th>
+              <th> <%= gettext("Description (Without formatting)") %> </th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <%= for product <- @products do %>
+          <tbody>
+            <%= for product <- @products do %>
             <tr>
               <td> <%=product.id %> </td>
               <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
               <td> <%= product.description %> </td>
+
+              <td>
+                <%= link to: admin_path(@conn, :edit_product, product.id) do %>
+                <%= content_tag(:span, "", class: "fa fa-pencil", aria: [hidden: true]) %>
+                <% end %>
+              </td>
+
               <td>
                 <%= link to: admin_path(@conn, :delete_product, product.id),
-                    method: :delete, data: [confirm: gettext("Are you sure?")] do %>
+                method: :delete, data: [confirm: gettext("Are you sure?")] do %>
 
-                  <%= content_tag(:span, "", class: "fa fa-trash") %>
+                <%= content_tag(:span, "", class: "fa fa-trash") %>
                 <% end %>
               </td>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
     <!-- END PRODUCT INTERFACE -->
 
