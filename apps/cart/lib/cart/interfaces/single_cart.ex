@@ -3,7 +3,7 @@ defmodule Cart.Interfaces.SingleCart do
 
   alias Cart.SingleCart
 
-  defdelegate add_to_cart(name, product),   to: SingleCart
-  defdelegate show_cart(name),              to: SingleCart
-  defdelegate remove_from_cart(name, pro),  to: SingleCart
+  defdelegate add_to_cart(name, product),       to: SingleCart
+  defdelegate show_cart(name),                  to: SingleCart
+  defdelegate remove_from_cart(name, product),  to: SingleCart
 end
