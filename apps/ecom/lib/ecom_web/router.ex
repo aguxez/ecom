@@ -60,7 +60,7 @@ defmodule EcomWeb.Router do
     pipe_through [:browser, :authorized]
 
     # Root goes to "/product"
-    get("/", ProductController, :index)
+    get("/", Redirect, to: "/pub/product")
 
     # Products
     resources("/product", ProductController, only: [:index, :show])

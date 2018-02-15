@@ -6,6 +6,10 @@ defmodule EcomWeb.ProductController do
   alias Ecom.Accounts
   alias EcomWeb.ErrorView
 
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
   def show(conn, %{"id" => id}) do
     product = Accounts.get_product!(id)
 
