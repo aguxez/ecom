@@ -197,7 +197,7 @@ msgstr ""
 msgid "Edit your product"
 msgstr ""
 
-#: lib/ecom_web/controllers/cart_controller.ex:28
+#: lib/ecom_web/controllers/cart_controller.ex:26
 msgid "Product is already in the cart"
 msgstr ""
 
@@ -209,6 +209,10 @@ msgstr ""
 msgid "Save product"
 msgstr ""
 
-#: lib/ecom_web/controllers/cart_controller.ex:24
+#: lib/ecom_web/controllers/cart_controller.ex:22
 msgid "Product added to cart"
+msgstr ""
+
+#: lib/ecom_web/controllers/cart_controller.ex:37
+msgid "Removed from cart"
 msgstr ""

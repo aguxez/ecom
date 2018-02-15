@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th></th>
       </tr>
     </thead>
 
@@ -10,6 +11,13 @@
       <%= for product <- @products do %>
         <tr>
           <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
+          <td>
+            <%= link to: cart_path(@conn, :delete_product, product.id),
+            method: :delete, data: [confirm: gettext("Are you sure?")] do %>
+
+              <%= content_tag(:span, "", class: "fa fa-trash") %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

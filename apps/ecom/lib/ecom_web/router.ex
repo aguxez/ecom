@@ -66,5 +66,6 @@ defmodule EcomWeb.Router do
     resources("/product", ProductController, only: [:index, :show])
     resources("/cart", CartController, only: [:index])
     post("/cart", CartController, :add_to_cart)
+    delete("/cart/:id", CartController, :delete_product)
   end
 end

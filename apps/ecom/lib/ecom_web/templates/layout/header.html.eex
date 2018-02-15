@@ -2,16 +2,16 @@
   <div class="grid-x grid-margin-x">
 
     <div class="text-center cell">
+      <h5>
+        <%= link gettext("Home"), to: "/" %>
+      </h5>
+
       <!-- LOGGED-IN USER -->
       <%= if @user !== nil do %>
         <div>
           <h4>
             Logged-in as <strong> <%= @user.username %> </strong>
           </h4>
-
-          <h5>
-            <%= link gettext("Home"), to: "/" %>
-          </h5>
 
           <h5>
             <%= link gettext("Logout"), to: session_path(@conn, :delete, @user.id), method: :delete %>

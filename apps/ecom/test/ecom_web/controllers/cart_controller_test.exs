@@ -50,7 +50,19 @@ defmodule EcomWeb.CartControllerTest do
     assert redirected_to(conn) == page_path(conn, :index)
   end
 
+  test "deletes product from cart", %{conn: conn, product: product} do
+    conn = do_delete(conn, product)
+
+    assert conn.status == 302
+    assert get_flash(conn, :success) == "Producto removido del carrito"
+    assert redirected_to(conn) == cart_path(conn, :index)
+  end
+
   defp do_post(conn, product) do
     post(conn, cart_path(conn, :add_to_cart), product: product.id, curr_path: page_path(conn, :index))
+  end
+
+  defp do_delete(conn, product) do
+    delete(conn, cart_path(conn, :delete_product, product.id))
   end
 end
