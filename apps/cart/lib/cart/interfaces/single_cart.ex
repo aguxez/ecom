@@ -5,4 +5,5 @@ defmodule Cart.Interfaces.SingleCart do
 
   defdelegate add_to_cart(name, product),   to: SingleCart
   defdelegate show_cart(name),              to: SingleCart
+  defdelegate remove_from_cart(name, pro),  to: SingleCart
 end

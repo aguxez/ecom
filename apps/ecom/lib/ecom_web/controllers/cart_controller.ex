@@ -13,13 +13,20 @@ defmodule EcomWeb.CartController do
     render(conn, "index.html", products: products_in_cart)
   end
 
-  def add_to_cart(conn, %{"product" => id}) do
+  def add_to_cart(conn, %{"product" => id, "curr_path" => path}) do
     product = Accounts.get_product!(id)
     product_params = Map.take(product, ~w(id name description quantity user_id)a)
     user_cart = conn.cookies["user_cart_name"]
 
-    SingleCart.add_to_cart(user_cart, product_params)
-
-    redirect(conn, to: page_path(conn, :index))
+    case SingleCart.add_to_cart(user_cart, product_params) do
+      :added ->
+        conn
+        |> put_flash(:success, gettext("Product added to cart"))
+        |> redirect(to: path)
+      :already_added ->
+        conn
+        |> put_flash(:warning, gettext("Product is already in the cart"))
+        |> redirect(to: path)
+    end
   end
 end

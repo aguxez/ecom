@@ -18,6 +18,7 @@
   <div>
     <%= form_tag cart_path(@conn, :add_to_cart) do %>
       <%= content_tag :input, "", type: "hidden", value: @product.id, name: "product" %>
+      <%= content_tag :input, "", type: "hidden", value: Phoenix.Controller.current_path(@conn), name: "curr_path" %>
 
       <%= submit gettext("Add to cart"), class: "button success" %>
     <% end %>
