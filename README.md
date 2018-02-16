@@ -23,6 +23,9 @@
 - [ ] SEO tags
 
 ### Notes:
+#### `current_user/2`
+It's a helper function from `EcomWeb.Helpers` imported in the Controllers and Views
+
 #### Unable to encode value
 When `Poison` throws an encoding error such as `unable to encode value {nil, "users"}`, it's because the Struct or whatever you're trying to encode has private data such as `__meta__`.
 
