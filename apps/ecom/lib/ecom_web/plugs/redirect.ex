@@ -1,4 +1,4 @@
-defmodule EcomWeb.Redirect do
+defmodule EcomWeb.Plugs.Redirect do
   @moduledoc """
   Handle redirects from 'router'
   """

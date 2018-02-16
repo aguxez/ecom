@@ -20,6 +20,7 @@
 - [ ] Payments
 - [ ] Shipping
 - [ ] Flexible configuration
+- [ ] SEO tags
 
 ### Notes:
 #### Unable to encode value

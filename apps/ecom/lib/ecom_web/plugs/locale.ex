@@ -1,4 +1,4 @@
-defmodule EcomWeb.Locale do
+defmodule EcomWeb.Plugs.Locale do
   @moduledoc false
 
   import Plug.Conn

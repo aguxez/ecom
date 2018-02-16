@@ -12,6 +12,7 @@ defmodule EcomWeb.SessionController do
 
   def new(conn, _params) do
     changeset = User.changeset(%User{}, %{})
+    # IO.inspect(conn)
 
     render(conn, "new.html", changeset: changeset)
   end

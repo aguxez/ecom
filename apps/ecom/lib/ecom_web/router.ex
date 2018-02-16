@@ -7,7 +7,8 @@ defmodule EcomWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug EcomWeb.Locale
+    plug EcomWeb.Plugs.Locale
+    plug EcomWeb.Plugs.SingleCartPlug
   end
 
   pipeline :api do
@@ -60,7 +61,8 @@ defmodule EcomWeb.Router do
     pipe_through [:browser, :authorized]
 
     # Root goes to "/product"
-    get("/", Redirect, to: "/pub/product")
+    # 'EcomWeb.Plugs.Redirect'
+    get("/", Plugs.Redirect, to: "/pub/product")
 
     # Products
     resources("/product", ProductController, only: [:index, :show])
