@@ -21,6 +21,7 @@
 - [ ] Shipping
 - [ ] Flexible configuration
 - [ ] SEO tags
+- [ ] Wishlist
 
 ### Notes:
 #### `current_user/2`
