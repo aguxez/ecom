@@ -10,16 +10,23 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Ecom.Accounts.User
+alias Ecom.Accounts
 alias Ecom.Repo
 
+ran = fn ->
+  64
+  |> :crypto.strong_rand_bytes()
+  |> Base.url_encode64()
+  |> binary_part(0, 15)
+end
+
 attrs = %{
-  email: "diazmiiguel@gmail.com",
-  username: "aguxez",
-  password: "m2481369",
-  password_confirmation: "m2481369",
+  name: "some#{ran.()}name",
+  description: "Some #{ran.()}",
+  quantity: Enum.random(1..100_000),
+  user_id: 5
 }
 
-%User{}
-|> User.changeset(attrs)
-|> Repo.insert!()
+Enum.each(1..5000, fn _x ->
+  Accounts.create_product(attrs)
+end)
