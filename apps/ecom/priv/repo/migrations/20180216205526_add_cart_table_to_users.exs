@@ -3,8 +3,8 @@ defmodule Ecom.Repo.Migrations.AddCartTableToUsers do
 
   def change do
     create table(:carts) do
-      add :user_id, references(:users)
-      add :products, {:array, :map}
+      add :user_id, references(:users), null: false
+      add :products, {:array, :map}, default: []
 
       timestamps()
     end

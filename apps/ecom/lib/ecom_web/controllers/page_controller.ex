@@ -9,6 +9,7 @@ defmodule EcomWeb.PageController do
 
   def index(conn, _params) do
     products = Accounts.list_products()
+    IO.inspect(current_user(conn, "everything"))
 
     render(conn, "index.html", products: products)
   end

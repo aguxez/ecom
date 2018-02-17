@@ -8,6 +8,8 @@ defmodule Ecom.Accounts do
   alias Ecom.Repo
   alias Ecom.Accounts.{User, Product, Cart}
 
+  # TODO: Preload User's products
+
   @doc """
   Returns the list of users.
 
@@ -21,6 +23,7 @@ defmodule Ecom.Accounts do
     User
     |> Repo.all()
     |> Repo.preload(:products)
+    |> Repo.preload(:cart)
   end
 
   @doc """
@@ -41,6 +44,7 @@ defmodule Ecom.Accounts do
     User
     |> Repo.get!(id)
     |> Repo.preload(:products)
+    |> Repo.preload(:cart)
   end
 
   @doc """
