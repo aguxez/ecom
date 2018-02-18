@@ -13,7 +13,9 @@ defmodule EcomWeb.CartController do
   def index(conn, _params) do
     user_cart = conn.cookies["user_cart_name"]
 
-    products_in_cart = single_cart_user_action(conn, user_cart, &SingleCart.show_cart/2)
+    products_in_cart =
+      conn
+      |> single_cart_user_action(user_cart, &SingleCart.show_cart/2)
 
     render(conn, "index.html", products: products_in_cart)
   end

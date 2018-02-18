@@ -2,7 +2,7 @@ defmodule EcomWeb.LayoutViewTest do
   use EcomWeb.ConnCase, async: true
 
   alias Ecom.Accounts.User
-  alias Ecom.Repo
+  alias Ecom.{Repo, Accounts}
 
   setup do
     info =
@@ -13,9 +13,8 @@ defmodule EcomWeb.LayoutViewTest do
         password_confirmation: "testing_password",
       }
 
-    %User{}
-    |> User.changeset(info)
-    |> Repo.insert()
+    {:ok, user} = Accounts.create_user(info)
+    {:ok, _} = Accounts.create_cart(%{user_id: user.id})
 
     {:ok, conn: build_conn()}
   end

@@ -112,9 +112,8 @@ defmodule Cart.SingleCart do
   def handle_call({:sign_in_and_remove, conn, [logged: true, user: user]}, _from, state) do
     # Leave out all the items that are already on user's cart
     push_action =
-      for item <- state.products do
-        unless item in user.cart.products, do: user.cart.products ++ [item]
-      end
+      state.products
+      |> Enum.map(&(unless &1 in user.cart.products, do: user.cart.products ++ [&1]))
       |> Enum.reject(&is_nil/1)
       |> List.flatten()
 
