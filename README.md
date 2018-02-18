@@ -23,6 +23,9 @@
 - [ ] SEO tags
 - [ ] Wishlist
 
+### Dev TODO
+- [ ] Write tests for Cart when users are logged in.
+
 ### Notes:
 #### `current_user/2`
 It's a helper function from `EcomWeb.Helpers` imported in the Controllers and Views
