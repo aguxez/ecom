@@ -8,8 +8,6 @@ defmodule Ecom.Accounts do
   alias Ecom.Repo
   alias Ecom.Accounts.{User, Product, Cart}
 
-  # TODO: Preload User's products
-
   @doc """
   Returns the list of users.
 
@@ -122,7 +120,9 @@ defmodule Ecom.Accounts do
 
   """
   def list_products do
-    Repo.all(Product)
+    Product
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -139,7 +139,11 @@ defmodule Ecom.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_product!(id), do: Repo.get!(Product, id)
+  def get_product!(id) do
+    Product
+    |> Repo.get!(id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a product.
@@ -225,12 +229,14 @@ defmodule Ecom.Accounts do
   def create_cart(attrs \\ %{}) do
     %Cart{}
     |> Cart.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:user, with: &User.changeset/2)
     |> Repo.insert()
   end
 
   def update_cart(%Cart{} = cart, attrs) do
     cart
     |> Cart.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:user, with: &User.changeset/2)
     |> Repo.update()
   end
 

@@ -3,8 +3,8 @@ defmodule Ecom.AccountsTest do
 
   use Ecom.DataCase
 
-  alias Ecom.Accounts
-  alias Ecom.Accounts.{User}
+  alias Ecom.Accounts.User
+  alias Ecom.{Accounts, Repo}
 
   describe "users" do
     @valid_attrs %{email: "some@email", username: "some username", password: "12345678",
@@ -85,7 +85,7 @@ defmodule Ecom.AccountsTest do
         |> Map.merge(%{user_id: user.id})
         |> Accounts.create_product()
 
-      product
+      Repo.preload(product, :user)
     end
 
     test "list_products/0 returns all products" do
