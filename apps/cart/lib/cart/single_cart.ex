@@ -29,6 +29,10 @@ defmodule Cart.SingleCart do
     GenServer.call(via_tuple(name), {:remove, product, opt})
   end
 
+  def sign_in_and_remove(conn, name, opt) do
+    GenServer.call(via_tuple(name), {:sign_in_and_remove, conn, opt})
+  end
+
   # priv
   defp via_tuple(name) do
     {:via, Registry, {SingleCartReg, name}}
@@ -65,7 +69,7 @@ defmodule Cart.SingleCart do
       if Enum.member?(state.products, product) do
         {:already_added, state}
       else
-        new_state = %{products: [state.products ++ product]}
+        new_state = %{products: state.products ++ [product]}
 
         {:added, new_state}
       end
@@ -97,11 +101,29 @@ defmodule Cart.SingleCart do
 
   def handle_call({:remove, product, [logged: false]}, _from, state) do
     # We're handling a call here, but this function will always return a list, so we're "assuming" that
-    # the product will always be deleted. Probably we can think of a better solution but for now we're 
+    # the product will always be deleted. Probably we can think of a better solution but for now we're
     # always going to reply with :removed meanwhile in the case above we can have an error.
     new_state = %{products: Enum.reject(state.products, &(&1 == product))}
-    IO.inspect(new_state)
 
     {:reply, :removed, new_state}
+  end
+
+  # 'conn' is just so we can return something to the pipeline.
+  def handle_call({:sign_in_and_remove, conn, [logged: true, user: user]}, _from, state) do
+    # Leave out all the items that are already on user's cart
+    push_action =
+      for item <- state.products do
+        unless item in user.cart.products, do: user.cart.products ++ [item]
+      end
+      |> Enum.reject(&is_nil/1)
+      |> List.flatten()
+
+    action =
+      case AccountsInterface.update_cart(user.cart, %{products: push_action}) do
+        {:ok, _} -> conn
+        {:error, _} -> conn
+      end
+
+    {:reply, action, %{products: []}}
   end
 end
