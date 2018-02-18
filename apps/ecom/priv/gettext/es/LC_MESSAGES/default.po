@@ -10,15 +10,15 @@ msgid ""
 msgstr ""
 "Language: es\n"
 
-#: lib/ecom_web/controllers/session_controller.ex:42
+#: lib/ecom_web/controllers/session_controller.ex:45
 msgid "Logged-in!"
 msgstr "¡Sesión iniciada satisfactoriamente!"
 
-#: lib/ecom_web/controllers/session_controller.ex:62
+#: lib/ecom_web/controllers/session_controller.ex:66
 msgid "You've been logged-out"
 msgstr "Sesión cerrada satisfactoriamente"
 
-#: lib/ecom_web/controllers/session_controller.ex:68
+#: lib/ecom_web/controllers/session_controller.ex:72
 msgid "Your username or password are incorrect!"
 msgstr "¡Nombre de usuario o contraseña incorrectos!"
 
@@ -46,11 +46,11 @@ msgstr "Hubo un problema al intentar crear tu producto"
 msgid "There was a problem updating your account"
 msgstr "No se pudo actualizar tu cuenta"
 
-#: lib/ecom_web/controllers/registration_controller.ex:26
+#: lib/ecom_web/controllers/registration_controller.ex:32
 msgid "There were some problems trying to create your account"
 msgstr "Hubieron unos problemas al intentar registrar tu cuenta"
 
-#: lib/ecom_web/controllers/registration_controller.ex:21
+#: lib/ecom_web/controllers/registration_controller.ex:25
 msgid "Your account has been created!"
 msgstr "Cuenta creada satisfactoriamente"
 
@@ -66,7 +66,7 @@ msgstr "Panel de administrador"
 msgid "Account"
 msgstr "Cuenta"
 
-#: lib/ecom_web/templates/layout/header.html.eex:13
+#: lib/ecom_web/templates/layout/header.html.eex:6
 msgid "Home"
 msgstr "Inicio"
 
@@ -177,6 +177,7 @@ msgid "Add to cart"
 msgstr "Añadir a carrito"
 
 #: lib/ecom_web/templates/admin/index.html.eex:55
+#: lib/ecom_web/templates/cart/index.html.eex:16
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
@@ -197,7 +198,7 @@ msgstr "ID"
 msgid "Edit your product"
 msgstr "Editar producto"
 
-#: lib/ecom_web/controllers/cart_controller.ex:26
+#: lib/ecom_web/controllers/cart_controller.ex:63
 msgid "Product is already in the cart"
 msgstr "El producto ya está en el carrito"
 
@@ -209,10 +210,20 @@ msgstr "Producto actualizado"
 msgid "Save product"
 msgstr "Guardar producto"
 
-#: lib/ecom_web/controllers/cart_controller.ex:22
+#: lib/ecom_web/controllers/cart_controller.ex:59
 msgid "Product added to cart"
 msgstr "Producto añadido al carrito"
 
-#: lib/ecom_web/controllers/cart_controller.ex:37
+#: lib/ecom_web/controllers/cart_controller.ex:80
 msgid "Removed from cart"
 msgstr "Producto removido del carrito"
+
+#, elixir-format
+#: lib/ecom_web/controllers/cart_controller.ex:84
+msgid "There was a problem removing the product from your cart"
+msgstr "Hubo un problema intentando remover el producto de tu carrito"
+
+#, elixir-format
+#: lib/ecom_web/controllers/cart_controller.ex:67
+msgid "There was a problem updating your cart"
+msgstr "Hubo un problema al actualizar tu carrito"
