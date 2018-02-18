@@ -26,6 +26,22 @@
 ### Dev TODO
 - [ ] Write tests for Cart when users are logged in.
 
+### Running
+
+```sh
+-> git clone https://github.com/aguxez/ecom.git
+-> cd ecom
+-> mix do deps.get, compile
+-> cd apps/ecom
+-> mix ecto.setup
+-> cd assets
+-> yarn
+```
+
+Add something to  `seeds.exs` file and then `mix run priv/repo/seeds.exs`
+
+`iex mix -S phx.server` and go to localhost:4000
+
 ### Notes:
 #### `current_user/2`
 It's a helper function from `EcomWeb.Helpers` imported in the Controllers and Views
