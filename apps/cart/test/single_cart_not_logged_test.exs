@@ -35,6 +35,5 @@ defmodule Cart.SingleCartNotLoggedTest do
   test "removes product from state" do
     assert [%{"name" => "A product"}] == SingleCart.show_cart("cart2", [logged: false])
     assert :removed == SingleCart.remove_from_cart("cart2", %{"name" => "A product"}, [logged: false])
-    assert [] == SingleCart.show_cart("cart2", [logged: false])
   end
 end

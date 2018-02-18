@@ -32,8 +32,11 @@ defmodule Ecom.GuardianTest do
     end
 
     test "returns {:ok %User{}} tuple", %{user: user} do
-      # Preloading association
-      user = Repo.preload(user, :products)
+      user =
+        user
+        |> Repo.preload(:products)
+        |> Repo.preload(:cart)
+
       assert Ecom.Guardian.resource_from_claims(%{"sub" => "User:#{user.id}"}) == {:ok, %{user | password_confirmation: nil}}
     end
 
