@@ -14,7 +14,7 @@ defmodule Cart.SingleCart do
 
   # API
   def start_link(name) do
-    GenServer.start_link(__MODULE__, [], name: via_tuple(name))
+    GenServer.start_link(__MODULE__, %{products: []}, name: via_tuple(name))
   end
 
   def add_to_cart(name, product, opt) do
@@ -39,31 +39,33 @@ defmodule Cart.SingleCart do
     {:ok, state}
   end
 
+  # ADD TO CART
   def handle_call({:add_to_cart, product, [logged: true, user: user]}, _from, state) do
+    # Products are always comming as a maps with string keys.
     cart_products = user.cart.products
     attrs = %{products: cart_products ++ [product]}
 
     action =
       with false <- Enum.member?(cart_products, product),
-      {:ok, _} <- AccountsInterface.update_cart(user.cart, attrs) do
+           {:ok, _} <- AccountsInterface.update_cart(user.cart, attrs) do
 
         :added
       else
         true ->
           :already_added
-          {:error, _} ->
-            :error
-          end
+        {:error, _} ->
+          :error
+      end
 
     {:reply, action, state}
   end
 
   def handle_call({:add_to_cart, product, [logged: false]}, _from, state) do
     {action, new_state} =
-      if Enum.member?(state, product) do
+      if Enum.member?(state.products, product) do
         {:already_added, state}
       else
-        new_state = List.insert_at(state, -1, product)
+        new_state = %{products: [state.products ++ product]}
 
         {:added, new_state}
       end
@@ -71,14 +73,16 @@ defmodule Cart.SingleCart do
     {:reply, action, new_state}
   end
 
+  # SHOW CURRENT CART
   def handle_call({:show, [logged: true, user: user]}, _from, state) do
     {:reply, user.cart.products, state}
   end
 
   def handle_call({:show, [logged: false]}, _from, state) do
-    {:reply, state, state}
+    {:reply, state.products, state}
   end
 
+  # REMOVE FROM CART
   def handle_call({:remove, product, [logged: true, user: user]}, _from, state) do
     attrs = Enum.reject(user.cart.products, &(&1 == product))
 
@@ -92,8 +96,12 @@ defmodule Cart.SingleCart do
   end
 
   def handle_call({:remove, product, [logged: false]}, _from, state) do
-    new_state = Enum.reject(state, &(&1 == product))
+    # We're handling a call here, but this function will always return a list, so we're "assuming" that
+    # the product will always be deleted. Probably we can think of a better solution but for now we're 
+    # always going to reply with :removed meanwhile in the case above we can have an error.
+    new_state = %{products: Enum.reject(state.products, &(&1 == product))}
+    IO.inspect(new_state)
 
-    {:reply, new_state, state}
+    {:reply, :removed, new_state}
   end
 end
