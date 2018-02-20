@@ -11,17 +11,25 @@ defmodule EcomWeb.Plugs.SingleCartPlug do
 
   def call(conn, _opts) do
     [request_id] = get_resp_header(conn, "x-request-id")
+    user_cart = get_session(conn, :user_cart)
+    user_cart_name = get_session(conn, :user_cart_name)
 
-    if conn.cookies["user_cart_name"] do
-      SingleCartSup.start_child(conn.cookies["user_cart_name"])
-
+    if user_cart do
       conn
     else
-      conn = put_resp_cookie(conn, "user_cart_name", request_id)
-
-      SingleCartSup.start_child(conn.cookies["user_cart_name"])
-
-      conn
+      put_session(conn, :user_cart, [])
     end
+
+    # if user_cart do
+    #   SingleCartSup.start_child(user_cart)
+
+    #   conn
+    # else
+    #   conn = put_session(conn, :user_cart_name, request_id)
+
+    #   SingleCartSup.start_child(user_cart)
+
+    #   conn
+    # end
   end
 end
