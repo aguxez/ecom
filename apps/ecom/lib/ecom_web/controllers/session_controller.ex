@@ -5,7 +5,6 @@ defmodule EcomWeb.SessionController do
 
   import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
 
-  alias Cart.Interfaces.SingleCart
   alias Ecom.Repo
   alias Ecom.Accounts.User
 
@@ -37,7 +36,7 @@ defmodule EcomWeb.SessionController do
 
   # If 'user' exists
   defp sign_in(user, plain_password, conn)  do
-    user_cart = get_session(conn, :user_cart_name)
+    # user_cart = get_session(conn, :user_cart_name)
 
     if checkpw(plain_password, user.password_digest) do
       # If 'plain_password' matches 'password_digest'

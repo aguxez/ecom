@@ -10,7 +10,7 @@ defmodule Ecom.Accounts.Cart do
   ##############
 
   schema "carts" do
-    field :products, {:array, :map}
+    field :products, :map
 
     belongs_to :user, User
 

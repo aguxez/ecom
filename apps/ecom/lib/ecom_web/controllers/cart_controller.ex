@@ -6,10 +6,7 @@ defmodule EcomWeb.CartController do
 
   use EcomWeb, :controller
 
-
-  alias Ecom.Repo
-  alias Ecom.Accounts
-  alias Cart.Interfaces.SingleCart
+  alias Ecom.{Repo, Accounts}
 
   def index(conn, _params) do
     products_in_cart = show_cart(conn)
@@ -21,56 +18,10 @@ defmodule EcomWeb.CartController do
     curr_user = preloaded_user(conn)
 
     if curr_user do
-      curr_user.cart.products
+      Map.values(curr_user.cart.products)
     else
       # If the user is not logged in then the item is added to the key ':user_cart' in session.
-      get_session(conn, :user_cart)
-    end
-  end
-
-  # For arity 3 functions
-  defp do_add_to_cart(conn, product) do
-    curr_user = preloaded_user(conn)
-    # 'to_map_string' is a private function
-    string_map = to_map_string(product)
-    new_product = Enum.map([string_map], &Map.put(&1, "value", 1))
-
-    if curr_user do
-      do_add_to_db_cart(conn, curr_user, new_product)
-    else
-      add_to_session_cart(conn, new_product)
-    end
-  end
-
-  defp do_add_to_db_cart(conn, user, product) do
-    cart_products = user.cart.products
-    attrs = %{products: cart_products ++ product}
-
-    with false <- Enum.member?(cart_products, hd(product)),
-         {:ok, _} <- Accounts.update_cart(user.cart, attrs) do
-
-      {conn, :added}
-    else
-      true -> {conn, :already_added}
-      {:error, _} -> {conn, :error}
-    end
-  end
-
-  defp preloaded_user(conn) do
-    conn
-    |> current_user("everything")
-    |> Repo.preload(:cart)
-  end
-
-  defp add_to_session_cart(conn, product) do
-    products = get_session(conn, :user_cart)
-
-    # 'product' is a list already, we need to get the first element.
-    if Enum.find(products, &Map.get(&1, "id") == hd(product)["id"]) do
-      {conn, :already_added}
-    else
-      conn = put_session(conn, :user_cart, products ++ product)
-      {conn, :added}
+      Map.values(get_session(conn, :user_cart))
     end
   end
 
@@ -83,10 +34,12 @@ defmodule EcomWeb.CartController do
         conn
         |> put_flash(:success, gettext("Product added to cart"))
         |> redirect(to: path)
+
       {conn, :already_added} ->
         conn
         |> put_flash(:warning, gettext("Product is already in the cart"))
         |> redirect(to: path)
+
       _ ->
         conn
         |> put_flash(:alert, gettext("There was a problem updating your cart"))
@@ -94,8 +47,49 @@ defmodule EcomWeb.CartController do
     end
   end
 
+  defp do_add_to_cart(conn, product) do
+    curr_user = preloaded_user(conn)
+    # 'to_map_string' is a private function
+    string_map = to_map_string(product)
+    new_product = Enum.map([string_map], &Map.put(&1, "value", 1))
+
+    if curr_user do
+      add_to_db_cart(conn, curr_user, new_product)
+    else
+      add_to_session_cart(conn, new_product)
+    end
+  end
+
+  defp add_to_db_cart(conn, user, [product]) do
+    cart_products = user.cart.products
+    attrs = %{products: Map.merge(cart_products, %{product["id"] => product})}
+
+    # when 'product' is inserted in the db, the value gets turned into a String,
+    # that's why we use 'to_string' here.
+    with false <- Map.has_key?(cart_products, to_string(product["id"])),
+         {:ok, _} <- Accounts.update_cart(user.cart, attrs) do
+
+      {conn, :added}
+    else
+      true -> {conn, :already_added}
+      {:error, _} -> {conn, :error}
+    end
+  end
+
+  defp add_to_session_cart(conn, [product]) do
+    products = get_session(conn, :user_cart)
+
+    # 'product' is a list already, we need to get the first element.
+    if Map.has_key?(products, product["id"]) do
+      {conn, :already_added}
+    else
+      conn = put_session(conn, :user_cart, Map.merge(products, %{product["id"] => product}))
+      {conn, :added}
+    end
+  end
+
   def delete_product(conn, %{"id" => id}) do
-    {user_cart, _product, product_params} = get_params_and_cart_name(conn, id)
+    {_user_cart, _product, product_params} = get_params_and_cart_name(conn, id)
 
     cart_op = do_delete_product(conn, product_params)
 
@@ -104,6 +98,7 @@ defmodule EcomWeb.CartController do
         conn
         |> put_flash(:success, gettext("Removed from cart"))
         |> redirect(to: cart_path(conn, :index))
+
       {conn, :failed} ->
         conn
         |> put_flash(:alert, gettext("There was a problem removing the product from your cart"))
@@ -111,14 +106,14 @@ defmodule EcomWeb.CartController do
     end
   end
 
-  defp do_delete_product(conn, product_params) do
+  defp do_delete_product(conn, product) do
     curr_user = preloaded_user(conn)
 
     if curr_user do
-      do_delete_db_cart_product(conn, curr_user, product_params)
+      do_delete_db_cart_product(conn, curr_user, product)
     else
       products = get_session(conn, :user_cart)
-      new_params = Enum.reject(products, &(&1["id"] == product_params["id"]))
+      {_, new_params} = Map.pop(products, product["id"])
       conn = put_session(conn, :user_cart, new_params)
 
       {conn, :removed}
@@ -126,7 +121,7 @@ defmodule EcomWeb.CartController do
   end
 
   defp do_delete_db_cart_product(conn, user, product) do
-    attrs = Enum.reject(user.cart.products, &(&1["id"] == product["id"]))
+    {_, attrs} = Map.pop(user.cart.products, to_string(product["id"]))
 
     case Accounts.update_cart(user.cart, %{products: attrs}) do
       {:ok, _} -> {conn, :removed}
@@ -134,29 +129,76 @@ defmodule EcomWeb.CartController do
     end
   end
 
+  # When the 'Save' or 'Pay' button are clicked.
   def process_cart(conn, %{"submit" => submit_val} = params) do
     case submit_val do
-      "save" -> save_cart_values(conn, params)
+      "save" -> update_cart_values(conn, params)
       "pay"  -> :ok # TODO: Pay function
     end
   end
 
-  defp save_cart_values(conn, params) do
+  defp update_cart_values(conn, params) do
+    curr_user = preloaded_user(conn)
     # Probably theres a better way of constructing these params
-    attrs = Map.put(%{}, :products, Map.drop(params, ~w(_utf8 submit)))
-    user_cart = get_session(conn, :user_cart_name)
+    # Puts a map without the '_utf8' and 'submit' keys under :products key.
+    attrs = Map.drop(params, ~w(_utf8 submit))
+    user_cart = get_session(conn, :user_cart)
 
-    Enum.each(attrs.products, fn{k, v} ->
-      SingleCart.update_value(user_cart, k, v, [logged: false])
-    end)
+    new_conn =
+      if curr_user do
+        db_update_cart_values(conn, curr_user, attrs)
+      else
+        session_update_cart_values(conn, user_cart, attrs)
+      end
 
-    conn
-    |> put_session(:user_cart_values, attrs)
-    |> put_flash(:success, gettext("Your cart has been saved!"))
-    |> redirect(to: cart_path(conn, :index))
+    case new_conn do
+      {:ok, conn} ->
+        conn
+        |> put_flash(:success, gettext("Your cart has been saved!"))
+        |> redirect(to: cart_path(conn, :index))
+
+      {:error, conn} ->
+        conn
+        |> put_flash(:alert, gettext("There was a problem trying to save your cart"))
+        |> redirect(to: cart_path(conn, :index))
+    end
   end
 
-  # Get a triplet of information
+  defp db_update_cart_values(conn, user, products_to_update) do
+    updated_values =
+      Enum.reduce(products_to_update, user.cart.products, fn({k, v}, acc) ->
+        put_in(acc, [k, "value"], v)
+      end)
+
+    case Accounts.update_cart(user.cart, %{products: updated_values}) do
+      {:ok, _} -> {:ok, conn}
+      {:error, _} -> {:error, conn}
+    end
+  end
+
+  defp session_update_cart_values(conn, user_cart, products_to_update) do
+    updated_values =
+      Enum.reduce(products_to_update, user_cart, fn({k, v}, acc) ->
+        id = String.to_integer(k)
+        put_in(acc, [id, "value"], v)
+      end)
+
+    put_session(conn, :user_cart, updated_values)
+  end
+
+  # More used privs
+  defp preloaded_user(conn) do
+    conn
+    |> current_user("everything")
+    |> Repo.preload(:cart)
+  end
+
+  # Converts atom keys to strings for the given product.
+  defp to_map_string(product) do
+    for {k, v} <- product, into: %{}, do: {to_string(k), v}
+  end
+
+  # Get a triplet of information, probably can be overriden.
   defp get_params_and_cart_name(conn, id) do
     user_cart = get_session(conn, :user_cart_name)
     product = Accounts.get_product!(id)
@@ -166,10 +208,5 @@ defmodule EcomWeb.CartController do
       |> to_map_string()
 
     {user_cart, product, product_params}
-  end
-
-  # Converts atom keys to strings for the given product.
-  defp to_map_string(product) do
-    for {k, v} <- product, into: %{}, do: {to_string(k), v}
   end
 end

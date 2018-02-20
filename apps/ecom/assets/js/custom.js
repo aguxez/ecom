@@ -1,27 +1,19 @@
-// Simple client-side form validation
-// if (window.location.href.match(/\/register\/new/)) {
-//   $('#submit').prop('disabled', true);
-//   $('#submit').text('Las contraseñas no coinciden');
-//
-//   let password_field = document.getElementById('user_password');
-//   let password_confirm_field = document.getElementById('user_password_confirmation');
-//
-//   let password, password_confirm;
-//
-//   password_field.addEventListener('change', event => {
-//     password = event.target.value;
-//   });
-//
-//   password_confirm_field.addEventListener('change', event => {
-//     password_confirm = event.target.value;
-//
-//     if (password === password_confirm) {
-//       $('#submit').prop('disabled', false);
-//       $('#submit').text('Enviar');
+// Unsaved data on form is prompted before leaving.
+
+// var unsaved = false;
+
+// $(":input").change(function(){ //trigers change in all input fields including text type
+//     unsaved = true;
+// });
+
+// function unloadPage(){
+//     if(unsaved){
+//         return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
 //     }
-//   });
-// };
+// }
+
+// window.onbeforeunload = unloadPage;
 
 //////////////////////////////////////////
-///////////END FORM VALIDATION////////////
+///////////END FORM VALIDATIONS///////////
 //////////////////////////////////////////

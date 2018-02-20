@@ -8,7 +8,7 @@ defmodule EcomWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug EcomWeb.Plugs.Locale
-    plug EcomWeb.Plugs.SingleCartPlug
+    plug EcomWeb.Plugs.CartPlug
   end
 
   pipeline :api do
@@ -67,6 +67,7 @@ defmodule EcomWeb.Router do
     # Products
     resources("/product", ProductController, only: [:index, :show])
     resources("/cart", CartController, only: [:index])
+    get("/cart/process_cart", CartController, :process_cart)
     post("/cart", CartController, :add_to_cart)
     delete("/cart/:id", CartController, :delete_product)
   end
