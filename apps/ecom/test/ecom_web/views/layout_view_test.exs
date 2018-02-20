@@ -7,7 +7,7 @@ defmodule EcomWeb.LayoutViewTest do
   setup do
     info =
       %{
-        email: "some@email",
+        email: "someeee@email.com",
         username: "agu",
         password: "testing_password",
         password_confirmation: "testing_password",
@@ -22,13 +22,13 @@ defmodule EcomWeb.LayoutViewTest do
   test "current_user returns the user in the session", %{conn: conn} do
     conn = post(conn, session_path(conn, :create), user: %{username: "agu", password: "testing_password"})
 
-    assert EcomWeb.Helpers.current_user(conn, "everything")
+    assert EcomWeb.Helpers.current_user(conn)
   end
 
   test "current_user returns nothing if there is no user in the current session", %{conn: conn} do
     user = Repo.get_by(User, %{username: "agu"})
     conn = delete(conn, session_path(conn, :delete, user))
 
-    refute EcomWeb.Helpers.current_user(conn, "everything")
+    refute EcomWeb.Helpers.current_user(conn)
   end
 end

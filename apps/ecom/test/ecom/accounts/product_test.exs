@@ -33,7 +33,7 @@ defmodule Ecom.ProductTest do
 
   defp user_fixture do
     attrs = %{
-      email: "some@email.com",
+      email: "somee@email.com",
       username: "test_user",
       password: "24813699",
       password_confirmation: "24813699"

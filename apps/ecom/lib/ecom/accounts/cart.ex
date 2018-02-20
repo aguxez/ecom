@@ -21,6 +21,6 @@ defmodule Ecom.Accounts.Cart do
   def changeset(%Cart{} = cart, attrs) do
     cart
     |> cast(attrs, ~w(products user_id)a)
-    |> foreign_key_constraint(:user, name: :carts_user_id_fkey)
+    |> foreign_key_constraint(:user_id)
   end
 end

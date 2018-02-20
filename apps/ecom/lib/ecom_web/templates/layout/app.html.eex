@@ -21,7 +21,7 @@
     <%=
       render("header.html",
         conn: @conn,
-        user: current_user(@conn, "basic"),
+        user: current_user(@conn),
         current_path: Phoenix.Controller.current_path(@conn, %{})
       )
     %>

@@ -71,7 +71,7 @@ defmodule Ecom.AccountsTest do
 
     def product_fixture(attrs \\ %{}) do
       attr = %{
-        email: "some@email.com",
+        email: "some@emai.com",
         username: "test_user",
         password: "24813699",
         password_confirmation: "24813699"

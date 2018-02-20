@@ -16,7 +16,7 @@ defmodule EcomWeb.AccountController do
   end
 
   def update(conn, %{"user" => user_params}) do
-    user = current_user(conn, "everything")
+    user = current_user(conn)
     attrs = %{password: user_params["new_password"], password_confirmation: user_params["new_password_confirmation"]}
 
     with true <- Comeonin.Argon2.checkpw(user_params["password"], user.password_digest),

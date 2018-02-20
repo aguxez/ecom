@@ -42,7 +42,7 @@ defmodule EcomWeb.SessionController do
       # If 'plain_password' matches 'password_digest'
       conn
       |> put_flash(:success, gettext("Logged-in!"))
-      |> Ecom.Guardian.Plug.sign_in(Repo.preload(user, :cart))
+      |> Ecom.Guardian.Plug.sign_in(user)
       # TODO: Add sign in functionality on cart here.
       |> redirect(to: page_path(conn, :index))
     else

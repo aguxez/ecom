@@ -34,7 +34,7 @@ defmodule EcomWeb.RegistrationControllerTest do
 
   defp get_attrs do
     %{
-      email: "some@email.com",
+      email: "some@emailll.com",
       username: "test_user",
       password: "24813699",
       password_confirmation: "24813699"

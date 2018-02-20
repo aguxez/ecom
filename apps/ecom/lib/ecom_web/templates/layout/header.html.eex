@@ -37,7 +37,7 @@
 
     <div class="text-center cell">
       <!-- ADMIN SECTION -->
-      <%= if @user !== nil && @user.overall do %>
+      <%= if @user !== nil && @user.is_admin do %>
         <div>
           <h5>
             <%= link gettext("Admin panel"), to: admin_path(@conn, :index) %>

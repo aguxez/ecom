@@ -26,6 +26,7 @@ defmodule Ecom.Accounts.Product do
   def changeset(%Product{} = product, attrs) do
     product
     |> cast(attrs, [:name, :user_id, :description, :quantity])
+    |> foreign_key_constraint(:user_id)
     |> cast_attachments(attrs, [:image])
     |> validate_required([:name, :user_id, :description, :quantity])
     |> strip_unsafe_desc(attrs)

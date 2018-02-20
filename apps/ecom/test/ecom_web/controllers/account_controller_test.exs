@@ -8,7 +8,7 @@ defmodule Ecomweb.AccountControllerTest do
   describe("account controller") do
     setup do
       attrs = %{
-        email: "some@email.com",
+        email: "so@email.com",
         username: "test_user",
         password: "24813699",
         password_confirmation: "24813699"

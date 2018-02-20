@@ -11,7 +11,7 @@ defmodule EcomWeb.CartControllerTest do
     conn = get(conn, page_path(conn, :index))
 
     user_attrs = %{
-      email: "some@email.com",
+      email: "som@email.com",
       username: "test_username",
       password: "123456789",
       password_confirmation: "123456789"

@@ -5,7 +5,6 @@ defmodule EcomWeb.SessionControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Cart.Interfaces.{SingleCart, SingleCartSup}
   alias Ecom.Accounts.{User}
   alias Ecom.{Repo, Accounts}
 
@@ -15,15 +14,14 @@ defmodule EcomWeb.SessionControllerTest do
         username: "test",
         password: "testing_password",
         password_confirmation: "testing_password",
-        email: "some@email.com",
+        email: "foo@bar.com",
       }
 
-    SingleCartSup.start_child("cart3")
     {:ok, user} = Accounts.create_user(info)
     Accounts.create_cart(%{user_id: user.id})
 
 
-    {:ok, conn: build_conn(), user: user}
+    {:ok, conn: build_conn()}
   end
 
   test "shows the login form", %{conn: conn} do
@@ -61,24 +59,6 @@ defmodule EcomWeb.SessionControllerTest do
 
     refute get_session(conn, :current_user)
     assert get_flash(conn, :success) == "Sesión cerrada satisfactoriamente"
-    assert redirected_to(conn) == page_path(conn, :index)
-  end
-
-  test "when user is logged in the cart is moved to db and memory is emptied", %{conn: conn, user: user} do
-    assert :added == SingleCart.add_to_cart("cart3", %{"name" => "something"}, [logged: false])
-    assert [%{"name" => "something"}] == SingleCart.show_cart("cart3", [logged: false])
-
-    conn =
-      conn
-      |> get("/")
-      |> do_post(%{username: "test", password: "testing_password"})
-
-    conn = SingleCart.sign_in_and_remove(conn, "cart3", [logged: true, user: Repo.preload(user, :cart)])
-
-    assert [] == SingleCart.show_cart("cart3", [logged: false])
-    assert [%{"name" => "something"}] == SingleCart.show_cart("cart3", [logged: true, user: Repo.preload(user, :cart)])
-
-    assert conn.status == 302
     assert redirected_to(conn) == page_path(conn, :index)
   end
 

@@ -41,7 +41,7 @@ defmodule EcomWeb.AdminController do
   end
 
   def create_product(conn, %{"product" => product_params}) do
-    user = current_user(conn, "everything")
+    user = current_user(conn)
 
     params = Map.merge(product_params, %{"user_id" => user.id})
 

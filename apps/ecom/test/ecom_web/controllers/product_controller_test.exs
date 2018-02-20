@@ -8,7 +8,7 @@ defmodule EcomWeb.ProductControllerTest do
   setup do
     user_att = %{
       username: "test_",
-      email: "some@email.com",
+      email: "some@emaill.com",
       password: "123456789",
       password_confirmation: "123456789"
     }
