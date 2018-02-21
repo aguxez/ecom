@@ -24,7 +24,7 @@
 - [ ] Wishlist
 
 ### Dev TODO
-- [ ] Write tests for Cart when users are logged in.
+- [ ] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
 
 ### Running
 
