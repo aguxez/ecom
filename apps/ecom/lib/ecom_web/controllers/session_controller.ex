@@ -5,7 +5,7 @@ defmodule EcomWeb.SessionController do
 
   import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
 
-  alias Ecom.Repo
+  alias Ecom.{Repo}
   alias Ecom.Accounts.User
 
   plug :scrub_params, "user" when action in [:create]
@@ -36,14 +36,14 @@ defmodule EcomWeb.SessionController do
 
   # If 'user' exists
   defp sign_in(user, plain_password, conn)  do
-    # user_cart = get_session(conn, :user_cart_name)
-
     if checkpw(plain_password, user.password_digest) do
+      session_cart = get_session(conn, :user_cart)
       # If 'plain_password' matches 'password_digest'
       conn
       |> put_flash(:success, gettext("Logged-in!"))
       |> Ecom.Guardian.Plug.sign_in(user)
-      # TODO: Add sign in functionality on cart here.
+      # from the 'Helpers' module
+      |> sign_in_and_remove(user, session_cart)
       |> redirect(to: page_path(conn, :index))
     else
       # If 'plain_password' is invalid

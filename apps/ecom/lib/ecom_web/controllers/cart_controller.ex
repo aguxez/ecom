@@ -183,13 +183,13 @@ defmodule EcomWeb.CartController do
         put_in(acc, [id, "value"], v)
       end)
 
-    put_session(conn, :user_cart, updated_values)
+    {:ok, put_session(conn, :user_cart, updated_values)}
   end
 
   # More used privs
   defp preloaded_user(conn) do
     conn
-    |> current_user("everything")
+    |> current_user()
     |> Repo.preload(:cart)
   end
 
