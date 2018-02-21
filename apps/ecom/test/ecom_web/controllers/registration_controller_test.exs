@@ -17,7 +17,7 @@ defmodule EcomWeb.RegistrationControllerTest do
     end
 
     test "creates a new user", %{conn: conn} do
-      conn = post(conn, registration_path(conn, :create), user: get_attrs())
+      conn = post(conn, registration_path(conn, :create), user: params_for(:user))
 
       assert get_flash(conn, :success) == "Cuenta creada satisfactoriamente"
       assert Ecom.Guardian.Plug.current_resource(conn)
@@ -30,14 +30,5 @@ defmodule EcomWeb.RegistrationControllerTest do
 
       assert get_flash(conn, :alert) == "Hubieron unos problemas al intentar registrar tu cuenta"
     end
-  end
-
-  defp get_attrs do
-    %{
-      email: "some@emailll.com",
-      username: "test_user",
-      password: "24813699",
-      password_confirmation: "24813699"
-    }
   end
 end

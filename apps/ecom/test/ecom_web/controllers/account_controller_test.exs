@@ -3,18 +3,13 @@ defmodule Ecomweb.AccountControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Ecom.Accounts
-
   describe("account controller") do
     setup do
-      attrs = %{
-        email: "so@email.com",
-        username: "test_user",
-        password: "24813699",
-        password_confirmation: "24813699"
-      }
-
-      {:ok, user} = Accounts.create_user(attrs)
+      user =
+        :user
+        |> build()
+        |> encrypt_password("password")
+        |> insert()
 
       {:ok, user: user, conn: build_conn()}
     end
@@ -32,7 +27,7 @@ defmodule Ecomweb.AccountControllerTest do
     end
 
     test "can update user information", %{conn: conn, user: user} do
-      new_params = %{password: "24813699", new_password: "m2481369", new_password_confirmation: "m2481369"}
+      new_params = %{password: "password", new_password: "m2481369", new_password_confirmation: "m2481369"}
 
       conn =
         conn
@@ -44,19 +39,19 @@ defmodule Ecomweb.AccountControllerTest do
     end
 
     test "returns error on invalid password", %{conn: conn, user: user} do
-     new_params = %{password: "24813695", new_password: "m2481369", new_password_confirmation: "m2481369"}
+      new_params = %{password: "passwordd", new_password: "m2481369", new_password_confirmation: "m2481369"}
 
-     conn =
-       conn
-       |> sign_in(user)
-       |> patch(account_path(conn, :update, user.id), user: new_params)
+      conn =
+        conn
+        |> sign_in(user)
+        |> patch(account_path(conn, :update, user.id), user: new_params)
 
-     assert get_flash(conn, :warning) == "Contraseña actual incorrecta"
-     assert redirected_to(conn) == account_path(conn, :index)
+      assert get_flash(conn, :warning) == "Contraseña actual incorrecta"
+      assert redirected_to(conn) == account_path(conn, :index)
     end
 
     test "returns error on invalid information", %{conn: conn, user: user} do
-      new_params = %{password: "24813699", new_password: "m2481369", new_password_confirmation: "m2481394"}
+      new_params = %{password: "password", new_password: "m2481369", new_password_confirmation: "m2481394"}
 
       conn =
         conn

@@ -3,26 +3,15 @@ defmodule EcomWeb.ProductControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Ecom.Accounts
 
   setup do
-    user_att = %{
-      username: "test_",
-      email: "some@emaill.com",
-      password: "123456789",
-      password_confirmation: "123456789"
-    }
+    user =
+      :user
+      |> build()
+      |> encrypt_password("password")
+      |> insert()
 
-    {:ok, user} = Accounts.create_user(user_att)
-
-    attrs = %{
-      name: "some name",
-      description: "some description",
-      user_id: user.id,
-      quantity: Enum.random(1..100)
-    }
-
-    {:ok, product} = Accounts.create_product(attrs)
+    product = insert(:product, user_id: user.id)
 
     {:ok, product: product, conn: build_conn()}
   end

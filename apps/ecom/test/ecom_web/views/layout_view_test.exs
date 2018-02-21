@@ -2,35 +2,35 @@ defmodule EcomWeb.LayoutViewTest do
   use EcomWeb.ConnCase, async: true
 
   alias Ecom.Accounts.User
-  alias Ecom.{Repo, Accounts}
+  alias Ecom.{Repo}
   alias EcomWeb.Helpers
 
   setup do
-    info =
-      %{
-        email: "someeee@email.com",
-        username: "agu",
-        password: "testing_password",
-        password_confirmation: "testing_password",
-      }
+    user =
+      :user
+      |> build()
+      |> encrypt_password("password")
+      |> insert()
 
-    {:ok, user} = Accounts.create_user(info)
-    {:ok, _} = Accounts.create_cart(%{user_id: user.id})
+    insert(:cart, user_id: user.id)
 
-    {:ok, conn: build_conn()}
+    {:ok, conn: build_conn(), user: user}
   end
 
-  @tag :skip
-  test "current_user returns the user in the session", %{conn: conn} do
-    conn = post(conn, session_path(conn, :create), user: %{username: "agu", password: "testing_password"})
+  test "current_user returns the user in the session", %{conn: conn, user: user} do
+    conn = sign_in(conn, user)
 
     assert Helpers.current_user(conn)
   end
 
-  test "current_user returns nothing if there is no user in the current session", %{conn: conn} do
-    user = Repo.get_by(User, %{username: "agu"})
+  test "current_user returns nothing if there is no user in the current session", %{conn: conn, user: user} do
+    user = Repo.get_by(User, %{username: user.username})
     conn = delete(conn, session_path(conn, :delete, user))
 
     refute EcomWeb.Helpers.current_user(conn)
+  end
+
+  defp sign_in(conn, user) do
+    Ecom.Guardian.Plug.sign_in(conn, user)
   end
 end

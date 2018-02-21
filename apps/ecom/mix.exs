@@ -69,6 +69,7 @@ defmodule Ecom.Mixfile do
 
       {:credo, "~> 0.8.10", only: [:test, :dev]},
       {:coverex, "~> 1.4", only: [:test]},
+      {:ex_machina, "~> 2.1", only: :test},
     ]
   end
 

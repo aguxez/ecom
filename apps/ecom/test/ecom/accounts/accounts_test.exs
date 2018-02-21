@@ -7,8 +7,8 @@ defmodule Ecom.AccountsTest do
   alias Ecom.{Accounts, Repo}
 
   describe "users" do
-    @valid_attrs %{email: "some@email", username: "some username", password: "12345678",
-      password_confirmation: "12345678"}
+    @valid_attrs %{email: "email@email.com", username: "someusername", password: "123456789",
+      password_confirmation: "123456789"}
     @update_attrs %{email: "some@updatedemail", username: "some updated username",
       password: "87654321", password_confirmation: "87654321"}
     @invalid_attrs %{email: nil, username: nil}
@@ -20,9 +20,9 @@ defmodule Ecom.AccountsTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.email == "some@email"
-      assert user.username == "some username"
+      user = insert(:user)
+
+      assert %User{} = user
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -39,14 +39,14 @@ defmodule Ecom.AccountsTest do
     end
 
     test "delete_users/1 deletes the users" do
-      user = user_fixture(@valid_attrs)
+      user = insert(:user)
 
       assert {:ok, %User{}} = Accounts.delete_user(user)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_user!(user.id) end
     end
 
     test "change_users/1 returns a users changeset" do
-      user = user_fixture(@valid_attrs)
+      user = insert(:user)
 
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
@@ -89,19 +89,31 @@ defmodule Ecom.AccountsTest do
     end
 
     test "list_products/0 returns all products" do
-      product = product_fixture()
+      user = insert(:user)
+      product =
+        :product
+        |> insert(user_id: user.id)
+        |> Repo.preload(:user)
+
       assert Accounts.list_products() == [product]
     end
 
     test "get_product!/1 returns the product with given id" do
-      product = product_fixture()
+      user = insert(:user)
+      product =
+        :product
+        |>insert(user_id: user.id)
+        |> Repo.preload(:user)
+
       assert Accounts.get_product!(product.id) == product
     end
 
     test "create_product/1 with valid data creates a product" do
       # 'product_fixture' calls Accounts.create_product/1
-      assert {:ok, %Product{} = product} = {:ok, product_fixture()}
-      assert product.name == "some name"
+      user = insert(:user)
+
+      assert {:ok, %Product{} = product} = {:ok, insert(:product, user_id: user.id)}
+      assert product.name == "Some product name"
     end
 
     test "create_product/1 with invalid data returns error changeset" do
@@ -109,26 +121,46 @@ defmodule Ecom.AccountsTest do
     end
 
     test "update_product/2 with valid data updates the product" do
-      product = product_fixture()
+      user = insert(:user)
+      product =
+        :product
+        |> insert(user_id: user.id)
+        |> Repo.preload(:user)
+
       assert {:ok, product} = Accounts.update_product(product, @update_attrs)
       assert %Product{} = product
       assert product.name == "some updated name"
     end
 
     test "update_product/2 with invalid data returns error changeset" do
-      product = product_fixture()
+      user = insert(:user)
+      product =
+        :product
+        |> insert(user_id: user.id)
+        |> Repo.preload(:user)
+
       assert {:error, %Ecto.Changeset{}} = Accounts.update_product(product, @invalid_attrs)
       assert product == Accounts.get_product!(product.id)
     end
 
     test "delete_product/1 deletes the product" do
-      product = product_fixture()
+      user = insert(:user)
+      product =
+        :product
+        |> insert(user_id: user.id)
+        |> Repo.preload(:user)
+
       assert {:ok, %Product{}} = Accounts.delete_product(product)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_product!(product.id) end
     end
 
     test "change_product/1 returns a product changeset" do
-      product = product_fixture()
+      user = insert(:user)
+      product =
+        :product
+        |> insert(user_id: user.id)
+        |> Repo.preload(:user)
+
       assert %Ecto.Changeset{} = Accounts.change_product(product)
     end
   end

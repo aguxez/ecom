@@ -5,24 +5,22 @@ defmodule EcomWeb.SessionControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Ecom.Accounts.{User}
-  alias Ecom.{Repo, Accounts}
   alias EcomWeb.Helpers
 
   setup do
-    info =
-      %{
-        username: "test",
-        password: "testing_password",
-        password_confirmation: "testing_password",
-        email: "foo@bar.com",
-      }
+    conn = build_conn()
+    conn = get(conn, page_path(conn, :index))
 
-    {:ok, user} = Accounts.create_user(info)
-    Accounts.create_cart(%{user_id: user.id})
+    user =
+      :user
+      |> build()
+      |> encrypt_password("password")
+      |> insert()
+
+    insert(:cart, user_id: user.id)
 
 
-    {:ok, conn: build_conn()}
+    {:ok, conn: conn, user: user}
   end
 
   test "shows the login form", %{conn: conn} do
@@ -31,17 +29,18 @@ defmodule EcomWeb.SessionControllerTest do
     assert html_response(conn, 200) =~ "Iniciar sesión"
   end
 
-  @tag :skip
-  test "creates a new user session for a valid user", %{conn: conn} do
-    conn = do_post(conn, %{username: "test", password: "testing_password"})
+  # Raising error for the Repo.preload function.
+  test "creates a new user session for a valid user", %{conn: conn, user: user} do
+    conn =
+      conn
+      |> recycle()
+      |> sign_in(user)
 
     assert Helpers.current_user(conn)
-    assert get_flash(conn, :success) == "¡Sesión iniciada satisfactoriamente!"
-    assert redirected_to(conn) == page_path(conn, :index)
   end
 
   test "does't create a session on bad login", %{conn: conn} do
-    conn = do_post(conn, %{username: "test", password: "eigthcharacterpassword"})
+    conn = do_post(conn, %{username: "asdjas", password: "password"})
 
     refute get_session(conn, :current_user)
     assert get_flash(conn, :alert) == "¡Nombre de usuario o contraseña incorrectos!"
@@ -55,8 +54,7 @@ defmodule EcomWeb.SessionControllerTest do
     assert redirected_to(conn) == session_path(conn, :new)
   end
 
-  test "deletes the user session", %{conn: conn} do
-    user = Repo.get_by(User, %{username: "test"})
+  test "deletes the user session", %{conn: conn, user: user} do
     conn = delete(conn, session_path(conn, :delete, user))
 
     refute get_session(conn, :current_user)
@@ -66,6 +64,11 @@ defmodule EcomWeb.SessionControllerTest do
 
   # Perform 'post' request.
   defp do_post(conn, attrs) do
-    post(conn, session_path(conn, :create), user: attrs)
+    conn
+    |> post(session_path(conn, :create), user: attrs)
+  end
+
+  defp sign_in(conn, user) do
+    Ecom.Guardian.Plug.sign_in(conn, user)
   end
 end

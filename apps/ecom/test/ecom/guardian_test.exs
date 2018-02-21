@@ -3,20 +3,19 @@ defmodule Ecom.GuardianTest do
 
   use Ecom.DataCase
 
-  alias Ecom.Accounts
   alias Ecom.Repo
 
-  @usr %{email: "some@emaile", username: "agu", password: "m2481369", password_confirmation: "m2481369"}
+  # @usr %{email: "some@emaile", username: "agu", password: "m2481369", password_confirmation: "m2481369"}
 
   describe("subject_for_token for %User{} given") do
     setup do
-      {:ok, user} = Accounts.create_user(@usr)
+      user = insert(:user)
 
       {:ok, user: user}
     end
 
     test "returns user User:<id>", %{user: user} do
-      assert Ecom.Guardian.subject_for_token(user, nil) == {:ok, "User:#{user.id}"}
+      assert {:ok, "User:#{user.id}"} == Ecom.Guardian.subject_for_token(user, nil)
     end
 
     test "returns error" do
@@ -26,7 +25,11 @@ defmodule Ecom.GuardianTest do
 
   describe("resource_from_claims for User given") do
     setup do
-      {:ok, user} = Accounts.create_user(@usr)
+      user =
+        :user
+        |> build()
+        |> encrypt_password("password")
+        |> insert()
 
       {:ok, user: user}
     end

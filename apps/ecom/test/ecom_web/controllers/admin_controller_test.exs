@@ -3,24 +3,23 @@ defmodule EcomWeb.AdminControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Ecom.Accounts
   alias Ecom.Accounts.User
   alias Ecom.Repo
   alias Ecto.Changeset
 
   describe("admin panel") do
     setup do
-      attr = %{
-        email: "test@email.com",
-        username: "test_user",
-        password: "24813699",
-        password_confirmation: "24813699"
-      }
-
-      {:ok, user} = Accounts.create_user(attr)
+      user =
+        :user
+        |> build()
+        |> encrypt_password("password")
+        |> insert()
 
       admin_user =
-        user
+        :user
+        |> build()
+        |> encrypt_password("password")
+        |> insert()
         |> Changeset.change(is_admin: true)
         |> Repo.update!()
 
@@ -61,9 +60,9 @@ defmodule EcomWeb.AdminControllerTest do
       assert redirected_to(conn) == session_path(conn, :new)
     end
 
-    @tag :skip
+    # @tag :skip
     test "admin can create new product", %{admin: user, conn: conn} do
-      attrs = %{name: "some name", description: "some description"}
+      attrs = %{name: "some name", description: "some description", quantity: "12", user_id: user.id}
       conn =
         conn
         |> sign_in(user)
@@ -73,19 +72,19 @@ defmodule EcomWeb.AdminControllerTest do
       assert conn.status == 302
     end
 
-    @tag :skip
+    # @tag :skip
     test "users can't create products", %{user: user, conn: conn} do
       # TODO: For some reason after posting the 'current_resource' has the user as
       # an admin which is not what we want since they're posting data when they shouldn't.
-      attrs = %{name: "some name", description: "Some desc"}
+      attrs = %{name: "some name", description: "Some desc", quantity: "12", user_id: user.id}
 
-      conn = sign_in(conn, user)
       conn =
         conn
+        |> sign_in(user)
         |> post(admin_path(conn, :create_product), product: attrs)
 
       assert get_flash(conn, :alert) == "No autorizado"
-      assert conn.status in 200..299
+      assert conn.status == 302
     end
   end
 

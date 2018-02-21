@@ -20,6 +20,7 @@ defmodule EcomWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       import EcomWeb.Router.Helpers
+      import Ecom.Factory
 
       # The default endpoint for testing
       @endpoint EcomWeb.Endpoint

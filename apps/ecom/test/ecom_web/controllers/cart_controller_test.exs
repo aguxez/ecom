@@ -3,31 +3,19 @@ defmodule EcomWeb.CartControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Ecom.Accounts
-
   setup do
     # First we get the 'user_cart_name' from the 'index' cookie.
     conn = build_conn()
     conn = get(conn, page_path(conn, :index))
 
-    user_attrs = %{
-      email: "som@email.com",
-      username: "test_username",
-      password: "123456789",
-      password_confirmation: "123456789"
-    }
-
-    {:ok, user} = Accounts.create_user(user_attrs)
+    user =
+      :user
+      |> build()
+      |> encrypt_password("password")
+      |> insert()
 
     # The product we're going to add
-    product_attrs = %{
-      name: "name",
-      description: "description",
-      quantity: 123,
-      user_id: user.id
-    }
-
-    {:ok, product} = Accounts.create_product(product_attrs)
+    product = insert(:product, user_id: user.id)
 
     {:ok, conn: conn, product: product}
   end

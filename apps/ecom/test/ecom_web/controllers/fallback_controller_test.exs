@@ -3,19 +3,14 @@ defmodule EcomWeb.FallbackControllerTest do
 
   use EcomWeb.ConnCase
 
-  alias Ecom.Accounts
-
   # To test this module we're going to create a normal user and call an endpoint
   # that requires more perms then make sure that the FallbackController was called.
   setup do
-    attrs = %{
-      email: "some_email@mail.com",
-      username: "test_user",
-      password: "24813569",
-      password_confirmation: "24813569"
-    }
-
-    {:ok, user} = Accounts.create_user(attrs)
+    user =
+      :user
+      |> build()
+      |> encrypt_password("password")
+      |> insert()
 
     {:ok, user: user, conn: build_conn()}
   end
