@@ -3,6 +3,7 @@ defmodule EcomWeb.LayoutViewTest do
 
   alias Ecom.Accounts.User
   alias Ecom.{Repo, Accounts}
+  alias EcomWeb.Helpers
 
   setup do
     info =
@@ -19,10 +20,11 @@ defmodule EcomWeb.LayoutViewTest do
     {:ok, conn: build_conn()}
   end
 
+  @tag :skip
   test "current_user returns the user in the session", %{conn: conn} do
     conn = post(conn, session_path(conn, :create), user: %{username: "agu", password: "testing_password"})
 
-    assert EcomWeb.Helpers.current_user(conn)
+    assert Helpers.current_user(conn)
   end
 
   test "current_user returns nothing if there is no user in the current session", %{conn: conn} do
