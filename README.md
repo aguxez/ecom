@@ -11,17 +11,17 @@
 5. Admin can add/delete/edit product.
 6. Spanish and English supported based on Locale.
 7. Support for Markdown.
-8. Support for adding pictures to Products
+8. Support for adding pictures to Product.
+9. Shopping cart added. Users can add, edit, remove products, when an unlogged user logs in, the items that are NOT in the user's db cart are added and the session cart is deleted.
 
 ### Being worked ATM
-**Shopping cart**
+**Payments**
 
 ### TODO
-- [ ] Payments
 - [ ] Shipping
-- [ ] Flexible configuration
-- [ ] SEO tags
 - [ ] Wishlist
+- [ ] SEO tags
+- [ ] Flexible configuration
 
 ### Dev TODO
 - [ ] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
