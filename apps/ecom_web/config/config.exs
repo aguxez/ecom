@@ -14,9 +14,14 @@ config :ecom_web,
   namespace: EcomWeb,
   ecto_repos: [Ecom.Repo]
 
+# Guardian
+config :ecom_web, EcomWeb.Auth.Guardian,
+  issuer: "ecom_web",
+  secret_key: "iw54jtTr2Gop851VIYsQ77MsvCxk0lDJOdbtPB7t+470lKlst1ly5ygbqcws9nWT"
+
 config :ecom_web, EcomWeb.Auth.Pipeline,
-  module: EcomWeb.Guardian,
-  error_handler: EcomWeb.AuthErrorHandler
+  module: EcomWeb.Auth.Guardian,
+  error_handler: EcomWeb.Auth.AuthErrorHandler
 
 # Configures the endpoint
 config :ecom_web, EcomWeb.Endpoint,
@@ -32,7 +37,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :ecom_web, :generators,
-  context_app: :ecom
+  context_app: :ecom_web
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

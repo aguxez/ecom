@@ -21,7 +21,7 @@ defmodule EcomWeb.RegistrationController do
          {:ok, %Accounts.Cart{}} <- Accounts.create_cart(%{user_id: user.id}) do
       conn
       |> put_flash(:success, gettext("Your account has been created!"))
-      |> EcomWeb.Guardian.Plug.sign_in(user)
+      |> EcomWeb.Auth.Guardian.Plug.sign_in(user)
       |> redirect(to: page_path(conn, :index))
     else
       {:error, changeset} ->

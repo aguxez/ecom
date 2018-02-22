@@ -1,7 +1,7 @@
 defmodule EcomWeb.Auth.Pipeline do
   @moduledoc false
 
-  use Guardian.Plug.Pipeline, otp_app: :ecom
+  use Guardian.Plug.Pipeline, otp_app: :ecom_web
 
   plug Guardian.Plug.VerifySession
   plug Guardian.Plug.VerifyHeader

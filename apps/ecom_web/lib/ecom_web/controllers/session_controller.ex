@@ -41,7 +41,7 @@ defmodule EcomWeb.SessionController do
       # If 'plain_password' matches 'password_digest'
       conn
       |> put_flash(:success, gettext("Logged-in!"))
-      |> EcomWeb.Guardian.Plug.sign_in(user)
+      |> EcomWeb.Auth.Guardian.Plug.sign_in(user)
       # from the 'Helpers' module
       |> sign_in_and_remove(user, session_cart)
       |> redirect(to: page_path(conn, :index))
@@ -63,7 +63,7 @@ defmodule EcomWeb.SessionController do
   def delete(conn, _params) do
     conn
     |> put_flash(:success, gettext("You've been logged-out"))
-    |> EcomWeb.Guardian.Plug.sign_out()
+    |> EcomWeb.Auth.Guardian.Plug.sign_out()
     |> redirect(to: page_path(conn, :index))
   end
 

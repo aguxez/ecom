@@ -45,3 +45,4 @@ config :ecom_web, EcomWeb.Endpoint,
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
+import_config "dev.secret.exs"

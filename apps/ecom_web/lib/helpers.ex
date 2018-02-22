@@ -6,14 +6,14 @@ defmodule EcomWeb.Helpers do
   alias Ecom.{Repo, Accounts}
 
   def current_user(conn) do
-    user = EcomWeb.Guardian.Plug.current_resource(conn)
+    user = EcomWeb.Auth.Guardian.Plug.current_resource(conn)
 
     unless user == nil, do: user
   end
 
   # Define 'fields' to get from 'user'
   def current_user(conn, fields) do
-    user = EcomWeb.Guardian.Plug.current_resource(conn)
+    user = EcomWeb.Auth.Guardian.Plug.current_resource(conn)
 
     unless user == nil, do: Map.take(user, fields)
   end

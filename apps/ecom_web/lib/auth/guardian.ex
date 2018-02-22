@@ -1,4 +1,4 @@
-defmodule EcomWeb.Guardian do
+defmodule EcomWeb.Auth.Guardian do
   @moduledoc false
 
   use Guardian, otp_app: :ecom_web

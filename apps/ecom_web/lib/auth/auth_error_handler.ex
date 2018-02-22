@@ -1,4 +1,4 @@
-defmodule EcomWeb.AuthErrorHandler do
+defmodule EcomWeb.Auth.AuthErrorHandler do
   @moduledoc false
 
   use EcomWeb, :controller
