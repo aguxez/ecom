@@ -23,7 +23,7 @@ defmodule Ecomweb.AccountControllerTest do
       assert conn.request_path == "/account"
       assert conn.status == 200
       assert html_response(conn, 200) =~ "Actualiza tu contraseña"
-      assert Ecom.Guardian.Plug.current_resource(conn)
+      assert EcomWeb.Auth.Guardian.Plug.current_resource(conn)
     end
 
     test "can update user information", %{conn: conn, user: user} do
@@ -64,6 +64,6 @@ defmodule Ecomweb.AccountControllerTest do
   end
 
   defp sign_in(conn, user) do
-    Ecom.Guardian.Plug.sign_in(conn, user)
+    EcomWeb.Auth.Guardian.Plug.sign_in(conn, user)
   end
 end

@@ -31,6 +31,6 @@ defmodule EcomWeb.LayoutViewTest do
   end
 
   defp sign_in(conn, user) do
-    Ecom.Guardian.Plug.sign_in(conn, user)
+    EcomWeb.Auth.Guardian.Plug.sign_in(conn, user)
   end
 end

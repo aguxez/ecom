@@ -20,7 +20,7 @@ defmodule EcomWeb.RegistrationControllerTest do
       conn = post(conn, registration_path(conn, :create), user: params_for(:user))
 
       assert get_flash(conn, :success) == "Cuenta creada satisfactoriamente"
-      assert Ecom.Guardian.Plug.current_resource(conn)
+      assert EcomWeb.Auth.Guardian.Plug.current_resource(conn)
       assert redirected_to(conn) == page_path(conn, :index)
     end
 
