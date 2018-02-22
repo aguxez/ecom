@@ -5,15 +5,14 @@ defmodule EcomWeb.AdminController do
 
   import Ecto.Query, only: [from: 2]
 
-  alias Ecom.Accounts
-  alias Ecom.Accounts.{User, Product}
+  alias Ecom.Interfaces.{Checker, Accounts}
   alias Ecom.Repo
   alias Ecom.Uploaders.Image
 
   action_fallback EcomWeb.FallbackController
 
   plug Bodyguard.Plug.Authorize,
-    policy: User,
+    policy: Ecom.Accounts.User,
     action: :admin_panel,
     user: &Guardian.Plug.current_resource/1,
     fallback: EcomWeb.FallbackController
@@ -24,7 +23,7 @@ defmodule EcomWeb.AdminController do
     users_amount = length(Accounts.list_users())
     products = Accounts.list_products()
 
-    latest_users = Repo.all(from u in User, order_by: u.inserted_at)
+    latest_users = Repo.all(from u in Ecom.Accounts.User, order_by: u.inserted_at)
 
     render(conn, "index.html",
       users_amount: users_amount,
@@ -35,23 +34,20 @@ defmodule EcomWeb.AdminController do
 
   # Products
   def new_product(conn, _params) do
-    changeset = Accounts.change_product(%Product{})
+    changeset = Accounts.change_product(%Ecom.Accounts.Product{})
 
     render(conn, "new_product.html", changeset: changeset)
   end
 
   def create_product(conn, %{"product" => product_params}) do
     user = current_user(conn)
-
     params = Map.merge(product_params, %{"user_id" => user.id})
 
-    with :ok <- Bodyguard.permit(Product, :create_products, user),
-         {:ok, %Product{} = product} <- Accounts.create_product(params) do
-
-      conn
-      |> put_flash(:success, gettext("Product created successfully"))
-      |> redirect(to: product_path(conn, :show, product.id))
-    else
+    case Checker.can_create_product?(user, params) do
+      {:ok, product} ->
+        conn
+        |> put_flash(:success, gettext("Product created successfully"))
+        |> redirect(to: product_path(conn, :show, product.id))
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))
@@ -70,7 +66,7 @@ defmodule EcomWeb.AdminController do
     product = Accounts.get_product!(id)
 
     case Accounts.update_product(product, product_params) do
-      {:ok, %Product{} = product} ->
+      {:ok, %Ecom.Accounts.Product{} = product} ->
         conn
         |> put_flash(:success, gettext("Product updated successfully"))
         |> redirect(to: product_path(conn, :show, product.id))
@@ -85,7 +81,7 @@ defmodule EcomWeb.AdminController do
     product = Accounts.get_product!(id)
 
     case Accounts.delete_product(product) do
-      {:ok, %Product{}} ->
+      {:ok, %Ecom.Accounts.Product{}} ->
         img_path = get_img_path(product)
         File.rm(img_path)
 
