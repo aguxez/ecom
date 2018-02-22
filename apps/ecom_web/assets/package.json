@@ -1,0 +1,31 @@
+{
+  "repository": {},
+  "license": "MIT",
+  "scripts": {
+    "deploy": "brunch build --production",
+    "watch": "brunch watch --stdin"
+  },
+  "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "font-awesome": "^4.7.0",
+    "foundation-sites": "^6.4.4-rc1",
+    "jquery": "^3.3.1",
+    "normalize-scss": "^7.0.1",
+    "phoenix": "file:../../../deps/phoenix",
+    "phoenix_html": "file:../../../deps/phoenix_html",
+    "react": "^16.2.0",
+    "react-phoenix": "file:../../../deps/react_phoenix",
+    "react-router-dom": "^4.2.2",
+    "sass-brunch": "^2.10.4",
+    "script-loader": "^0.7.2",
+    "simplemde": "^1.11.2"
+  },
+  "devDependencies": {
+    "babel-brunch": "6.1.1",
+    "brunch": "^2.10.12",
+    "clean-css-brunch": "2.10.0",
+    "uglify-js-brunch": "2.10.0"
+  }
+}

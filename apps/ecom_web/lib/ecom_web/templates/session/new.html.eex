@@ -1,0 +1,28 @@
+<!-- In forms we're going to render using Elixir, not React -->
+<%= form_for @changeset, session_path(@conn, :create), fn f -> %>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <div class="text-center cell">
+        <h1> <%= gettext("Login") %> </h1>
+      </div>
+
+      <div class="small-6 cell">
+        <%= label f, :username do %>
+          <%= gettext("Username") %>
+          <%= text_input f, :username, required: true, autoFocus: true %>
+        <% end %>
+      </div>
+
+      <div class="small-6 cell">
+        <%= label f, :password do %>
+          <%= gettext("Password") %>
+          <%= password_input f, :password, required: true, minlength: 8 %>
+        <% end %>
+      </div>
+
+      <div class="text-center cell">
+        <%= submit gettext("Login"), class: "button success" %>
+      </div>
+    </div>
+  </div>
+<% end %>

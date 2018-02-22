@@ -1,0 +1,69 @@
+<div>
+  <ul class="tabs" data-tabs id="dash-tabs">
+    <li class="tabs-title is-active">
+      <a href="#panel1" aria-selected="true"><strong> <%= gettext("Dashboard") %> </strong></a>
+    </li>
+
+    <li class="tabs-title">
+      <a href="#panel2"><strong> <%= gettext("Products") %> </strong></a>
+    </li>
+  </ul>
+
+  <div class="tabs-content" data-tabs-content="dash-tabs">
+    <!-- MAIN INTERFACE, MEMBERS, ETC... -->
+    <div class="tabs-panel is-active" id="panel1">
+      <p class="stat"> <%= @users_amount %> usuarios registrados.</p>
+
+      <h2> Ultimos miembros</h2>
+      <h3>
+        <%= for u <- @latest_users do %>
+          <%= u.username %> //
+        <% end %>
+      </h3>
+    </div>
+    <!-- END MAIN INTERFACE -->
+
+    <!-- PRODUCT INTERFACE -->
+    <div class="table-scroll">
+      <div class="tabs-panel" id="panel2">
+        <table class="unstriped">
+          <thead>
+            <tr>
+              <th> <%= gettext("ID") %> </th>
+              <th> <%= gettext("Name") %> </th>
+              <th> <%= gettext("Description (Without formatting)") %> </th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= for product <- @products do %>
+            <tr>
+              <td> <%=product.id %> </td>
+              <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
+              <td> <%= product.description %> </td>
+
+              <td>
+                <%= link to: admin_path(@conn, :edit_product, product.id) do %>
+                <%= content_tag(:span, "", class: "fa fa-pencil", aria: [hidden: true]) %>
+                <% end %>
+              </td>
+
+              <td>
+                <%= link to: admin_path(@conn, :delete_product, product.id),
+                method: :delete, data: [confirm: gettext("Are you sure?")] do %>
+
+                  <%= content_tag(:span, "", class: "fa fa-trash") %>
+                <% end %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- END PRODUCT INTERFACE -->
+
+  </div>
+</div>

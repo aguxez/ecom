@@ -1,0 +1,6 @@
+/* This file is for your main application css. */
+@import "foundation";
+@import "custom";
+
+@include foundation-everything;
+@include foundation-xy-grid-classes;

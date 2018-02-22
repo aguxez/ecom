@@ -1,0 +1,53 @@
+<!-- form start -->
+<%= form_for @changeset, registration_path(@conn, :create), [], fn f -> %>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <!-- TOP TEXT -->
+      <div class="text-center cell">
+        <h3>Registrate</h3>
+      </div>
+      <!-- END TOP TEXT -->
+
+      <!-- Use offset on sizes -->
+      <div class="small-10 small-offset-1 medium-8 medium-offset-2 large-6 large-offset-3 cell">
+        <div class="grid-container">
+          <div class="grid-x grid-margin-x">
+            <!-- START SIGN UP FORM -->
+            <div class="small-12 cell">
+
+              <%= label f, :email do %>
+                <%= gettext("Email") %>
+                <%= email_input f, :email %>
+                <%= error_tag f, :email %>
+              <% end %>
+
+              <%= label f, :username do %>
+                <%= gettext("Username") %>
+                <%= text_input f, :username %>
+                <%= error_tag f, :username %>
+              <% end %>
+
+              <%= label f, :password do %>
+                <%= gettext("Password") %>
+                <%= password_input f, :password, minLength: 8 %>
+                <%= error_tag f, :password %>
+              <% end %>
+
+              <%= label f, :password_confirmation do %>
+                <%= gettext("Confirm password") %>
+                <%= password_input f, :password_confirmation, minLength: 8 %>
+                <%= error_tag f, :password_confirmation %>
+              <% end %>
+
+              <%= submit gettext("Send"), id: "submit", class: "button success text-center cell" %>
+
+            </div>
+
+            <!-- END SIGN UP FORM  -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<!-- form end -->
