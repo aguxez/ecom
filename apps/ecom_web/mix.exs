@@ -52,19 +52,17 @@ defmodule EcomWeb.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-
-      {:react_phoenix, "~> 0.5.1"},
-      {:comeonin, "~> 4.1"},
-      {:bodyguard, "~> 2.2"},
       {:earmark, "~> 1.2"},
       {:sobelow, "~> 0.6.8"},
 
       {:credo, "~> 0.8.10", only: [:test, :dev]},
+
+      {:phoenix_live_reload, "~> 1.0", only: :dev},
+
       {:coverex, "~> 1.4", only: [:test]},
-      {:ex_machina, "~> 2.1", only: :test},
+      {:bypass, "~> 0.8", only: :test},
 
       {:ecom, in_umbrella: true},
     ]

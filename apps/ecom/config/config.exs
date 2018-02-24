@@ -4,6 +4,8 @@ use Mix.Config
 config :arc,
   storage: Arc.Storage.Local
 
+config :ecom, env: Mix.env()
+
 # General application configuration
 config :ecom,
   namespace: Ecom,

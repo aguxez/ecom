@@ -37,6 +37,12 @@ defmodule Ecom.Mixfile do
       {:arc_ecto, "~> 0.7.0"},
       {:argon2_elixir, "~> 1.2"},
       {:guardian, "~> 1.0"},
+      {:gringotts, "~> 1.0"},
+      {:ex_money, "~> 1.1.0"},
+      {:comeonin, "~> 4.1"},
+      {:bodyguard, "~> 2.2"},
+
+      {:ex_machina, "~> 2.1", only: :test},
     ]
   end
 
