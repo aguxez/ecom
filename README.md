@@ -74,3 +74,6 @@ At the beginning they're handled locally, if you're planning to use a Cloud Stor
 
 #### Attachments
 Arc_ecto provides the `cast_attachments` function. The attachment should be casted only on that function and not on `cast`
+
+#### regeneratorRuntime is not defined
+Install `babel-plugin-transform-runtime` and add it to the plugins besides other common dependencies

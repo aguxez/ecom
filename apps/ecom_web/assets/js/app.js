@@ -1,16 +1,14 @@
-// Import dependencies
-//
-// If you no longer want to use a dependency, remember
-// to also remove its path from "config.paths.watched".
 import "phoenix_html";
-import "react-phoenix";
-
-import "./custom.js";
-
-var SimpleMDE = require("simplemde/dist/simplemde.min.js");
-
+import "./stripeForm.js";
 // Way to import 'Foundation'
 import "foundation-sites/dist/js/foundation";
+
+// SimpleMDE
+var SimpleMDE = require("simplemde/dist/simplemde.min.js");
+
+// To make async/await work
+require("babel-core/register");
+require("babel-polyfill");
 
 $(document).ready($ => {
   // Foundation

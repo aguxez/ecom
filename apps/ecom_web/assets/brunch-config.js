@@ -38,10 +38,10 @@ exports.config = {
   // Configure your plugins
   plugins: {
     babel: {
-      presets: ["env", "react", "es2015"],
+      presets: ["env", "es2015", "stage-0"],
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/],
-      "plugins": ["transform-object-rest-spread"]
+      "plugins": ["transform-object-rest-spread", "babel-plugin-transform-runtime"]
     },
     sass: {
       options: {
