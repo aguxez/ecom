@@ -31,7 +31,7 @@ defmodule EcomWeb.AccountController do
         |> redirect(to: account_path(conn, :index))
 
       # TODO: MatchError
-      {:error, changeset} ->
+      {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem updating your account"))
         |> render("index.html", changeset: changeset, user: user)

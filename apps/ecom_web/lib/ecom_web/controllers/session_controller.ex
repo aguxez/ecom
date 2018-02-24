@@ -5,13 +5,12 @@ defmodule EcomWeb.SessionController do
 
   import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
 
-  alias Ecom.{Repo}
-  alias Ecom.Accounts.User
+  alias Ecom.Interfaces.{Accounts, Checker}
 
   plug :scrub_params, "user" when action in [:create]
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{}, %{})
+    changeset = Accounts.change_user(%Ecom.Accounts.User{})
 
     render(conn, "new.html", changeset: changeset)
   end
@@ -19,9 +18,13 @@ defmodule EcomWeb.SessionController do
   def create(conn, %{"user" => %{"username" => username, "password" => password}})
   when not is_nil(username) and not is_nil(password) do
 
-    User
-    |> Repo.get_by(username: username)
-    |> sign_in(password, conn)
+    case Checker.sign_in(username, password) do
+      {:ok, {new_user, new_password}} ->
+        sign_in(new_user, new_password, conn)
+
+      {:error, :failed} ->
+        sign_in(nil, "", conn)
+    end
   end
 
   def create(conn, _) do

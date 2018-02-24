@@ -3,7 +3,7 @@ defmodule EcomWeb.ProductController do
 
   use EcomWeb, :controller
 
-  alias Ecom.Accounts
+  alias Ecom.Interfaces.Accounts
   alias EcomWeb.ErrorView
 
   def index(conn, _params) do

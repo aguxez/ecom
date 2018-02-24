@@ -2,17 +2,18 @@ defmodule Ecom.Checker do
   @moduledoc false
 
   alias Comeonin.Argon2
-  alias Ecom.Accounts.{User, Product}
-  alias Ecom.Accounts
+  alias Ecom.Accounts.{User, Product, Cart}
+  alias Ecom.{Repo, Accounts}
 
   def update_user(user, params_password, attrs) do
     with true <- Argon2.checkpw(params_password, user.password_digest),
-         {:ok, %User{}} = Accounts.update_user(user, attrs)
-      do
+         {:ok, %User{}} <- Accounts.update_user(user, attrs) do
+
         {:ok, :accept}
     else
       false ->
         {:error, :wrong_pass}
+
       {:error, changeset} ->
         {:error, changeset}
     end
@@ -20,11 +21,30 @@ defmodule Ecom.Checker do
 
   def can_create_product?(user, params) do
     with :ok <- Bodyguard.permit(Product, :create_products, user),
-         {:ok, %Product{} = product} = Accounts.create_product(params)
-      do
-        {:ok, product}
-      else
-        {:error, changeset} -> {:error, changeset}
+         {:ok, %Product{} = product} = Accounts.create_product(params) do
+
+      {:ok, product}
+    else
+      {:error, changeset} -> {:error, changeset}
+    end
+  end
+
+  def sign_in(username, password) do
+    User
+    |> Repo.get_by(username: username)
+    |> do_sign_in(password)
+  end
+
+  defp do_sign_in(nil, _password), do: {:error, :failed}
+  defp do_sign_in(user, password), do: {:ok, {user, password}}
+
+  def new_user(user_params) do
+    with {:ok, user} <- Accounts.create_user(user_params),
+         {:ok, %Cart{}} <- Accounts.create_cart(%{user_id: user.id}) do
+
+        {:ok, user}
+    else
+      {:error, changeset} -> {:error, changeset}
     end
   end
 end

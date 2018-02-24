@@ -3,7 +3,7 @@ defmodule EcomWeb.PageController do
 
   use EcomWeb, :controller
 
-  alias Ecom.Accounts
+  alias Ecom.Interfaces.Accounts
 
   action_fallback EcomWeb.FallbackController
 
