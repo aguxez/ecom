@@ -14,7 +14,7 @@
       </div>
 
       <div class="small-12 cell">
-        <%= textarea f, :description, id: "product-edit" %>
+        <%= textarea f, :description, id: "productEdit" %>
         <%= error_tag f, :description %>
       </div>
 

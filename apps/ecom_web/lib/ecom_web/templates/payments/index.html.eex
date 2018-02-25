@@ -1,0 +1,20 @@
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= for product <- @products do %>
+        <tr>
+          <td> <%= product["name"] %> </td>
+          <td> <%= product["value"] %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

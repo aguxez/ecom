@@ -106,7 +106,7 @@ defmodule EcomWeb.CartController do
   def process_cart(conn, %{"submit" => submit_val} = params) do
     case submit_val do
       "save" -> update_cart_values(conn, params)
-      "pay"  -> :ok # TODO: Pay function
+      "pay"  -> make_cart_payment(conn)
     end
   end
 
@@ -145,6 +145,17 @@ defmodule EcomWeb.CartController do
       end)
 
     {:ok, put_session(conn, :user_cart, updated_values)}
+  end
+
+  defp make_cart_payment(conn) do
+    path =
+      if current_user(conn) do
+        payments_path(conn, :index)
+      else
+        session_path(conn, :new)
+      end
+
+    redirect(conn, to: path)
   end
 
   # More used privs

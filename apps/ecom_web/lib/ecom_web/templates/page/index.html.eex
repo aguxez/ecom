@@ -4,6 +4,17 @@
   </section>
 
   <div>
+    <%= form_for @conn, payments_path(@conn, :create), [id: "payment-form"], fn f -> %>
+      <div class="form-row">
+        <%= label f, :card_element, gettext("Credit or debit card") %>
+        <div id="card-element"></div>
+
+        <div id="card-errors"></div>
+      </div>
+
+      <%= submit "Submit payment" %>
+    <% end %>
+
     <table>
       <thead>
         <tr>

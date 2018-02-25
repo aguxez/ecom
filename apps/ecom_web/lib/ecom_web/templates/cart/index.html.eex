@@ -24,7 +24,7 @@
               <%= link to: cart_path(@conn, :delete_product, product["id"]), method: :delete,
                   data: [confirm: gettext("Are you sure?")] do %>
 
-                <%= content_tag(:span, "", class: "fa fa-trash") %>
+                <%= content_tag(:span, "", class: "fas fa-trash-alt") %>
               <% end %>
             </td>
           </tr>
@@ -32,7 +32,9 @@
       </tbody>
     </table>
 
-    <%= submit "Guardar", class: "button success", name: "submit", value: "save" %>
-    <%= submit "Pagar", class: "button success", name: "submit", value: "pay" %>
+    <%= if length(@products) > 0 do %>
+      <%= submit "Guardar", class: "button success", name: "submit", value: "save" %>
+      <%= submit "Pagar", class: "button success", name: "submit", value: "pay" %>
+    <% end %>
   <% end %>
 </div>
