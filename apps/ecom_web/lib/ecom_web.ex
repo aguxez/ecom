@@ -46,8 +46,6 @@ defmodule EcomWeb do
 
       # Global helpers
       import EcomWeb.Helpers
-
-      import ReactPhoenix.ClientSide
     end
   end
 
