@@ -20,7 +20,8 @@
     "normalize-scss": "^7.0.1",
     "phoenix": "file:../../../deps/phoenix",
     "phoenix_html": "^2.10.4",
-    "sass-brunch": "^2.10.4"
+    "sass-brunch": "^2.10.4",
+    "simplemde": "https://github.com/Ionaru/simplemde-markdown-editor"
   },
   "devDependencies": {
     "babel-brunch": "6.1.1",
