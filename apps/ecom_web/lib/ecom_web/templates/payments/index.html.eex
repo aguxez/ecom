@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Price</th>
         <th>Quantity</th>
       </tr>
     </thead>
@@ -11,10 +12,14 @@
       <%= for product <- @products do %>
         <tr>
           <td> <%= product["name"] %> </td>
+          <td> <%= product["price"] %> </td>
           <td> <%= product["value"] %> </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
+  <h4> Total: <%= @total %> </h4>
+
+  <%= link "Proceder", to: payments_path(@conn, :checkout), class: "button success" %>
 </div>

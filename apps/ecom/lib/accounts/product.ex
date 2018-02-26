@@ -16,6 +16,7 @@ defmodule Ecom.Accounts.Product do
     field :description, :string
     field :image, Ecom.Uploaders.Image.Type
     field :quantity, :integer
+    field :price, :integer
 
     belongs_to :user, User
 
@@ -25,10 +26,10 @@ defmodule Ecom.Accounts.Product do
   @doc false
   def changeset(%Product{} = product, attrs) do
     product
-    |> cast(attrs, [:name, :user_id, :description, :quantity])
+    |> cast(attrs, [:name, :user_id, :description, :quantity, :price])
     |> foreign_key_constraint(:user_id)
     |> cast_attachments(attrs, [:image])
-    |> validate_required([:name, :user_id, :description, :quantity])
+    |> validate_required([:name, :user_id, :description, :quantity, :price])
     |> strip_unsafe_desc(attrs)
   end
 

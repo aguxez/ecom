@@ -14,6 +14,14 @@
       </div>
 
       <div class="small-12 cell">
+        <%= label f, :field do %>
+          <%= gettext("Price") %>
+          <%= number_input f, :price %>
+          <%= error_tag f, :price %>
+        <% end %>
+      </div>
+
+      <div class="small-12 cell">
         <%= textarea f, :description, id: "productEdit" %>
         <%= error_tag f, :description %>
       </div>

@@ -176,7 +176,7 @@ defmodule EcomWeb.CartController do
     product = Accounts.get_product!(id)
     product_params =
       product
-      |> Map.take(~w(id name description quantity user_id)a)
+      |> Map.take(~w(id name description quantity user_id price)a)
       |> to_map_string()
 
     {user_cart, product, product_params}

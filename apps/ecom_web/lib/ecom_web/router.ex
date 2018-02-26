@@ -42,6 +42,7 @@ defmodule EcomWeb.Router do
     post("/account/:id", AccountController, :update)
     resources("/account", AccountController, only: [:index, :update])
     resources("/payments", PaymentsController, only: [:index, :create])
+    get("/payments/checkout", PaymentsController, :checkout)
   end
 
   scope "/site_settings", EcomWeb do

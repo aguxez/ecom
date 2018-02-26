@@ -8,25 +8,34 @@ defmodule EcomWeb.PaymentsController do
   require Logger
 
   alias Ecom.Interfaces.Payments.Processor
-  alias Ecom.Interfaces.Accounts
   alias Ecom.Repo
 
   def index(conn, _params) do
-    curr_user = conn |> current_user() |> Repo.preload(:cart)
+    {products, total} = products_and_total(conn)
 
-    products =
-      if curr_user do
-        Map.values(curr_user.cart.products)
-      else
-        # If the user is not logged in then the item is added to the key ':user_cart' in session.
-        Map.values(get_session(conn, :user_cart))
-      end
+    render(conn, "index.html", products: products, total: total)
+  end
 
-    render(conn, "index.html", products: products)
+  defp products_and_total(conn) do
+    curr_user =
+      conn
+      |> current_user()
+      |> Repo.preload(:cart)
+
+    products = Map.values(curr_user.cart.products)
+    total =
+      products
+      |> Enum.map(fn product -> product["price"] * String.to_integer(product["value"]) end)
+      |> Enum.sum()
+
+    {products, total}
   end
 
   def create(conn, %{"stripeToken" => token}) do
-    case Processor.create_purchase(token, :stripe) do
+    {_, total} = products_and_total(conn)
+    params = %{token: token, total: total}
+
+    case Processor.create_purchase(params, :stripe) do
       {:ok, :accepted} ->
         conn
         |> put_flash(:success, gettext("Payment done!"))
@@ -46,5 +55,14 @@ defmodule EcomWeb.PaymentsController do
         |> put_flash(:alert, gettext("There was a request error, contact if the error persist"))
         |> redirect(to: page_path(conn, :index))
     end
+
+  rescue
+    :exit -> IO.inspect("EXIT TIMEOUT")
+  end
+
+  def checkout(conn, _params) do
+    {_, total} = products_and_total(conn)
+
+    render(conn, "checkout.html", total: total)
   end
 end
