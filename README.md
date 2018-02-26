@@ -19,8 +19,9 @@
 
 ### TODO
 - [ ] Shipping
-- [ ] Wishlist
+- [ ] Categories
 - [ ] SEO tags
+- [ ] Wishlist
 - [ ] Flexible configuration
 
 ### Dev TODO
