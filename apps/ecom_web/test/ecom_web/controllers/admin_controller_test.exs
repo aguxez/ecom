@@ -67,7 +67,8 @@ defmodule EcomWeb.AdminControllerTest do
         name: "some name",
         description: "some description",
         quantity: "12",
-        user_id: user.id
+        user_id: user.id,
+        price: 5
       }
 
       conn =

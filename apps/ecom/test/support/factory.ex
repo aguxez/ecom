@@ -19,7 +19,8 @@ defmodule Ecom.Factory do
       name: "Some product name",
       description: "Some product description",
       user_id: build(:user),
-      quantity: Enum.random(1..100)
+      quantity: Enum.random(1..100),
+      price: Enum.random(1..10)
     }
   end
 
