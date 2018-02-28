@@ -11,6 +11,7 @@ defmodule Ecom.Interfaces.Accounts do
   defdelegate create_cart(params),                       to: Accounts
   defdelegate create_user(params),                       to: Accounts
   defdelegate get_product!(id),                          to: Accounts
+  defdelegate get_user!(id),                             to: Accounts
   defdelegate update_product(product, product_params),   to: Accounts
   defdelegate delete_product(id),                        to: Accounts
 end

@@ -32,7 +32,8 @@ defmodule Ecom.CartTask do
   def db_update_cart_values(conn, user, products_to_update) do
     updated_values =
       Enum.reduce(products_to_update, user.cart.products, fn({k, v}, acc) ->
-        put_in(acc, [k, "value"], v)
+        value = String.to_integer(v)
+        put_in(acc, [k, "value"], value)
       end)
 
     case Accounts.update_cart(user.cart, %{products: updated_values}) do

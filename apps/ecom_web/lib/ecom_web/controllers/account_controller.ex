@@ -3,7 +3,7 @@ defmodule EcomWeb.AccountController do
 
   use EcomWeb, :controller
 
-  alias Ecom.Interfaces.Checker
+  alias Ecom.Interfaces.Worker
   alias Ecom.Interfaces.Accounts
 
   plug :scrub_params, "user" when action in [:update]
@@ -19,7 +19,7 @@ defmodule EcomWeb.AccountController do
     user = current_user(conn)
     attrs = %{password: user_params["new_password"], password_confirmation: user_params["new_password_confirmation"]}
 
-    case Checker.update_user(user, user_params["password"], attrs) do
+    case Worker.update_user(user, user_params["password"], attrs) do
       {:ok, :accept} ->
         conn
         |> put_flash(:success, gettext("Account updated successfully"))

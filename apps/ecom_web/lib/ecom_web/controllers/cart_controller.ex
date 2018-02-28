@@ -141,7 +141,9 @@ defmodule EcomWeb.CartController do
     updated_values =
       Enum.reduce(products_to_update, user_cart, fn({k, v}, acc) ->
         id = String.to_integer(k)
-        put_in(acc, [id, "value"], v)
+        value = String.to_integer(v)
+        # Make value an a String
+        put_in(acc, [id, "value"], value)
       end)
 
     {:ok, put_session(conn, :user_cart, updated_values)}

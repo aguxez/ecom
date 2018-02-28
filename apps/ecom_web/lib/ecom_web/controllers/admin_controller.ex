@@ -5,7 +5,7 @@ defmodule EcomWeb.AdminController do
 
   import Ecto.Query, only: [from: 2]
 
-  alias Ecom.Interfaces.{Checker, Accounts}
+  alias Ecom.Interfaces.{Worker, Accounts}
   alias Ecom.Repo
   alias Ecom.Uploaders.Image
 
@@ -43,7 +43,7 @@ defmodule EcomWeb.AdminController do
     user = current_user(conn)
     params = Map.merge(product_params, %{"user_id" => user.id})
 
-    case Checker.can_create_product?(user, params) do
+    case Worker.can_create_product?(user, params) do
       {:ok, product} ->
         conn
         |> put_flash(:success, gettext("Product created successfully"))

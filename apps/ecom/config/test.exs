@@ -4,6 +4,8 @@ config :argon2_elixir,
   t_cost: 2,
   m_cost: 12
 
+config :ecom, env: :test
+
 # Configure your database
 config :ecom, Ecom.Repo,
   adapter: Ecto.Adapters.Postgres,

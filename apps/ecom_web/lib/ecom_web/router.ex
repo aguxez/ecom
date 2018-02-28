@@ -9,6 +9,7 @@ defmodule EcomWeb.Router do
     plug :put_secure_browser_headers
     plug EcomWeb.Plugs.Locale
     plug EcomWeb.Plugs.CartPlug
+    plug EcomWeb.Plugs.PayID
   end
 
   pipeline :api do
@@ -42,7 +43,8 @@ defmodule EcomWeb.Router do
     post("/account/:id", AccountController, :update)
     resources("/account", AccountController, only: [:index, :update])
     resources("/payments", PaymentsController, only: [:index, :create])
-    get("/payments/checkout", PaymentsController, :checkout)
+    get("/payments/processed", PaymentsController, :processed)
+    get("/payments/cancelled", PaymentsController, :cancelled)
   end
 
   scope "/site_settings", EcomWeb do

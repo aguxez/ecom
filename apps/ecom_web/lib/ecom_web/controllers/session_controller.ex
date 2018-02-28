@@ -5,7 +5,7 @@ defmodule EcomWeb.SessionController do
 
   import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
 
-  alias Ecom.Interfaces.{Accounts, Checker}
+  alias Ecom.Interfaces.{Accounts, Worker}
 
   plug :scrub_params, "user" when action in [:create]
 
@@ -18,7 +18,7 @@ defmodule EcomWeb.SessionController do
   def create(conn, %{"user" => %{"username" => username, "password" => password}})
   when not is_nil(username) and not is_nil(password) do
 
-    case Checker.sign_in(username, password) do
+    case Worker.sign_in(username, password) do
       {:ok, {new_user, new_password}} ->
         sign_in(new_user, new_password, conn)
 

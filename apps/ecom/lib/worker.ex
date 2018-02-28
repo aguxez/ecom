@@ -1,4 +1,4 @@
-defmodule Ecom.Checker do
+defmodule Ecom.Worker do
   @moduledoc false
 
   alias Comeonin.Argon2
@@ -45,6 +45,17 @@ defmodule Ecom.Checker do
         {:ok, user}
     else
       {:error, changeset} -> {:error, changeset}
+    end
+  end
+
+  def empty_user_cart(user, sess_proc_id, param_proc_id) do
+    with true <- sess_proc_id == param_proc_id,
+         {:ok, %Cart{}} <- Accounts.update_cart(user.cart, %{products: %{}}) do
+
+        {:ok, :empty}
+    else
+      false -> {:error, :invalid_proc_id}
+      {:error, _changeset} -> {:error, :unable_to_empty}
     end
   end
 end

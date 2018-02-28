@@ -14,13 +14,7 @@ defmodule Ecom.Payments.Processor do
   end
 
   # Real Payment
-  defp make_payment(%{token: token, total: total}, :stripe) do
-    payment = Gringotts.purchase(Stripe, total, %{}, source: token)
-
-    cond do
-      payment["status"] == "succeeded" -> {:ok, :accepted}
-      payment["status"] == "failed"    -> {:error, {:failed, payment}}
-      payment["error"] -> {:error, {:req_error, payment}}
-    end
+  defp make_payment(_params, :paypal) do
+    :ok
   end
 end

@@ -27,7 +27,7 @@
             </td>
 
             <td>
-              <%= product["price"] * String.to_integer(product["value"]) %>
+              <%= product["price"] * product["value"] %>
             </td>
 
             <td>

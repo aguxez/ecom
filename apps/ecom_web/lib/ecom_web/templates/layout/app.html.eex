@@ -18,12 +18,18 @@
     <meta name="apple-mobile-web-app-title" content="Ecom">
     <link rel="apple-touch-icon" href="images/logo.png">
 
-    <!-- Stripe -->
-    <script src="https://js.stripe.com/v3/"></script>
+    <!-- Paypal -->
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
     <!-- FontAwesome -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
+    <%= if current_user(@conn) do %>
+      <%= tag :meta, name: "channel_token", content: Phoenix.Token.sign(@conn, "user", current_user(@conn).id) %>
+    <% end %>
+  </head>
+
+  <body>
     <%=
       render("header.html",
         conn: @conn,
@@ -31,9 +37,7 @@
         current_path: Phoenix.Controller.current_path(@conn, %{})
       )
     %>
-  </head>
 
-  <body>
     <div class="grid-container">
       <%
         secondary = get_flash(@conn, :secondary)

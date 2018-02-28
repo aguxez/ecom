@@ -3,7 +3,7 @@ defmodule EcomWeb.RegistrationController do
 
   use EcomWeb, :controller
 
-  alias Ecom.Interfaces.{Accounts, Checker}
+  alias Ecom.Interfaces.{Accounts, Worker}
 
   plug :scrub_params, "user" when action in [:create]
 
@@ -14,7 +14,7 @@ defmodule EcomWeb.RegistrationController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    case Checker.new_user(user_params) do
+    case Worker.new_user(user_params) do
       {:ok, user} ->
         conn
         |> put_flash(:success, gettext("Your account has been created!"))

@@ -1,8 +1,12 @@
 defmodule EcomWeb.UserSocket do
+  @moduledoc false
+
   use Phoenix.Socket
 
+  alias Ecom.Interfaces.Accounts
+
   ## Channels
-  # channel "room:*", EcomWeb.RoomChannel
+  channel "payments:*", EcomWeb.PaymentsChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,8 +23,15 @@ defmodule EcomWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket) do
+    # Max age of 2 weeks
+    case Phoenix.Token.verify(socket, "user", token, max_age: 1209600) do
+      {:ok, user_id} ->
+        socket = assign(socket, :user, Accounts.get_user!(user_id))
+        {:ok, socket}
+      {:error, _} ->
+        :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
