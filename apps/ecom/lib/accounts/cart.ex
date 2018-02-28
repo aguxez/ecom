@@ -10,9 +10,9 @@ defmodule Ecom.Accounts.Cart do
   ##############
 
   schema "carts" do
-    field :products, :map
+    field(:products, :map)
 
-    belongs_to :user, User
+    belongs_to(:user, User)
 
     timestamps()
   end

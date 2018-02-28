@@ -7,10 +7,18 @@ defmodule Ecom.AccountsTest do
   alias Ecom.{Accounts, Repo}
 
   describe "users" do
-    @valid_attrs %{email: "email@email.com", username: "someusername", password: "123456789",
-      password_confirmation: "123456789"}
-    @update_attrs %{email: "some@updatedemail", username: "some updated username",
-      password: "87654321", password_confirmation: "87654321"}
+    @valid_attrs %{
+      email: "email@email.com",
+      username: "someusername",
+      password: "123456789",
+      password_confirmation: "123456789"
+    }
+    @update_attrs %{
+      email: "some@updatedemail",
+      username: "some updated username",
+      password: "87654321",
+      password_confirmation: "87654321"
+    }
     @invalid_attrs %{email: nil, username: nil}
 
     def user_fixture(mod_attr) do
@@ -53,11 +61,17 @@ defmodule Ecom.AccountsTest do
 
     test "password_hash value gets set to hash" do
       changeset = User.changeset(%User{}, @valid_attrs)
-      assert Comeonin.Argon2.checkpw(@valid_attrs.password, get_change(changeset, :password_digest))
+
+      assert Comeonin.Argon2.checkpw(
+               @valid_attrs.password,
+               get_change(changeset, :password_digest)
+             )
     end
 
     test "password_hash value doest not get set if password is nil" do
-      changeset = User.changeset(%User{}, %{@update_attrs | password: nil, password_confirmation: nil})
+      changeset =
+        User.changeset(%User{}, %{@update_attrs | password: nil, password_confirmation: nil})
+
       refute Ecto.Changeset.get_change(changeset, :password_digest)
     end
   end
@@ -90,6 +104,7 @@ defmodule Ecom.AccountsTest do
 
     test "list_products/0 returns all products" do
       user = insert(:user)
+
       product =
         :product
         |> insert(user_id: user.id)
@@ -100,9 +115,10 @@ defmodule Ecom.AccountsTest do
 
     test "get_product!/1 returns the product with given id" do
       user = insert(:user)
+
       product =
         :product
-        |>insert(user_id: user.id)
+        |> insert(user_id: user.id)
         |> Repo.preload(:user)
 
       assert Accounts.get_product!(product.id) == product
@@ -122,6 +138,7 @@ defmodule Ecom.AccountsTest do
 
     test "update_product/2 with valid data updates the product" do
       user = insert(:user)
+
       product =
         :product
         |> insert(user_id: user.id)
@@ -134,6 +151,7 @@ defmodule Ecom.AccountsTest do
 
     test "update_product/2 with invalid data returns error changeset" do
       user = insert(:user)
+
       product =
         :product
         |> insert(user_id: user.id)
@@ -145,6 +163,7 @@ defmodule Ecom.AccountsTest do
 
     test "delete_product/1 deletes the product" do
       user = insert(:user)
+
       product =
         :product
         |> insert(user_id: user.id)
@@ -156,6 +175,7 @@ defmodule Ecom.AccountsTest do
 
     test "change_product/1 returns a product changeset" do
       user = insert(:user)
+
       product =
         :product
         |> insert(user_id: user.id)

@@ -13,17 +13,17 @@ defmodule Ecom.Accounts.User do
   @behaviour Bodyguard.Policy
 
   schema "users" do
-    field :email,           :string
-    field :username,        :string
-    field :password_digest, :string
-    field :is_admin,        :boolean, default: false
+    field(:email, :string)
+    field(:username, :string)
+    field(:password_digest, :string)
+    field(:is_admin, :boolean, default: false)
 
     # Virtuals
-    field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
+    field(:password, :string, virtual: true)
+    field(:password_confirmation, :string, virtual: true)
 
-    has_many :products, Product
-    has_one  :cart,     Cart
+    has_many(:products, Product)
+    has_one(:cart, Cart)
 
     timestamps()
   end
@@ -45,6 +45,7 @@ defmodule Ecom.Accounts.User do
   defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, Comeonin.Argon2.add_hash(password, hash_key: :password_digest))
   end
+
   defp put_pass_hash(changeset), do: changeset
 
   # Bodyguard callback
@@ -53,8 +54,7 @@ defmodule Ecom.Accounts.User do
   def authorize(_, %User{is_admin: true}, _), do: :ok
 
   # Users can't go to a page
-  def authorize(:admin_panel, %User{is_admin: false}, _),
-    do: {:error, :unauthorized}
+  def authorize(:admin_panel, %User{is_admin: false}, _), do: {:error, :unauthorized}
 
   def authorize(_, _, _), do: {:error, :unauthorized}
 end

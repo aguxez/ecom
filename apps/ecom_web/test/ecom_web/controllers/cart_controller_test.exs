@@ -47,7 +47,12 @@ defmodule EcomWeb.CartControllerTest do
   end
 
   defp do_post(conn, product) do
-    post(conn, cart_path(conn, :add_to_cart), product: product.id, curr_path: page_path(conn, :index))
+    post(
+      conn,
+      cart_path(conn, :add_to_cart),
+      product: product.id,
+      curr_path: page_path(conn, :index)
+    )
   end
 
   defp do_delete(conn, product) do

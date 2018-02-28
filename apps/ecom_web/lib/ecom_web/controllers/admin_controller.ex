@@ -9,23 +9,27 @@ defmodule EcomWeb.AdminController do
   alias Ecom.Repo
   alias Ecom.Uploaders.Image
 
-  action_fallback EcomWeb.FallbackController
+  action_fallback(EcomWeb.FallbackController)
 
-  plug Bodyguard.Plug.Authorize,
+  plug(
+    Bodyguard.Plug.Authorize,
     policy: Ecom.Accounts.User,
     action: :admin_panel,
     user: &Guardian.Plug.current_resource/1,
     fallback: EcomWeb.FallbackController
+  )
 
-  plug :scrub_params, "product" when action in [:create_product, :update_product]
+  plug(:scrub_params, "product" when action in [:create_product, :update_product])
 
   def index(conn, _params) do
     users_amount = length(Accounts.list_users())
     products = Accounts.list_products()
 
-    latest_users = Repo.all(from u in Ecom.Accounts.User, order_by: u.inserted_at)
+    latest_users = Repo.all(from(u in Ecom.Accounts.User, order_by: u.inserted_at))
 
-    render(conn, "index.html",
+    render(
+      conn,
+      "index.html",
       users_amount: users_amount,
       latest_users: latest_users,
       products: products
@@ -48,6 +52,7 @@ defmodule EcomWeb.AdminController do
         conn
         |> put_flash(:success, gettext("Product created successfully"))
         |> redirect(to: product_path(conn, :show, product.id))
+
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))
@@ -70,6 +75,7 @@ defmodule EcomWeb.AdminController do
         conn
         |> put_flash(:success, gettext("Product updated successfully"))
         |> redirect(to: product_path(conn, :show, product.id))
+
       {:error, changeset} ->
         conn
         |> put_flash(:alert, "There were some problems updating your product")
@@ -88,6 +94,7 @@ defmodule EcomWeb.AdminController do
         conn
         |> put_flash(:success, gettext("Product deleted successfully"))
         |> redirect(to: admin_path(conn, :index))
+
       {:error, _} ->
         conn
         |> put_flash(:warning, gettext("There was a problem trying to delete your product"))

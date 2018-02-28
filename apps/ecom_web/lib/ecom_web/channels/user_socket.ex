@@ -6,10 +6,10 @@ defmodule EcomWeb.UserSocket do
   alias Ecom.Interfaces.Accounts
 
   ## Channels
-  channel "payments:*", EcomWeb.PaymentsChannel
+  channel("payments:*", EcomWeb.PaymentsChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
+  transport(:websocket, Phoenix.Transports.WebSocket)
   # transport :longpoll, Phoenix.Transports.LongPoll
 
   # Socket params are passed from the client and can
@@ -25,10 +25,11 @@ defmodule EcomWeb.UserSocket do
   # performing token verification on connect.
   def connect(%{"token" => token}, socket) do
     # Max age of 2 weeks
-    case Phoenix.Token.verify(socket, "user", token, max_age: 1209600) do
+    case Phoenix.Token.verify(socket, "user", token, max_age: 1_209_600) do
       {:ok, user_id} ->
         socket = assign(socket, :user, Accounts.get_user!(user_id))
         {:ok, socket}
+
       {:error, _} ->
         :error
     end

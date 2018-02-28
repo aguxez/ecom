@@ -7,7 +7,7 @@ defmodule EcomWeb.Application do
     import Supervisor.Spec, warn: false
 
     children = [
-      supervisor(EcomWeb.Endpoint, []),
+      supervisor(EcomWeb.Endpoint, [])
     ]
 
     opts = [strategy: :one_for_one, name: EcomWeb.Supervisor]

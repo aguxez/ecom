@@ -7,7 +7,7 @@ defmodule EcomWeb.AdminControllerTest do
   alias Ecom.Repo
   alias Ecto.Changeset
 
-  describe("admin panel") do
+  describe "admin panel" do
     setup do
       user =
         :user
@@ -29,7 +29,8 @@ defmodule EcomWeb.AdminControllerTest do
     test "path exists", %{conn: conn} do
       conn = get(conn, admin_path(conn, :index))
 
-      assert conn.status == 302 # since we're not allowed
+      # since we're not allowed
+      assert conn.status == 302
       assert conn.path_info == ["site_settings"]
       assert conn.request_path == "/site_settings"
     end
@@ -62,7 +63,13 @@ defmodule EcomWeb.AdminControllerTest do
 
     # @tag :skip
     test "admin can create new product", %{admin: user, conn: conn} do
-      attrs = %{name: "some name", description: "some description", quantity: "12", user_id: user.id}
+      attrs = %{
+        name: "some name",
+        description: "some description",
+        quantity: "12",
+        user_id: user.id
+      }
+
       conn =
         conn
         |> sign_in(user)

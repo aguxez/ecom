@@ -9,7 +9,7 @@ defmodule Ecom.Payments.Processor do
   def create_purchase(params, processor) do
     case Application.get_env(:ecom, :env) do
       :test -> MockPayment.pay(params, processor)
-      _     -> make_payment(params, processor)
+      _ -> make_payment(params, processor)
     end
   end
 

@@ -3,7 +3,7 @@ defmodule Ecomweb.AccountControllerTest do
 
   use EcomWeb.ConnCase
 
-  describe("account controller") do
+  describe "account controller" do
     setup do
       user =
         :user
@@ -27,7 +27,11 @@ defmodule Ecomweb.AccountControllerTest do
     end
 
     test "can update user information", %{conn: conn, user: user} do
-      new_params = %{password: "password", new_password: "m2481369", new_password_confirmation: "m2481369"}
+      new_params = %{
+        password: "password",
+        new_password: "m2481369",
+        new_password_confirmation: "m2481369"
+      }
 
       conn =
         conn
@@ -39,7 +43,11 @@ defmodule Ecomweb.AccountControllerTest do
     end
 
     test "returns error on invalid password", %{conn: conn, user: user} do
-      new_params = %{password: "passwordd", new_password: "m2481369", new_password_confirmation: "m2481369"}
+      new_params = %{
+        password: "passwordd",
+        new_password: "m2481369",
+        new_password_confirmation: "m2481369"
+      }
 
       conn =
         conn
@@ -52,7 +60,11 @@ defmodule Ecomweb.AccountControllerTest do
 
     # @tag :skip
     test "returns error on invalid information", %{conn: conn, user: user} do
-      new_params = %{password: "password", new_password: "m2481369", new_password_confirmation: "m2481394"}
+      new_params = %{
+        password: "password",
+        new_password: "m2481369",
+        new_password_confirmation: "m2481394"
+      }
 
       conn =
         conn

@@ -11,7 +11,7 @@ defmodule Ecom.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(Ecom.Repo, []),
+      supervisor(Ecom.Repo, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

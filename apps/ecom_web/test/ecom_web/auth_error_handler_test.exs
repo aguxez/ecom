@@ -3,7 +3,7 @@ defmodule Ecom.AuthErrorHandlerTest do
 
   use EcomWeb.ConnCase
 
-  describe("auth_error") do
+  describe "auth_error" do
     setup do
       {:ok, conn: build_conn()}
     end

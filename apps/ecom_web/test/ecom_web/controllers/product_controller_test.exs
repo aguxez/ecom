@@ -3,7 +3,6 @@ defmodule EcomWeb.ProductControllerTest do
 
   use EcomWeb.ConnCase
 
-
   setup do
     user =
       :user

@@ -5,17 +5,14 @@ defmodule EcomWeb.ErrorViewTest do
   import Phoenix.View
 
   test "renders 404.html" do
-    assert render_to_string(EcomWeb.ErrorView, "404.html", []) ==
-           "Página no encontrada"
+    assert render_to_string(EcomWeb.ErrorView, "404.html", []) == "Página no encontrada"
   end
 
   test "render 500.html" do
-    assert render_to_string(EcomWeb.ErrorView, "500.html", []) ==
-           "Error interno del servidor"
+    assert render_to_string(EcomWeb.ErrorView, "500.html", []) == "Error interno del servidor"
   end
 
   test "render any other" do
-    assert render_to_string(EcomWeb.ErrorView, "505.html", []) ==
-           "Error interno del servidor"
+    assert render_to_string(EcomWeb.ErrorView, "505.html", []) == "Error interno del servidor"
   end
 end

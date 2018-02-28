@@ -3,7 +3,7 @@ defmodule EcomWeb.RegistrationControllerTest do
 
   use EcomWeb.ConnCase
 
-  describe("registration tests") do
+  describe "registration tests" do
     setup do
       {:ok, conn: build_conn()}
     end
@@ -25,7 +25,13 @@ defmodule EcomWeb.RegistrationControllerTest do
     end
 
     test "doesn't create user with invalid params", %{conn: conn} do
-      attrs = %{email: "something", username: "user", password: "1234", password_confirmation: "12412"}
+      attrs = %{
+        email: "something",
+        username: "user",
+        password: "1234",
+        password_confirmation: "12412"
+      }
+
       conn = post(conn, registration_path(conn, :create), user: attrs)
 
       assert get_flash(conn, :alert) == "Hubieron unos problemas al intentar registrar tu cuenta"

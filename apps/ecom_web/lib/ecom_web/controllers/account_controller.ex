@@ -6,7 +6,7 @@ defmodule EcomWeb.AccountController do
   alias Ecom.Interfaces.Worker
   alias Ecom.Interfaces.Accounts
 
-  plug :scrub_params, "user" when action in [:update]
+  plug(:scrub_params, "user" when action in [:update])
 
   def index(conn, _params) do
     user = current_user(conn, [:id])
@@ -17,7 +17,11 @@ defmodule EcomWeb.AccountController do
 
   def update(conn, %{"user" => user_params}) do
     user = current_user(conn)
-    attrs = %{password: user_params["new_password"], password_confirmation: user_params["new_password_confirmation"]}
+
+    attrs = %{
+      password: user_params["new_password"],
+      password_confirmation: user_params["new_password_confirmation"]
+    }
 
     case Worker.update_user(user, user_params["password"], attrs) do
       {:ok, :accept} ->

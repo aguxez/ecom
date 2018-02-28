@@ -18,13 +18,12 @@ defmodule EcomWeb.FallbackControllerTest do
   test "Action is called", %{conn: conn, user: user} do
     conn =
       conn
-      |>sign_in(user)
+      |> sign_in(user)
       |> get(admin_path(conn, :index))
 
     assert get_flash(conn, :alert) == "No autorizado"
     assert redirected_to(conn) == page_path(conn, :index)
   end
 
-  defp sign_in(conn, user),
-    do: EcomWeb.Auth.Guardian.Plug.sign_in(conn, user)
+  defp sign_in(conn, user), do: EcomWeb.Auth.Guardian.Plug.sign_in(conn, user)
 end

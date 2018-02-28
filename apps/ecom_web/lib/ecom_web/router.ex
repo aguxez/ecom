@@ -2,30 +2,30 @@ defmodule EcomWeb.Router do
   use EcomWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug EcomWeb.Plugs.Locale
-    plug EcomWeb.Plugs.CartPlug
-    plug EcomWeb.Plugs.PayID
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_flash)
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+    plug(EcomWeb.Plugs.Locale)
+    plug(EcomWeb.Plugs.CartPlug)
+    plug(EcomWeb.Plugs.PayID)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   pipeline :authorized do
-    plug EcomWeb.Auth.Pipeline
+    plug(EcomWeb.Auth.Pipeline)
   end
 
   pipeline :ensure_auth do
-    plug Guardian.Plug.EnsureAuthenticated
+    plug(Guardian.Plug.EnsureAuthenticated)
   end
 
   scope "/", EcomWeb do
-    pipe_through [:browser, :authorized]
+    pipe_through([:browser, :authorized])
 
     get("/", PageController, :index)
 
@@ -37,7 +37,7 @@ defmodule EcomWeb.Router do
   end
 
   scope "/", EcomWeb do
-    pipe_through [:browser, :authorized, :ensure_auth]
+    pipe_through([:browser, :authorized, :ensure_auth])
 
     # User account
     post("/account/:id", AccountController, :update)
@@ -48,7 +48,7 @@ defmodule EcomWeb.Router do
   end
 
   scope "/site_settings", EcomWeb do
-    pipe_through [:browser, :authorized, :ensure_auth]
+    pipe_through([:browser, :authorized, :ensure_auth])
 
     # Admin panel
     resources("/", AdminController, only: [:index])
@@ -62,7 +62,7 @@ defmodule EcomWeb.Router do
 
   scope "/pub", EcomWeb do
     # Everything that needs to be shown to the public will be on '/pub'
-    pipe_through [:browser, :authorized]
+    pipe_through([:browser, :authorized])
 
     # Root goes to "/product"
     # 'EcomWeb.Plugs.Redirect'

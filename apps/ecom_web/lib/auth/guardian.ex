@@ -17,7 +17,7 @@ defmodule EcomWeb.Auth.Guardian do
   def resource_from_claims(%{"sub" => "User:" <> id}) do
     case Integer.parse(id) do
       {uid, ""} -> {:ok, Accounts.get_user!(uid)}
-      _         -> {:error, :invalid_id}
+      _ -> {:error, :invalid_id}
     end
   rescue
     Ecto.NoResultsError -> {:error, :no_result}

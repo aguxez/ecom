@@ -7,8 +7,8 @@ defmodule Ecom.Factory do
 
   def user_factory do
     %User{
-      email: sequence(:email, &("email-#{&1}@example.com")),
-      username: sequence(:username, &("user-#{&1}name")),
+      email: sequence(:email, &"email-#{&1}@example.com"),
+      username: sequence(:username, &"user-#{&1}name"),
       password: "passwordd",
       password_confirmation: "passwordd"
     }

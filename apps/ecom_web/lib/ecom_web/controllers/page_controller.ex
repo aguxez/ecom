@@ -5,7 +5,7 @@ defmodule EcomWeb.PageController do
 
   alias Ecom.Interfaces.Accounts
 
-  action_fallback EcomWeb.FallbackController
+  action_fallback(EcomWeb.FallbackController)
 
   def index(conn, _params) do
     products = Accounts.list_products()

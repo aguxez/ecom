@@ -5,7 +5,7 @@ defmodule EcomWeb.RegistrationController do
 
   alias Ecom.Interfaces.{Accounts, Worker}
 
-  plug :scrub_params, "user" when action in [:create]
+  plug(:scrub_params, "user" when action in [:create])
 
   def new(conn, _params) do
     changeset = Accounts.change_user(%Ecom.Accounts.User{})

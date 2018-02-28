@@ -12,13 +12,13 @@ defmodule Ecom.Accounts.Product do
   @behaviour Bodyguard.Policy
 
   schema "products" do
-    field :name, :string
-    field :description, :string
-    field :image, Ecom.Uploaders.Image.Type
-    field :quantity, :integer
-    field :price, :integer
+    field(:name, :string)
+    field(:description, :string)
+    field(:image, Ecom.Uploaders.Image.Type)
+    field(:quantity, :integer)
+    field(:price, :integer)
 
-    belongs_to :user, User
+    belongs_to(:user, User)
 
     timestamps()
   end

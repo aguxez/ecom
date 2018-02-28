@@ -8,8 +8,7 @@ defmodule Ecom.Worker do
   def update_user(user, params_password, attrs) do
     with true <- Argon2.checkpw(params_password, user.password_digest),
          {:ok, %User{}} <- Accounts.update_user(user, attrs) do
-
-        {:ok, :accept}
+      {:ok, :accept}
     else
       false ->
         {:error, :wrong_pass}
@@ -22,7 +21,6 @@ defmodule Ecom.Worker do
   def can_create_product?(user, params) do
     with :ok <- Bodyguard.permit(Product, :create_products, user),
          {:ok, %Product{} = product} = Accounts.create_product(params) do
-
       {:ok, product}
     else
       {:error, changeset} -> {:error, changeset}
@@ -41,8 +39,7 @@ defmodule Ecom.Worker do
   def new_user(user_params) do
     with {:ok, user} <- Accounts.create_user(user_params),
          {:ok, %Cart{}} <- Accounts.create_cart(%{user_id: user.id}) do
-
-        {:ok, user}
+      {:ok, user}
     else
       {:error, changeset} -> {:error, changeset}
     end
@@ -51,8 +48,7 @@ defmodule Ecom.Worker do
   def empty_user_cart(user, sess_proc_id, param_proc_id) do
     with true <- sess_proc_id == param_proc_id,
          {:ok, %Cart{}} <- Accounts.update_cart(user.cart, %{products: %{}}) do
-
-        {:ok, :empty}
+      {:ok, :empty}
     else
       false -> {:error, :invalid_proc_id}
       {:error, _changeset} -> {:error, :unable_to_empty}

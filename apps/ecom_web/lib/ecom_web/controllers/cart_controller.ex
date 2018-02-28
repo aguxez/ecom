@@ -106,7 +106,7 @@ defmodule EcomWeb.CartController do
   def process_cart(conn, %{"submit" => submit_val} = params) do
     case submit_val do
       "save" -> update_cart_values(conn, params)
-      "pay"  -> make_cart_payment(conn)
+      "pay" -> make_cart_payment(conn)
     end
   end
 
@@ -139,7 +139,7 @@ defmodule EcomWeb.CartController do
 
   defp session_update_cart_values(conn, user_cart, products_to_update) do
     updated_values =
-      Enum.reduce(products_to_update, user_cart, fn({k, v}, acc) ->
+      Enum.reduce(products_to_update, user_cart, fn {k, v}, acc ->
         id = String.to_integer(k)
         value = String.to_integer(v)
         # Make value an a String
@@ -176,6 +176,7 @@ defmodule EcomWeb.CartController do
   defp get_params_and_cart_name(conn, id) do
     user_cart = get_session(conn, :user_cart_name)
     product = Accounts.get_product!(id)
+
     product_params =
       product
       |> Map.take(~w(id name description quantity user_id price)a)

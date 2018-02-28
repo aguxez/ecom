@@ -19,7 +19,6 @@ defmodule EcomWeb.SessionControllerTest do
 
     insert(:cart, user_id: user.id)
 
-
     {:ok, conn: conn, user: user}
   end
 

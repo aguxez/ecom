@@ -11,9 +11,9 @@ defmodule EcomWeb.PaymentsControllerTest do
   end
 
   test "post payment", %{bypass: bypass, user: user, conn: conn} do
-    Bypass.expect bypass, fn conn ->
+    Bypass.expect(bypass, fn conn ->
       Plug.Conn.send_resp(conn, 200, "")
-    end
+    end)
 
     conn =
       conn
@@ -25,9 +25,9 @@ defmodule EcomWeb.PaymentsControllerTest do
   end
 
   test "failed payment", %{bypass: bypass, user: user, conn: conn} do
-    Bypass.expect bypass, fn conn ->
+    Bypass.expect(bypass, fn conn ->
       Plug.Conn.send_resp(conn, 500, "")
-    end
+    end)
 
     conn =
       conn

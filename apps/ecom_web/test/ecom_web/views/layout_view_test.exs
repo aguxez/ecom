@@ -23,7 +23,10 @@ defmodule EcomWeb.LayoutViewTest do
     assert Helpers.current_user(conn)
   end
 
-  test "current_user returns nothing if there is no user in the current session", %{conn: conn, user: user} do
+  test "current_user returns nothing if there is no user in the current session", %{
+    conn: conn,
+    user: user
+  } do
     user = Repo.get_by(User, %{username: user.username})
     conn = delete(conn, session_path(conn, :delete, user))
 

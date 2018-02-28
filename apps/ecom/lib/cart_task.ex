@@ -11,7 +11,6 @@ defmodule Ecom.CartTask do
     # that's why we use 'to_string' here.
     with false <- Map.has_key?(cart_products, to_string(product["id"])),
          {:ok, _} <- Accounts.update_cart(user.cart, attrs) do
-
       {conn, :added}
     else
       true -> {conn, :already_added}
@@ -31,7 +30,7 @@ defmodule Ecom.CartTask do
 
   def db_update_cart_values(conn, user, products_to_update) do
     updated_values =
-      Enum.reduce(products_to_update, user.cart.products, fn({k, v}, acc) ->
+      Enum.reduce(products_to_update, user.cart.products, fn {k, v}, acc ->
         value = String.to_integer(v)
         put_in(acc, [k, "value"], value)
       end)

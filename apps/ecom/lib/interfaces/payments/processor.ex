@@ -3,5 +3,5 @@ defmodule Ecom.Interfaces.Payments.Processor do
 
   alias Ecom.Payments.Processor
 
-  defdelegate create_purchase(token, module),       to: Processor
+  defdelegate create_purchase(token, module), to: Processor
 end

@@ -30,7 +30,7 @@ defmodule EcomWeb.Helpers do
 
     push_action =
       session_cart
-      |> Enum.map(fn{key, val} ->
+      |> Enum.map(fn {key, val} ->
         if to_string(key) not in Map.keys(user_prods) do
           Map.merge(user_prods, %{key => val})
         end
@@ -41,7 +41,7 @@ defmodule EcomWeb.Helpers do
     attrs =
       case push_action do
         nil -> user.cart.products
-        new_value   -> new_value
+        new_value -> new_value
       end
 
     Accounts.update_cart(user.cart, %{products: attrs})

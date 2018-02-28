@@ -31,6 +31,7 @@ defmodule EcomWeb.PaymentsController do
       |> Repo.preload(:cart)
 
     products = Map.values(curr_user.cart.products)
+
     total =
       products
       |> Enum.map(fn product -> product["price"] * product["value"] end)
