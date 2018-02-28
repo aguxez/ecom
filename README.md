@@ -25,7 +25,7 @@
 - [ ] Flexible configuration
 
 ### Dev TODO
-- [ ] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
+- [x] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
 
 ### Running
 
@@ -35,7 +35,7 @@
 -> mix do deps.get, compile
 -> cd apps/ecom
 -> mix ecto.setup
--> cd assets
+-> cd ../ecom_web/assets
 -> yarn
 ```
 
