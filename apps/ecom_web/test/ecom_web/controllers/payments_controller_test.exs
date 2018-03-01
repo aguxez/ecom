@@ -3,18 +3,40 @@ defmodule EcomWeb.PaymentsControllerTest do
 
   use EcomWeb.ConnCase
 
-  # TODO: RE-do payments tests
-
   setup do
     bypass = Bypass.open()
     user = insert(:user)
+    insert(:cart, user_id: user.id)
 
     {:ok, bypass: bypass, user: user}
+  end
+
+  test "session variables get set on payments index", %{conn: conn, user: user} do
+    conn =
+      conn
+      |> sign_in(user)
+      |> get(payments_path(conn, :index))
+
+    assert html_response(conn, 200) =~ "Total"
+    assert get_session(conn, :proc_id)
+  end
+
+  test "process payment", %{conn: conn, user: user} do
+    conn = conn |> get(page_path(conn, :index))
+    proc = get_session(conn, :proc_id)
+
+    conn =
+      conn
+      |> recycle()
+      |> sign_in(user)
+      |> get(payments_path(conn, :processed), proc_id: proc)
+
+    assert get_flash(conn, :success) == "Payment made!"
   end
 
   defp sign_in(conn, user) do
     EcomWeb.Auth.Guardian.Plug.sign_in(conn, user)
   end
 
-  defp conn_url(port), do: "http://localhost:#{port}/payments"
+  # defp conn_url(port), do: "http://localhost:#{port}/payments"
 end

@@ -1,6 +1,8 @@
 defmodule Ecom.AccountsTest do
   @moduledoc false
 
+  # TODO: Change default structure of tests made with the generator.
+
   use Ecom.DataCase
 
   alias Ecom.Accounts.User
@@ -104,6 +106,8 @@ defmodule Ecom.AccountsTest do
 
     test "list_products/0 returns all products" do
       user = insert(:user)
+      # More products where being listed when they didn't need to.
+      Enum.each(Accounts.list_products(), fn x -> Accounts.delete_product(x) end)
 
       product =
         :product

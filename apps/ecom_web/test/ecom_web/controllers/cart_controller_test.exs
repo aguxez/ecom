@@ -14,10 +14,12 @@ defmodule EcomWeb.CartControllerTest do
       |> encrypt_password("password")
       |> insert()
 
+    insert(:cart, user_id: user.id)
+
     # The product we're going to add
     product = insert(:product, user_id: user.id)
 
-    {:ok, conn: conn, product: product}
+    {:ok, conn: conn, product: product, user: user}
   end
 
   test "adds product to cart", %{conn: conn, product: product} do
