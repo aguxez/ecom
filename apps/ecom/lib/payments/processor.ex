@@ -4,7 +4,6 @@ defmodule Ecom.Payments.Processor do
   # TODO: Test module, change implementation
 
   alias Ecom.Payments.MockPayment
-  alias Gringotts.Gateways.Stripe
 
   def create_purchase(params, processor) do
     case Application.get_env(:ecom, :env) do

@@ -2,7 +2,7 @@ defmodule Ecom.Payments.MockPayment do
   @moduledoc false
 
   # For testing
-  defp pay(%{token: token}, :stripe) do
+  def pay(%{token: token}, :stripe) do
     # This time we use the "token" as the URL because we're not actually hitting Stripe's API.
     token
     |> HTTPoison.post([])
