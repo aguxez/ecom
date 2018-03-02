@@ -1,8 +1,6 @@
 defmodule Ecom.AccountsTest do
   @moduledoc false
 
-  # TODO: Change default structure of tests made with the generator.
-
   use Ecom.DataCase
 
   alias Ecom.Accounts.User
