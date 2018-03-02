@@ -46,7 +46,7 @@
 
               <td>
                 <%= link to: admin_path(@conn, :edit_product, product.id) do %>
-                <%= content_tag(:span, "", class: "fa fa-pencil", aria: [hidden: true]) %>
+                <%= content_tag(:span, "", class: "fas fa-pencil-alt", aria: [hidden: true]) %>
                 <% end %>
               </td>
 
