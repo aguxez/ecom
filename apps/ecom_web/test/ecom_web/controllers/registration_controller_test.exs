@@ -4,10 +4,6 @@ defmodule EcomWeb.RegistrationControllerTest do
   use EcomWeb.ConnCase
 
   describe "registration tests" do
-    setup do
-      {:ok, conn: build_conn()}
-    end
-
     test "renders index.html", %{conn: conn} do
       conn = get(conn, registration_path(conn, :new))
 
