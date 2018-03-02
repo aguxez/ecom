@@ -56,6 +56,14 @@ exports.config = {
       'fonts': [
         'node_modules/font-awesome/fonts'
       ]
+    },
+    uglify: {
+      mangle: false,
+      compress: {
+        global_defs: {
+          DEBUG: false
+        }
+      }
     }
   },
 
