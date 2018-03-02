@@ -1,6 +1,8 @@
 defmodule Ecom.Worker do
   @moduledoc false
 
+  import Ecto.Query, only: [from: 2]
+
   alias Comeonin.Argon2
   alias Ecom.Accounts.{User, Product, Cart}
   alias Ecom.{Repo, Accounts}
@@ -53,5 +55,18 @@ defmodule Ecom.Worker do
       false -> {:error, :invalid_proc_id}
       {:error, _changeset} -> {:error, :unable_to_empty}
     end
+  end
+
+  # Makes a query to select multiple items
+  def select_multiple_from(module, param) do
+    ids = Enum.map(param, &(&1["id"]))
+    values = Enum.map(param, &(&1["value"]))
+    do_select_multiple_from(module, ids, values)
+  end
+
+  # We're returning the records as a list of tuples with {Product, value}
+  defp do_select_multiple_from(module, ids, values) do
+    products = Repo.all(from(i in module, where: i.id in ^ids))
+    Enum.zip(products, values)
   end
 end

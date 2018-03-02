@@ -12,26 +12,26 @@
       </thead>
 
       <tbody>
-        <%= for product <- @products do %>
+        <%= for {product, value} <- @products do %>
           <tr>
             <td>
-              <%= link product["name"], to: product_path(@conn, :show, product["id"]) %>
+              <%= link product.name, to: product_path(@conn, :show, product.id) %>
             </td>
 
             <td>
-              <%= product["price"] %>
+              <%= product.id %>
             </td>
 
             <td>
-              <%= content_tag(:input, "", type: "number", name: product["id"], value: product["value"] || 1, min: 1, max: product_quantity(product["id"])) %>
+              <%= content_tag(:input, "", type: "number", name: product.id, value: value || 1, min: 1, max: product_quantity(product.id)) %>
             </td>
 
             <td>
-              <%= product["price"] * product["value"] %>
+              <%= product.price * value %>
             </td>
 
             <td>
-              <%= link to: cart_path(@conn, :delete_product, product["id"]), method: :delete,
+              <%= link to: cart_path(@conn, :delete_product, product.id), method: :delete,
                   data: [confirm: gettext("Are you sure?")] do %>
 
                 <%= content_tag(:span, "", class: "fas fa-trash-alt") %>

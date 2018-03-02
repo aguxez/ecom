@@ -9,11 +9,11 @@
     </thead>
 
     <tbody>
-      <%= for product <- @products do %>
+      <%= for {product, value} <- @products do %>
         <tr>
-          <td> <%= product["name"] %> </td>
-          <td> <%= product["price"] %> </td>
-          <td> <%= product["value"] %> </td>
+          <td> <%= product.name %> </td>
+          <td> <%= product.price %> </td>
+          <td> <%= value %> </td>
         </tr>
       <% end %>
     </tbody>

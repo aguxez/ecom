@@ -4,7 +4,8 @@ defmodule EcomWeb.CartController do
   use EcomWeb, :controller
 
   alias Ecom.{Repo}
-  alias Ecom.Interfaces.{Accounts, CartTask}
+  alias Ecom.Interfaces.{Accounts, CartTask, Worker}
+  alias Ecom.Accounts.Product
 
   def index(conn, _params) do
     products_in_cart = show_cart(conn)
@@ -16,16 +17,16 @@ defmodule EcomWeb.CartController do
     curr_user = preloaded_user(conn)
 
     if curr_user do
-      Map.values(curr_user.cart.products)
+      Worker.select_multiple_from(Product, Map.values(curr_user.cart.products))
     else
       # If the user is not logged in then the item is added to the key ':user_cart' in session.
-      Map.values(get_session(conn, :user_cart))
+      Worker.select_multiple_from(Product, Map.values(get_session(conn, :user_cart)))
     end
   end
 
   def add_to_cart(conn, %{"product" => id, "curr_path" => path}) do
     {_user_cart, _, product_params} = get_params_and_cart_name(conn, id)
-    cart_operation = add_to_cart(conn, product_params)
+    cart_operation = do_add_to_cart(conn, product_params)
 
     case cart_operation do
       {conn, :added} ->
@@ -45,7 +46,7 @@ defmodule EcomWeb.CartController do
     end
   end
 
-  def add_to_cart(conn, product) do
+  defp do_add_to_cart(conn, product) do
     curr_user = preloaded_user(conn)
     # 'to_map_string' is a private function
     string_map = to_map_string(product)
@@ -179,7 +180,7 @@ defmodule EcomWeb.CartController do
 
     product_params =
       product
-      |> Map.take(~w(id name description user_id price)a)
+      |> Map.take([:id])
       |> to_map_string()
 
     {user_cart, product, product_params}
