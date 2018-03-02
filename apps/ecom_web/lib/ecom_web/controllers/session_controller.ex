@@ -3,8 +3,6 @@ defmodule EcomWeb.SessionController do
 
   use EcomWeb, :controller
 
-  import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
-
   alias Ecom.Interfaces.{Accounts, Worker}
 
   plug(:scrub_params, "user" when action in [:create])
@@ -18,11 +16,11 @@ defmodule EcomWeb.SessionController do
   def create(conn, %{"user" => %{"username" => username, "password" => password}})
       when not is_nil(username) and not is_nil(password) do
     case Worker.sign_in(username, password) do
-      {:ok, {new_user, new_password}} ->
-        sign_in(new_user, new_password, conn)
+      {:ok, user} ->
+        sign_in(user, conn)
 
       {:error, :failed} ->
-        sign_in(nil, "", conn)
+        failed_login(conn)
     end
   end
 
@@ -36,25 +34,17 @@ defmodule EcomWeb.SessionController do
   end
 
   # If 'user' exists
-  defp sign_in(user, plain_password, conn) do
-    if checkpw(plain_password, user.password_digest) do
-      session_cart = get_session(conn, :user_cart)
-      # If 'plain_password' matches 'password_digest'
-      # from the 'Helpers' module
-      conn
-      |> put_flash(:success, gettext("Logged-in!"))
-      |> EcomWeb.Auth.Guardian.Plug.sign_in(user)
-      |> sign_in_and_remove(user, session_cart)
-      |> redirect(to: page_path(conn, :index))
-    else
-      # If 'plain_password' is invalid
-      failed_login(conn)
-    end
+  defp sign_in(user, conn) do
+    session_cart = get_session(conn, :user_cart)
+    # `sign_in_and_remove/2` comes from the 'Helpers' module.
+    conn
+    |> put_flash(:success, gettext("Logged-in!"))
+    |> EcomWeb.Auth.Guardian.Plug.sign_in(user)
+    |> sign_in_and_remove(user, session_cart)
+    |> redirect(to: page_path(conn, :index))
   end
 
   defp failed_login(conn) do
-    dummy_checkpw()
-
     conn
     |> put_flash(:alert, wrong_creds())
     |> redirect(to: session_path(conn, :new))

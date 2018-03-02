@@ -20,7 +20,7 @@ defmodule Ecom.Worker do
     end
   end
 
-  def can_create_product?(user, params) do
+  def create_product(user, params) do
     with :ok <- Bodyguard.permit(Product, :create_products, user),
          {:ok, %Product{} = product} = Accounts.create_product(params) do
       {:ok, product}
@@ -35,8 +35,17 @@ defmodule Ecom.Worker do
     |> do_sign_in(password)
   end
 
-  defp do_sign_in(nil, _password), do: {:error, :failed}
-  defp do_sign_in(user, password), do: {:ok, {user, password}}
+  defp do_sign_in(nil, _password) do
+    {:error, :failed}
+  end
+  defp do_sign_in(user, password) do
+    if Argon2.checkpw(password, user.password_digest) do
+      {:ok, user}
+    else
+      Argon2.dummy_checkpw()
+      {:error, :failed}
+    end
+  end
 
   def new_user(user_params) do
     with {:ok, user} <- Accounts.create_user(user_params),

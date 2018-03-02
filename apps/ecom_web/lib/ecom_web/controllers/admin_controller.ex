@@ -47,7 +47,7 @@ defmodule EcomWeb.AdminController do
     user = current_user(conn)
     params = Map.merge(product_params, %{"user_id" => user.id})
 
-    case Worker.can_create_product?(user, params) do
+    case Worker.create_product(user, params) do
       {:ok, product} ->
         conn
         |> put_flash(:success, gettext("Product created successfully"))
