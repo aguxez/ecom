@@ -19,7 +19,10 @@ defmodule EcomWeb.PaymentsChannel do
   def handle_in("form_submit", %{"form" => _data}, socket) do
     total = get_product_total(socket.assigns)
     business_id = Application.get_env(:ecom_web, :paypal_business_id)
-    attr = %{"amount" => %{"value" => total}, "business" => %{"value" => business_id}}
+    attr = %{
+      "first" => %{"name" => "amount", "value" => total},
+      "second" => %{"name" => "business", "value" => business_id}
+    }
 
     broadcast!(socket, "form_resubmit", %{form: attr})
 

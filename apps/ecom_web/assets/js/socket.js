@@ -32,16 +32,17 @@ if (checker !== null) {
 
     $("input[name='amount']").remove();
 
+    console.log(event.form)
 
     hid_in.setAttribute("type", "hidden");
-    hid_in.setAttribute("name", "amount");
-    hid_in.setAttribute("value", event.form.amount.value);
+    hid_in.setAttribute("name", event.form.first.name);
+    hid_in.setAttribute("value", event.form.first.value);
 
     form.appendChild(hid_in);
 
-    hid_in.setAttribute("type", "hidden");
-    hid_in2.setAttribute("name", "business");
-    hid_in2.setAttribute("value", event.form.business.value);
+    hid_in2.setAttribute("type", "hidden");
+    hid_in2.setAttribute("name", event.form.second.name);
+    hid_in2.setAttribute("value", event.form.second.value);
 
     form.appendChild(hid_in2);
 
