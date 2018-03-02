@@ -179,7 +179,7 @@ defmodule EcomWeb.CartController do
 
     product_params =
       product
-      |> Map.take(~w(id name description quantity user_id price)a)
+      |> Map.take(~w(id name description user_id price)a)
       |> to_map_string()
 
     {user_cart, product, product_params}

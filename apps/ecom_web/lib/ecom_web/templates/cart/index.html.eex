@@ -23,7 +23,7 @@
             </td>
 
             <td>
-              <%= content_tag(:input, "", type: "number", name: product["id"], value: product["value"] || 1, min: 1, max: product["quantity"]) %>
+              <%= content_tag(:input, "", type: "number", name: product["id"], value: product["value"] || 1, min: 1, max: product_quantity(product["id"])) %>
             </td>
 
             <td>

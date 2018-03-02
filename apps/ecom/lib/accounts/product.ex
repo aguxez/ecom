@@ -8,6 +8,8 @@ defmodule Ecom.Accounts.Product do
 
   alias Ecom.Accounts.{User, Product}
 
+  @derive {Poison.Encoder, except: [:__meta__]}
+
   # Authorization Behaviour
   @behaviour Bodyguard.Policy
 

@@ -7,6 +7,8 @@ defmodule Ecom.Accounts.Cart do
 
   alias Ecom.Accounts.{User, Cart}
 
+  @derive {Poison.Encoder, except: [:__meta__]}
+
   ##############
 
   schema "carts" do
