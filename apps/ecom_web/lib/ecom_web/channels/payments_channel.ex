@@ -3,8 +3,17 @@ defmodule EcomWeb.PaymentsChannel do
 
   use Phoenix.Channel
 
-  def join("payments:" <> _sub_topic, _, socket) do
-    {:ok, socket}
+  def join("payments:" <> token, _, socket) do
+    %{id: id} = socket.assigns[:user]
+
+    with {:ok, user_id} <- Phoenix.Token.verify(socket, "user auth", token, max_age: 1_209_600),
+         true <- id == user_id || Application.get_env(:ecom_web, :env) == :dev do
+
+        {:ok, socket}
+    else
+      {:error, _} -> :error
+      false -> {:error, "Wrong channel"}
+    end
   end
 
   def handle_in("form_submit", %{"form" => _data}, socket) do

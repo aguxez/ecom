@@ -55,6 +55,8 @@ defmodule EcomWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+
+      import EcomWeb.Helpers
     end
   end
 

@@ -18,11 +18,22 @@ defmodule EcomWeb.Router do
 
   pipeline :authorized do
     plug(EcomWeb.Auth.Pipeline)
+    plug(:put_user_auth_token)
+  end
+
+  defp put_user_auth_token(conn, _) do
+    if curr_user = current_user(conn) do
+      token = Phoenix.Token.sign(conn, "user auth", curr_user.id)
+      assign(conn, :user_token, token)
+    else
+      conn
+    end
   end
 
   pipeline :ensure_auth do
     plug(Guardian.Plug.EnsureAuthenticated)
   end
+
 
   scope "/", EcomWeb do
     pipe_through([:browser, :authorized])
