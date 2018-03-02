@@ -13,16 +13,17 @@
 7. Support for Markdown.
 8. Support for adding pictures to Product.
 9. Shopping cart added. Users can add, edit, remove products, when an unlogged user logs in, the items that are NOT in the user's db cart are added and the session cart is deleted.
+10. Payments
 
 ### Being worked ATM
-**Payments**
+**Categories**
+
 
 ### TODO
 1. Shipping
-2. Categories
-3. SEO tags
-4. Wishlist
-5. Flexible configuration
+2. SEO tags
+3. Wishlist
+4. Flexible configuration
 
 ### Dev TODO
 - [x] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
