@@ -1,13 +1,12 @@
 defmodule EcomWeb.PaymentsController do
   @moduledoc false
 
-  # TODO: Module marked as Test
-
   use EcomWeb, :controller
 
   require Logger
 
   alias Ecom.Interfaces.Worker
+  alias Ecom.Accounts.Product
   alias Ecom.Repo
 
   def index(conn, _params) do
@@ -30,11 +29,11 @@ defmodule EcomWeb.PaymentsController do
       |> current_user()
       |> Repo.preload(:cart)
 
-    products = Map.values(curr_user.cart.products)
+    products = Worker.select_multiple_from(Product, Map.values(curr_user.cart.products))
 
     total =
       products
-      |> Enum.map(fn product -> product["price"] * product["value"] end)
+      |> Enum.map(fn {product, value} -> product.price * value end)
       |> Enum.sum()
 
     {products, total}

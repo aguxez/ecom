@@ -34,7 +34,6 @@ defmodule EcomWeb.AccountController do
         |> put_flash(:warning, gettext("Incorrect password"))
         |> redirect(to: account_path(conn, :index))
 
-      # TODO: MatchError
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem updating your account"))
