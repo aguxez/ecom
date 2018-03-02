@@ -28,6 +28,7 @@ if (checker !== null) {
 
   channel.on("form_resubmit", event => {
     let hid_in = document.createElement("input");
+    let hid_in2 = document.createElement("input");
 
     $("input[name='amount']").remove();
 
@@ -37,6 +38,12 @@ if (checker !== null) {
     hid_in.setAttribute("value", event.form.amount.value);
 
     form.appendChild(hid_in);
+
+    hid_in.setAttribute("type", "hidden");
+    hid_in2.setAttribute("name", "business");
+    hid_in2.setAttribute("value", event.form.business.value);
+
+    form.appendChild(hid_in2);
 
     form.submit();
   })

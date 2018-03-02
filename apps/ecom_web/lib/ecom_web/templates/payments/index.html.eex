@@ -23,7 +23,6 @@
 
   <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top" id="paypal-form">
     <input type="hidden" name="cmd" value="_xclick">
-    <input type="hidden" name="business" value="YEKJUQPWXYWBQ">
     <input type="hidden" name="lc" value="US">
     <input type="hidden" name="item_name" value="SmartBrush">
     <input type="hidden" name="button_subtype" value="services">
