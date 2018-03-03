@@ -13,7 +13,7 @@ defmodule Ecom.Uploaders.Image do
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    ~w(.jpg .jpeg .gif .png) |> Enum.member?(Path.extname(file.file_name))
+    ~w(.jpg .jpeg .png) |> Enum.member?(Path.extname(file.file_name))
   end
 
   # Define a thumbnail transformation:
@@ -28,13 +28,17 @@ defmodule Ecom.Uploaders.Image do
 
   # Override the storage directory:
   def storage_dir(_version, {_file, scope}) do
-    "../uploads/user/image/#{scope.user_id}"
+    "/var/www/uploads/product/image/#{scope.user_id}"
+  end
+
+  def request_dir(_version, {_file, scope}) do
+    "uploads/#{scope.user_id}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded
-  def default_url(_version, _scope) do
-    "https://placehold.it/100x100"
-  end
+  # def default_url(_version, _scope) do
+  #   "https://placehold.it/100x100"
+  # end
 
   # Specify custom headers for s3 objects
   # Available options are [:cache_control, :content_disposition,

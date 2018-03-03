@@ -9,6 +9,12 @@ defmodule EcomWeb.Endpoint do
   # when deploying your static files in production.
   plug(
     Plug.Static,
+    at: "/uploads",
+    from: "/var/www/uploads/product/image"
+  )
+
+  plug(
+    Plug.Static,
     at: "/",
     from: :ecom_web,
     gzip: false,
