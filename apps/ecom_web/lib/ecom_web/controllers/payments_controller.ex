@@ -27,9 +27,9 @@ defmodule EcomWeb.PaymentsController do
     curr_user =
       conn
       |> current_user()
-      |> Repo.preload(:cart)
+      |> Repo.preload([cart: [:products]])
 
-    products = Worker.select_multiple_from(Product, Map.values(curr_user.cart.products))
+    products = Worker.zip_from(curr_user.cart.products, curr_user.id)
 
     total =
       products

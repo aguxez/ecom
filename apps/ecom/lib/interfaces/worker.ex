@@ -8,5 +8,5 @@ defmodule Ecom.Interfaces.Worker do
   defdelegate sign_in(user, password), to: Worker
   defdelegate new_user(params), to: Worker
   defdelegate empty_user_cart(user, proc_id, param_proc_id), to: Worker
-  defdelegate select_multiple_from(mod, val), to: Worker
+  defdelegate zip_from(products, id), to: Worker
 end

@@ -5,7 +5,7 @@ defmodule Ecom.Worker do
 
   alias Comeonin.Argon2
   alias Ecom.Accounts.{User, Product, Cart}
-  alias Ecom.{Repo, Accounts}
+  alias Ecom.{Repo, Accounts, ProductValues}
 
   def update_user(user, params_password, attrs) do
     with true <- Argon2.checkpw(params_password, user.password_digest),
@@ -40,6 +40,9 @@ defmodule Ecom.Worker do
   end
   defp do_sign_in(user, password) do
     if Argon2.checkpw(password, user.password_digest) do
+      # Starts the state for product values added to cart
+      ProductValues.start_link(user.id)
+
       {:ok, user}
     else
       Argon2.dummy_checkpw()
@@ -66,16 +69,13 @@ defmodule Ecom.Worker do
     end
   end
 
-  # Makes a query to select multiple items
-  def select_multiple_from(module, param) do
-    ids = Enum.map(param, &(&1["id"]))
-    values = Enum.map(param, &(&1["value"]))
-    do_select_multiple_from(module, ids, values)
-  end
+  # Zips product and value into a tuple
+  def zip_from(products, user_id) do
+    values = ProductValues.get_all_values(user_id)
 
-  # We're returning the records as a list of tuples with {Product, value}
-  defp do_select_multiple_from(module, ids, values) do
-    products = Repo.all(from(i in module, where: i.id in ^ids))
-    Enum.zip(products, values)
+    for product <- products, {id, val} <- values do
+      if product.id == id, do: {product, val["value"]}
+    end
+    |> Enum.reject(&is_nil/1)
   end
 end

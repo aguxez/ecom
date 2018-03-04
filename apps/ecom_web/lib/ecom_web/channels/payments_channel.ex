@@ -3,6 +3,9 @@ defmodule EcomWeb.PaymentsChannel do
 
   use Phoenix.Channel
 
+  alias Ecom.Repo
+  alias Ecom.Interfaces.Worker
+
   def join("payments:" <> token, _, socket) do
     %{id: id} = socket.assigns[:user]
 
@@ -30,10 +33,11 @@ defmodule EcomWeb.PaymentsChannel do
   end
 
   defp get_product_total(%{user: user}) do
-    products = Map.values(user.cart.products)
+    user = Repo.preload(user, [cart: [:products]])
 
-    products
-    |> Enum.map(fn product -> product["price"] * product["value"] end)
+    user.cart.products
+    |> Worker.zip_from(user.id)
+    |> Enum.map(fn {product, value} -> product.price * value end)
     |> Enum.sum()
   end
 end
