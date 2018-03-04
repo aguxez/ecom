@@ -1,4 +1,6 @@
 defmodule Ecom.ReleaseTasks do
+  @moduledoc false
+
   alias Ecto.Migrator
 
   @otp_app :ecom

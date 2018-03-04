@@ -7,7 +7,6 @@ defmodule EcomWeb.AdminController do
 
   alias Ecom.Interfaces.{Worker, Accounts}
   alias Ecom.Repo
-  alias Ecom.Uploaders.Image
 
   action_fallback(EcomWeb.FallbackController)
 

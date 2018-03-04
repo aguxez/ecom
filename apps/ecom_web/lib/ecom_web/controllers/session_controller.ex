@@ -28,11 +28,6 @@ defmodule EcomWeb.SessionController do
     failed_login(conn)
   end
 
-  # If 'user' doesn't exist
-  defp sign_in(nil, _password, conn) do
-    failed_login(conn)
-  end
-
   # If 'user' exists
   defp sign_in(user, conn) do
     session_cart = get_session(conn, :user_cart)

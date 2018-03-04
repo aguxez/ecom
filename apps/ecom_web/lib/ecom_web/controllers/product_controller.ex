@@ -16,7 +16,6 @@ defmodule EcomWeb.ProductController do
     render(conn, "show.html", product: product)
   rescue
     Ecto.NoResultsError ->
-      conn
-      |> render(ErrorView, "404.html")
+      render(conn, ErrorView, "404.html")
   end
 end
