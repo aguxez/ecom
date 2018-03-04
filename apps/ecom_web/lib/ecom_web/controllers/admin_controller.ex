@@ -88,8 +88,6 @@ defmodule EcomWeb.AdminController do
 
     case Accounts.delete_product(product) do
       {:ok, %Ecom.Accounts.Product{}} ->
-        img_path = get_img_path(product)
-        File.rm(img_path)
 
         conn
         |> put_flash(:success, gettext("Product deleted successfully"))
@@ -100,17 +98,5 @@ defmodule EcomWeb.AdminController do
         |> put_flash(:warning, gettext("There was a problem trying to delete your product"))
         |> redirect(to: admin_path(conn, :index))
     end
-  end
-
-  defp get_img_path(product) do
-    # HACK: to get img_path, not what I'd like to do.
-    # TODO: Refactor this and the default folder of the uploads
-    "/" <> img_path =
-      {product.image, product}
-      |> Image.url()
-      |> String.split("?v=")
-      |> Enum.at(0)
-
-    img_path
   end
 end
