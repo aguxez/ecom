@@ -5,16 +5,16 @@ defmodule Ecom.Accounts.Cart do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User, Cart}
+  alias Ecom.Accounts.{User, Cart, Product, CartProducts}
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
   ##############
 
   schema "carts" do
-    field(:products, :map)
-
     belongs_to(:user, User)
+
+    many_to_many(:products, Product, join_through: CartProducts)
 
     timestamps()
   end
@@ -22,7 +22,7 @@ defmodule Ecom.Accounts.Cart do
   @doc false
   def changeset(%Cart{} = cart, attrs) do
     cart
-    |> cast(attrs, ~w(products user_id)a)
+    |> cast(attrs, ~w(user_id)a)
     |> foreign_key_constraint(:user_id)
   end
 end

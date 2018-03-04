@@ -6,7 +6,7 @@ defmodule Ecom.Accounts do
   import Ecto.Query, warn: false
 
   alias Ecom.Repo
-  alias Ecom.Accounts.{User, Product, Cart}
+  alias Ecom.Accounts.{User, Product, Cart, CartProducts}
 
   @doc """
   Returns the list of users.
@@ -246,5 +246,39 @@ defmodule Ecom.Accounts do
 
   def change_cart(%Cart{} = cart) do
     Cart.changeset(cart, %{})
+  end
+
+  ########## CartProducts
+
+  def list_cart_products do
+    CartProducts
+    |> Repo.all()
+    |> Repo.preload([:cart, :product])
+  end
+
+  def get_cart_product!(id) do
+    CartProducts
+    |> Repo.get!(id)
+    |> Repo.preload([:cart, :product])
+  end
+
+  def create_cart_product(attrs \\ %{}) do
+    %CartProducts{}
+    |> CartProducts.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_cart_product(%CartProducts{} = cart_products, attrs) do
+    cart_products
+    |> CartProducts.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_cart_product(%CartProducts{} = cart_products) do
+    Repo.delete(cart_products)
+  end
+
+  def change_cart_product(%CartProducts{} = cart_products) do
+    CartProducts.changeset(cart_products, %{})
   end
 end
