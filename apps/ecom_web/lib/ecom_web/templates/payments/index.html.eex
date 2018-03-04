@@ -5,6 +5,7 @@
         <th>Name</th>
         <th>Price</th>
         <th>Quantity</th>
+        <th>Total</th>
       </tr>
     </thead>
 
@@ -14,6 +15,7 @@
           <td> <%= product.name %> </td>
           <td> <%= product.price %> </td>
           <td> <%= value %> </td>
+          <td> <%= product.price * value %> </td>
         </tr>
       <% end %>
     </tbody>

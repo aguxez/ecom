@@ -19,7 +19,7 @@
             </td>
 
             <td>
-              <%= product.id %>
+              <%= product.price %>
             </td>
 
             <td>
