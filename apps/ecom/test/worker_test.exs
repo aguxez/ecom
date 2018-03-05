@@ -3,7 +3,7 @@ defmodule Ecom.WorkerTests do
 
   use Ecom.DataCase
 
-  alias Ecom.{Repo, Worker}
+  alias Ecom.{Repo, Worker, ProductValues}
   alias Ecom.Accounts.{User, Product}
 
   setup do
@@ -13,12 +13,19 @@ defmodule Ecom.WorkerTests do
       |> encrypt_password("password")
       |> insert()
 
-    insert(:cart, user_id: user.id)
+    cart = insert(:cart, user_id: user.id)
 
-    product = params_for(:product, user_id: user.id)
+    ProductValues.start_link(user.id)
+
+    product_params = params_for(:product, user_id: user.id)
     user_params = params_for(:user)
+    product = insert(:product, user_id: user.id)
 
-    {:ok, user: user, product: product, user_params: user_params}
+    insert(:cart_products, product_id: product.id, cart_id: cart.id)
+
+    user = Repo.preload(user, [cart: [:products]])
+
+    {:ok, user: user, product_params: product_params, user_params: user_params, product: product}
   end
 
   describe "worker" do
@@ -45,14 +52,14 @@ defmodule Ecom.WorkerTests do
 
     ####
 
-    test "creates product when user is admin", %{user: user, product: product} do
+    test "creates product when user is admin", %{user: user, product_params: product} do
       changeset = Ecto.Changeset.change(user, %{is_admin: true})
       {:ok, user} = Repo.update(changeset)
 
       assert {:ok, %Product{}} = Worker.create_product(user, product)
     end
 
-    test "can't create product if not admin", %{user: user, product: product} do
+    test "can't create product if not admin", %{user: user, product_params: product} do
       assert {:error, :unauthorized} = Worker.create_product(user, product)
     end
 
@@ -79,20 +86,20 @@ defmodule Ecom.WorkerTests do
 
     ####
 
-    test "empties user cart on correct proc_id", %{user: user} do
+    test "empties user cart on correct proc_id", %{user: user, product: product} do
       user = Repo.preload(user, :cart)
       action = Worker.empty_user_cart(user, "123", "123")
 
       assert {:ok, :empty} = action
-      assert user.cart.products == %{}
+      assert user.cart.products == [product]
     end
 
     ####
 
-    test "query returns correct products as tuples", %{user: user} do
-      product = insert(:product, user_id: user.id)
-      params = [%{"id" => product.id, "value" => "12"}]
-      action = Worker.select_multiple_from(Product, params)
+    test "query returns correct products as tuples", %{user: user, product: product} do
+      ProductValues.save_value_for(user.id, %{"id" => product.id, "value" => "12"})
+
+      action = Worker.zip_from(user.cart.products, user.id)
 
       assert [{product, "12"}] == action
     end

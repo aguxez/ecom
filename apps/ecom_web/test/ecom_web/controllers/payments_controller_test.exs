@@ -5,7 +5,12 @@ defmodule EcomWeb.PaymentsControllerTest do
 
   setup do
     bypass = Bypass.open()
-    user = insert(:user)
+    user =
+      :user
+      |> build()
+      |> encrypt_password("password")
+      |> insert()
+
     insert(:cart, user_id: user.id)
 
     {:ok, bypass: bypass, user: user}
@@ -34,8 +39,25 @@ defmodule EcomWeb.PaymentsControllerTest do
     assert get_flash(conn, :success) == "Payment made!"
   end
 
+  test "redirects to login page if user isn't logged in", %{conn: conn} do
+    conn = get(conn, payments_path(conn, :index))
+
+    assert conn.status == 302
+    assert redirected_to(conn) == session_path(conn, :new)
+  end
+
+  test "doesn't redirect if there's a user logged in", %{conn: conn, user: user} do
+    conn =
+      conn
+      |> sign_in(user)
+      |> get(payments_path(conn, :index))
+
+    assert conn.status == 200
+    assert html_response(conn, 200) =~ "Total"
+  end
+
   defp sign_in(conn, user) do
-    EcomWeb.Auth.Guardian.Plug.sign_in(conn, user)
+    post(conn, session_path(conn, :create), user: %{username: user.username, password: "password"})
   end
 
   # defp conn_url(port), do: "http://localhost:#{port}/payments"
