@@ -97,7 +97,7 @@ defmodule Ecom.WorkerTests do
     ####
 
     test "query returns correct products as tuples", %{user: user, product: product} do
-      ProductValues.save_value_for(user.id, %{"id" => product.id, "value" => "12"})
+      ProductValues.save_value_for(user.id, %{id: product.id, value: "12"})
 
       action = Worker.zip_from(user.cart.products, user.id)
 

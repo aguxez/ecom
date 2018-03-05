@@ -74,7 +74,7 @@ defmodule Ecom.Worker do
     values = ProductValues.get_all_values(user_id)
 
     for product <- products, {id, val} <- values do
-      if product.id == id, do: {product, val["value"]}
+      if product.id == id, do: {product, val.value}
     end
     |> Enum.reject(&is_nil/1)
   end

@@ -35,7 +35,7 @@ defmodule Ecom.CartTaskTest do
 
   test "deletes db product", %{user: user, product: product} do
     {_attrs, _, new_user} = add_and_retrieve_user(user, product)
-    action = CartTask.delete_db_cart_product(%{}, new_user, %{"id" => product.id})
+    action = CartTask.delete_db_cart_product(%{}, new_user, %{id: product.id})
 
     assert {%{}, :removed} = action
   end
@@ -47,11 +47,11 @@ defmodule Ecom.CartTaskTest do
     values = ProductValues.get_all_values(new_user.id)
 
     assert {:ok, %{}} = action
-    assert %{product.id => %{"value" => 12}} == values
+    assert %{product.id => %{value: 12}} == values
   end
 
   defp add_and_retrieve_user(user, product) do
-    attrs = %{"id" => product.id, "value" => "12"}
+    attrs = %{id: product.id, value: "12"}
 
     action = CartTask.add_to_db_cart(%{}, user, [attrs])
 

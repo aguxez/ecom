@@ -8,7 +8,7 @@ defmodule Ecom.CartTask do
 
   def add_to_db_cart(conn, user, [product]) do
     cart_products = user.cart.products
-    attrs = %{product_id: product["id"], cart_id: user.cart.id}
+    attrs = %{product_id: product.id, cart_id: user.cart.id}
 
     # Save the value of the product
     ProductValues.save_value_for(user.id, product)
@@ -25,11 +25,11 @@ defmodule Ecom.CartTask do
 
   defp product_in_cart(cart, product) do
     ids = Enum.map(cart, fn x -> x.id end)
-    product["id"] in ids
+    product.id in ids
   end
 
   #######
-  def delete_db_cart_product(conn, %{id: user_id}, %{"id" => product_id}) do
+  def delete_db_cart_product(conn, %{id: user_id}, %{id: product_id}) do
     product = Repo.get_by(CartProducts, product_id: product_id)
 
     case Accounts.delete_cart_product(product) do
@@ -44,7 +44,7 @@ defmodule Ecom.CartTask do
 
   def db_update_cart_values(conn, %{id: user_id}, products_to_update) do
     Enum.each(products_to_update, fn {id, val} ->
-      attrs = %{"id" => String.to_integer(id), "value" => String.to_integer(val)}
+      attrs = %{id: String.to_integer(id), value: String.to_integer(val)}
 
       ProductValues.save_value_for(user_id, attrs)
     end)

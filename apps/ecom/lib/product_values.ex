@@ -8,7 +8,7 @@ defmodule Ecom.ProductValues do
   end
 
   def save_value_for(id, %{} = product) do
-    Agent.update(via_tuple(id), fn x -> Map.put(x, product["id"], %{"value" => product["value"]}) end)
+    Agent.update(via_tuple(id), fn x -> Map.put(x, product.id, %{value: product.value}) end)
   end
 
   def get_all_values(id) do
