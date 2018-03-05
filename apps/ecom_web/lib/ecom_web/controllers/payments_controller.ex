@@ -6,7 +6,6 @@ defmodule EcomWeb.PaymentsController do
   require Logger
 
   alias Ecom.Interfaces.Worker
-  alias Ecom.Accounts.Product
   alias Ecom.Repo
 
   def index(conn, _params) do
@@ -41,7 +40,10 @@ defmodule EcomWeb.PaymentsController do
 
   def processed(conn, %{"proc_id" => param_proc_id}) do
     session_proc_id = get_session(conn, :proc_id)
-    user = current_user(conn)
+    user =
+      conn
+      |> current_user()
+      |> Repo.preload([cart: [:products]])
 
     case Worker.empty_user_cart(user, session_proc_id, param_proc_id) do
       {:ok, :empty} ->

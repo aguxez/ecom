@@ -4,7 +4,7 @@ defmodule Ecom.Worker do
   import Ecto.Query, only: [from: 2]
 
   alias Comeonin.Argon2
-  alias Ecom.Accounts.{User, Product, Cart}
+  alias Ecom.Accounts.{User, Product, Cart, CartProducts}
   alias Ecom.{Repo, Accounts, ProductValues}
 
   def update_user(user, params_password, attrs) do
@@ -61,12 +61,23 @@ defmodule Ecom.Worker do
 
   def empty_user_cart(user, sess_proc_id, param_proc_id) do
     with true <- sess_proc_id == param_proc_id,
-         {:ok, %Cart{}} <- Accounts.update_cart(user.cart, %{products: %{}}) do
+         :ok <- remove_user_products(user.cart.id, user.cart.products) do
+
       {:ok, :empty}
     else
       false -> {:error, :invalid_proc_id}
       {:error, _changeset} -> {:error, :unable_to_empty}
     end
+  end
+
+  defp remove_user_products(cart_id, products) do
+    Enum.each(products, fn product ->
+      query = from(p in CartProducts, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
+
+      query
+      |> Repo.one()
+      |> Repo.delete()
+    end)
   end
 
   # Zips product and value into a tuple
