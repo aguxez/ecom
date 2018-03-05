@@ -3,7 +3,7 @@ defmodule Ecom.Factory do
 
   use ExMachina.Ecto, repo: Ecom.Repo
 
-  alias Ecom.Accounts.{User, Cart, Product}
+  alias Ecom.Accounts.{User, Cart, Product, CartProducts}
 
   def user_factory do
     %User{
@@ -27,6 +27,13 @@ defmodule Ecom.Factory do
   def cart_factory do
     %Cart{
       user_id: build(:user)
+    }
+  end
+
+  def cart_products_factory do
+    %CartProducts{
+      cart_id: build(:cart),
+      product_id: build(:product)
     }
   end
 
