@@ -11,12 +11,13 @@
 5. Admin can add/delete/edit product.
 6. Spanish and English supported based on Locale.
 7. Support for Markdown.
-8. Support for adding pictures to Product.
+8. Support for adding pictures to Product. (Locally for now)
 9. Shopping cart added. Users can add, edit, remove products, when an unlogged user logs in, the items that are NOT in the user's db cart are added and the session cart is deleted.
 10. Payments
 
 ### Being worked ATM
-**Categories**
+- **Refactor on User's cart**
+- **Categories**
 
 
 ### TODO
@@ -47,6 +48,9 @@ Add something to  `seeds.exs` file and then `mix run priv/repo/seeds.exs`
 `iex mix -S phx.server` and go to localhost:4000
 
 ### Notes:
+#### Local uploads
+For local uploads, the folder being used is `/var/www/uploads/product/image/`, if you want to remove this, edit `Ecom.Uploaders.Image.storage_dir/2` and the `Plug` serving these files on `endpoint.ex`.
+
 #### Payment solution for this [commit](https://github.com/aguxez/ecom/commit/42d5ca76f69ef705113db8b04c36e5b7b997937b)
 There was a lot to think here. I wanted to take the approach of just using a simple "Pay" button from PayPal that had information on inputs on the front-end, obviously this is a security flaw and I wanted to take care of that (At this exact moment I don't have access to a 'live' PayPal token, hence I couldn't just use their API). I used WebSockets for validating the information being sent, updating the amount and redirect URL accordingly, also I put an UUID on the session to check on the redirect URI so we can validate the order and place it on the admin panel; with the session approach we don't risk getting a GET request on the payments endpoint and processing an order which wasn't paid since we validate the UUID in the parameter. To remove this, edit:
 
