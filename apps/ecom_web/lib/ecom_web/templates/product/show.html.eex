@@ -26,7 +26,7 @@
       <%= content_tag :input, "", type: "hidden", value: @product.id, name: "product" %>
       <%= content_tag :input, "", type: "hidden", value: Phoenix.Controller.current_path(@conn), name: "curr_path" %>
 
-      <%= submit gettext("Add to cart"), class: "button success" %>
+      <%= submit submit_button(@conn, @product.id).text, class: "button success", disabled: submit_button(@conn, @product.id).disabled %>
     <% end %>
   </div>
 </div>
