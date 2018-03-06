@@ -16,7 +16,6 @@
 10. Payments
 
 ### Being worked ATM
-- **Refactor on User's cart**
 - **Categories**
 
 
