@@ -5,10 +5,9 @@ defmodule EcomWeb.CartController do
 
   alias Ecom.{Repo}
   alias Ecom.Interfaces.{Accounts, CartTask, Worker}
-  alias Ecom.Accounts.Product
 
   def index(conn, _params) do
-    products_in_cart = show_cart(conn)
+    {conn, products_in_cart} = show_cart(conn)
 
     render(conn, "index.html", products: products_in_cart)
   end
@@ -17,11 +16,28 @@ defmodule EcomWeb.CartController do
     curr_user = preloaded_user(conn)
 
     if curr_user do
-      Worker.select_multiple_from(Product, Map.values(curr_user.cart.products))
+      {conn, Worker.zip_from(curr_user.cart.products, curr_user.id)}
     else
       # If the user is not logged in then the item is added to the key ':user_cart' in session.
-      Worker.select_multiple_from(Product, Map.values(get_session(conn, :user_cart)))
+      products =
+        conn
+        |> get_session(:user_cart)
+        |> Map.values()
+
+      {session_products, new_products} = Worker.zip_from(products, nil)
+
+      # Puts available products into session and removes the ones which were deleted
+      conn = put_session_cart_products(conn, session_products)
+
+      {conn, new_products}
     end
+  end
+
+  defp put_session_cart_products(conn, session_products) do
+    # Making the old session map structure again
+    old_map = Enum.reduce(session_products, %{}, fn product, acc -> Map.merge(acc, %{product.id => product}) end)
+
+    put_session(conn, :user_cart, old_map)
   end
 
   def add_to_cart(conn, %{"product" => id, "curr_path" => path}) do
@@ -48,9 +64,7 @@ defmodule EcomWeb.CartController do
 
   defp do_add_to_cart(conn, product) do
     curr_user = preloaded_user(conn)
-    # 'to_map_string' is a private function
-    string_map = to_map_string(product)
-    new_product = Enum.map([string_map], &Map.put(&1, "value", 1))
+    new_product = Enum.map([product], &Map.put(&1, :value, 1))
 
     if curr_user do
       CartTask.add_to_db_cart(conn, curr_user, new_product)
@@ -63,10 +77,11 @@ defmodule EcomWeb.CartController do
     products = get_session(conn, :user_cart)
 
     # 'product' is a list already, we need to get the first element.
-    if Map.has_key?(products, product["id"]) do
+    if Map.has_key?(products, product.id) do
       {conn, :already_added}
     else
-      conn = put_session(conn, :user_cart, Map.merge(products, %{product["id"] => product}))
+      conn = put_session(conn, :user_cart, Map.merge(products, %{product.id => product}))
+
       {conn, :added}
     end
   end
@@ -96,7 +111,7 @@ defmodule EcomWeb.CartController do
       CartTask.delete_db_cart_product(conn, curr_user, product)
     else
       products = get_session(conn, :user_cart)
-      {_, new_params} = Map.pop(products, product["id"])
+      new_params = Map.delete(products, product.id)
       conn = put_session(conn, :user_cart, new_params)
 
       {conn, :removed}
@@ -144,33 +159,31 @@ defmodule EcomWeb.CartController do
         id = String.to_integer(k)
         value = String.to_integer(v)
         # Make value an a String
-        put_in(acc, [id, "value"], value)
+        put_in(acc, [id, :value], value)
       end)
 
     {:ok, put_session(conn, :user_cart, updated_values)}
   end
 
   defp make_cart_payment(conn) do
-    path =
-      if current_user(conn) do
-        payments_path(conn, :index)
-      else
-        session_path(conn, :new)
-      end
+    # Just checking if user is logged in
+    check_before_payment(conn, current_user(conn))
+  end
 
-    redirect(conn, to: path)
+  defp check_before_payment(conn, nil) do
+    conn
+    |> put_flash(:warning, gettext("Please log-in first"))
+    |> redirect(to: session_path(conn, :new))
+  end
+  defp check_before_payment(conn, _user) do
+    redirect(conn, to: payments_path(conn, :index))
   end
 
   # More used privs
   defp preloaded_user(conn) do
     conn
     |> current_user()
-    |> Repo.preload(:cart)
-  end
-
-  # Converts atom keys to strings for the given product.
-  defp to_map_string(product) do
-    for {k, v} <- product, into: %{}, do: {to_string(k), v}
+    |> Repo.preload([cart: [:products]])
   end
 
   # Get a triplet of information, probably can be overriden.
@@ -178,10 +191,7 @@ defmodule EcomWeb.CartController do
     user_cart = get_session(conn, :user_cart_name)
     product = Accounts.get_product!(id)
 
-    product_params =
-      product
-      |> Map.take([:id])
-      |> to_map_string()
+    product_params = Map.take(product, [:id])
 
     {user_cart, product, product_params}
   end

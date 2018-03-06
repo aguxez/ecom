@@ -48,6 +48,30 @@ defmodule EcomWeb.CartControllerTest do
     assert redirected_to(conn) == cart_path(conn, :index)
   end
 
+  test "retrieves the correct product on session cart", %{conn: conn, product: product} do
+    conn = do_post(conn, product)
+
+    assert get_session(conn, :user_cart) == %{product.id => %{id: product.id, value: 1}}
+  end
+
+  test "state of session cart on product delete", %{conn: conn, product: product} do
+    conn =
+      conn
+      |> do_post(product)
+      |> do_delete(product)
+
+    assert get_session(conn, :user_cart) == %{}
+  end
+
+  test "shows correct cart on index.html", %{conn: conn, product: product} do
+    conn = do_post(conn, product)
+    conn = get(conn, cart_path(conn, :index))
+
+    assert conn.status == 200
+    assert html_response(conn, 200) =~ product.name
+    assert html_response(conn, 200) =~ "1" # Default value of a product when added to a cart as string because of HTML.
+  end
+
   defp do_post(conn, product) do
     post(
       conn,

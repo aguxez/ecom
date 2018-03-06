@@ -81,6 +81,18 @@ defmodule Ecom.Worker do
   end
 
   # Zips product and value into a tuple
+  def zip_from(products, nil) do
+    # Get the valid products for the session (If a product was deleted)
+    valid_prods =
+      Enum.reduce(products, [], fn product, acc ->
+        case Repo.get(Product, product.id) do
+          nil -> acc
+          _ -> acc ++ [product]
+        end
+      end)
+
+    do_zip_from(valid_prods)
+  end
   def zip_from(products, user_id) do
     values = ProductValues.get_all_values(user_id)
 
@@ -88,5 +100,14 @@ defmodule Ecom.Worker do
       if product.id == id, do: {product, val.value}
     end
     |> Enum.reject(&is_nil/1)
+  end
+
+  defp do_zip_from(session_products) do
+    new_products =
+      Enum.map(session_products, fn product ->
+        {Accounts.get_product!(product.id), product.value}
+      end)
+
+    {session_products, new_products}
   end
 end
