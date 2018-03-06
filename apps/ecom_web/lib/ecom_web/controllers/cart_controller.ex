@@ -35,7 +35,10 @@ defmodule EcomWeb.CartController do
 
   defp put_session_cart_products(conn, session_products) do
     # Making the old session map structure again
-    old_map = Enum.reduce(session_products, %{}, fn product, acc -> Map.merge(acc, %{product.id => product}) end)
+    old_map =
+      Enum.reduce(session_products, %{}, fn product, acc ->
+        Map.merge(acc, %{product.id => product})
+      end)
 
     put_session(conn, :user_cart, old_map)
   end
@@ -175,6 +178,7 @@ defmodule EcomWeb.CartController do
     |> put_flash(:warning, gettext("Please log-in first"))
     |> redirect(to: session_path(conn, :new))
   end
+
   defp check_before_payment(conn, _user) do
     redirect(conn, to: payments_path(conn, :index))
   end
@@ -183,7 +187,7 @@ defmodule EcomWeb.CartController do
   defp preloaded_user(conn) do
     conn
     |> current_user()
-    |> Repo.preload([cart: [:products]])
+    |> Repo.preload(cart: [:products])
   end
 
   # Get a triplet of information, probably can be overriden.

@@ -38,6 +38,7 @@ defmodule Ecom.Worker do
   defp do_sign_in(nil, _password) do
     {:error, :failed}
   end
+
   defp do_sign_in(user, password) do
     if Argon2.checkpw(password, user.password_digest) do
       # Starts the state for product values added to cart
@@ -62,7 +63,6 @@ defmodule Ecom.Worker do
   def empty_user_cart(user, sess_proc_id, param_proc_id) do
     with true <- sess_proc_id == param_proc_id,
          :ok <- remove_user_products(user.cart.id, user.cart.products) do
-
       {:ok, :empty}
     else
       false -> {:error, :invalid_proc_id}
@@ -72,7 +72,8 @@ defmodule Ecom.Worker do
 
   defp remove_user_products(cart_id, products) do
     Enum.each(products, fn product ->
-      query = from(p in CartProducts, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
+      query =
+        from(p in CartProducts, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
 
       query
       |> Repo.one()
@@ -93,10 +94,12 @@ defmodule Ecom.Worker do
 
     do_zip_from(valid_prods)
   end
+
   def zip_from(products, user_id) do
     values = ProductValues.get_all_values(user_id)
 
-    for product <- products, {id, val} <- values do
+    for product <- products,
+        {id, val} <- values do
       if product.id == id, do: {product, val.value}
     end
     |> Enum.reject(&is_nil/1)

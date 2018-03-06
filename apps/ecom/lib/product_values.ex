@@ -12,7 +12,7 @@ defmodule Ecom.ProductValues do
   end
 
   def get_all_values(id) do
-    Agent.get(via_tuple(id), &(&1))
+    Agent.get(via_tuple(id), & &1)
   end
 
   def remove_from(id, product_id) do

@@ -23,7 +23,7 @@ defmodule Ecom.WorkerTests do
 
     insert(:cart_products, product_id: product.id, cart_id: cart.id)
 
-    user = Repo.preload(user, [cart: [:products]])
+    user = Repo.preload(user, cart: [:products])
 
     {:ok, user: user, product_params: product_params, user_params: user_params, product: product}
   end

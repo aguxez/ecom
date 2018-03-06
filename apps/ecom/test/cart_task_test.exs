@@ -9,7 +9,7 @@ defmodule Ecom.CartTaskTest do
     user = insert(:user)
     product = insert(:product, user_id: user.id)
     cart = insert(:cart, user_id: user.id)
-    user = Repo.preload(user, [cart: [:products]])
+    user = Repo.preload(user, cart: [:products])
 
     ProductValues.start_link(user.id)
 
@@ -58,7 +58,7 @@ defmodule Ecom.CartTaskTest do
     new_user =
       user.id
       |> Accounts.get_user!()
-      |> Repo.preload([cart: [:products]])
+      |> Repo.preload(cart: [:products])
 
     {attrs, action, new_user}
   end

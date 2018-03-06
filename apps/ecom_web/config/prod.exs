@@ -9,8 +9,7 @@ config :ecom_web, EcomWeb.Endpoint,
   root: ".",
   version: Application.spec(:ecom_web, :vsn)
 
-config :ecom_web,
-  env: :prod
+config :ecom_web, env: :prod
 
 # Do not print debug messages in production
 config :logger, level: :info

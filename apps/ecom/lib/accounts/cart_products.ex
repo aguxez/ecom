@@ -8,8 +8,8 @@ defmodule Ecom.Accounts.CartProducts do
   alias Ecom.Accounts.{Product, Cart}
 
   schema "cart_products" do
-    belongs_to :product, Product
-    belongs_to :cart, Cart
+    belongs_to(:product, Product)
+    belongs_to(:cart, Cart)
 
     # Join schema
     timestamps()

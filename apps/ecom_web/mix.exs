@@ -10,9 +10,9 @@ defmodule EcomWeb.Mixfile do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: Coverex.Task, ignore_modules: modules_to_ignore()]
@@ -21,11 +21,29 @@ defmodule EcomWeb.Mixfile do
 
   defp modules_to_ignore do
     [
-      Ecom, EcomWeb.Accounts, Ecom.Application, Ecom.Auth.Pipeline, Ecom.DataCase,
-      Ecom.Guardian.Plug, Ecom.Repo, EcomWeb, EcomWeb.ChannelCase, EcomWeb.ConnCase,
-      EcomWeb.Endpoint, EcomWeb.ErrorView, EcomWeb.Gettext, EcomWeb.Helpers,
-      EcomWeb.Locale, EcomWeb.PageView, EcomWeb.ProductView, EcomWeb.RegistrationView,
-      EcomWeb.Router, EcomWeb.Router.Helpers, EcomWeb.SessionView, EcomWeb.UserSocker, Poison.Encoder.Ecom.Accounts.User
+      Ecom,
+      EcomWeb.Accounts,
+      Ecom.Application,
+      Ecom.Auth.Pipeline,
+      Ecom.DataCase,
+      Ecom.Guardian.Plug,
+      Ecom.Repo,
+      EcomWeb,
+      EcomWeb.ChannelCase,
+      EcomWeb.ConnCase,
+      EcomWeb.Endpoint,
+      EcomWeb.ErrorView,
+      EcomWeb.Gettext,
+      EcomWeb.Helpers,
+      EcomWeb.Locale,
+      EcomWeb.PageView,
+      EcomWeb.ProductView,
+      EcomWeb.RegistrationView,
+      EcomWeb.Router,
+      EcomWeb.Router.Helpers,
+      EcomWeb.SessionView,
+      EcomWeb.UserSocker,
+      Poison.Encoder.Ecom.Accounts.User
     ]
   end
 
@@ -41,7 +59,7 @@ defmodule EcomWeb.Mixfile do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -56,15 +74,11 @@ defmodule EcomWeb.Mixfile do
       {:cowboy, "~> 1.0"},
       {:earmark, "~> 1.2"},
       {:sobelow, "~> 0.6.8"},
-
       {:credo, "~> 0.8.10", only: [:test, :dev]},
-
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-
       {:coverex, "~> 1.4", only: [:test]},
       {:bypass, "~> 0.8", only: :test},
-
-      {:ecom, in_umbrella: true},
+      {:ecom, in_umbrella: true}
     ]
   end
 
@@ -78,7 +92,7 @@ defmodule EcomWeb.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

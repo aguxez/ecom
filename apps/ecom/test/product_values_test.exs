@@ -18,7 +18,7 @@ defmodule Ecom.ProductValuesTest do
   end
 
   test "saves and retrieves value", %{user: user} do
-    attrs = %{id:  12, value: 2}
+    attrs = %{id: 12, value: 2}
     ProductValues.save_value_for(user.id, attrs)
 
     assert %{12 => %{value: 2}} == ProductValues.get_all_values(user.id)

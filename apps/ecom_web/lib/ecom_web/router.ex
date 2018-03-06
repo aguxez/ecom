@@ -34,7 +34,6 @@ defmodule EcomWeb.Router do
     plug(Guardian.Plug.EnsureAuthenticated)
   end
 
-
   scope "/", EcomWeb do
     pipe_through([:browser, :authorized])
 

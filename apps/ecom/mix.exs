@@ -10,8 +10,8 @@ defmodule Ecom.Mixfile do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env),
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
     ]
@@ -21,12 +21,12 @@ defmodule Ecom.Mixfile do
   def application do
     [
       mod: {Ecom.Application, []},
-      extra_applications: [:logger, :runtime_tools],
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
@@ -40,8 +40,7 @@ defmodule Ecom.Mixfile do
       {:ex_money, "~> 1.1.0"},
       {:comeonin, "~> 4.1"},
       {:bodyguard, "~> 2.2"},
-
-      {:ex_machina, "~> 2.1", only: :test},
+      {:ex_machina, "~> 2.1", only: :test}
     ]
   end
 
@@ -49,7 +48,7 @@ defmodule Ecom.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

@@ -69,7 +69,8 @@ defmodule EcomWeb.CartControllerTest do
 
     assert conn.status == 200
     assert html_response(conn, 200) =~ product.name
-    assert html_response(conn, 200) =~ "1" # Default value of a product when added to a cart as string because of HTML.
+    # Default value of a product when added to a cart as string because of HTML.
+    assert html_response(conn, 200) =~ "1"
   end
 
   defp do_post(conn, product) do

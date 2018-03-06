@@ -26,7 +26,7 @@ defmodule EcomWeb.PaymentsController do
     curr_user =
       conn
       |> current_user()
-      |> Repo.preload([cart: [:products]])
+      |> Repo.preload(cart: [:products])
 
     products = Worker.zip_from(curr_user.cart.products, curr_user.id)
 
@@ -40,10 +40,11 @@ defmodule EcomWeb.PaymentsController do
 
   def processed(conn, %{"proc_id" => param_proc_id}) do
     session_proc_id = get_session(conn, :proc_id)
+
     user =
       conn
       |> current_user()
-      |> Repo.preload([cart: [:products]])
+      |> Repo.preload(cart: [:products])
 
     case Worker.empty_user_cart(user, session_proc_id, param_proc_id) do
       {:ok, :empty} ->

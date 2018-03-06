@@ -11,8 +11,7 @@ defmodule EcomWeb.PaymentsChannel do
 
     with {:ok, user_id} <- Phoenix.Token.verify(socket, "user auth", token, max_age: 1_209_600),
          true <- id == user_id || Application.get_env(:ecom_web, :env) == :dev do
-
-        {:ok, socket}
+      {:ok, socket}
     else
       {:error, _} -> :error
       false -> {:error, "Wrong channel"}
@@ -22,6 +21,7 @@ defmodule EcomWeb.PaymentsChannel do
   def handle_in("form_submit", %{"form" => _data}, socket) do
     total = get_product_total(socket.assigns)
     business_id = Application.get_env(:ecom_web, :paypal_business_id)
+
     attr = %{
       "first" => %{"name" => "amount", "value" => total},
       "second" => %{"name" => "business", "value" => business_id}
@@ -33,7 +33,7 @@ defmodule EcomWeb.PaymentsChannel do
   end
 
   defp get_product_total(%{user: user}) do
-    user = Repo.preload(user, [cart: [:products]])
+    user = Repo.preload(user, cart: [:products])
 
     user.cart.products
     |> Worker.zip_from(user.id)

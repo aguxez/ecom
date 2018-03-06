@@ -5,6 +5,7 @@ defmodule EcomWeb.PaymentsControllerTest do
 
   setup do
     bypass = Bypass.open()
+
     user =
       :user
       |> build()
@@ -57,7 +58,11 @@ defmodule EcomWeb.PaymentsControllerTest do
   end
 
   defp sign_in(conn, user) do
-    post(conn, session_path(conn, :create), user: %{username: user.username, password: "password"})
+    post(
+      conn,
+      session_path(conn, :create),
+      user: %{username: user.username, password: "password"}
+    )
   end
 
   # defp conn_url(port), do: "http://localhost:#{port}/payments"

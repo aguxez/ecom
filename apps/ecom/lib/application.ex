@@ -10,7 +10,7 @@ defmodule Ecom.Application do
     children = [
       # Start the Ecto repository
       Ecom.Repo,
-      {Registry, keys: :unique, name: :product_values},
+      {Registry, keys: :unique, name: :product_values}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

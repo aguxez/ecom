@@ -87,7 +87,6 @@ defmodule EcomWeb.AdminController do
 
     case Accounts.delete_product(product) do
       {:ok, %Ecom.Accounts.Product{}} ->
-
         conn
         |> put_flash(:success, gettext("Product deleted successfully"))
         |> redirect(to: admin_path(conn, :index))

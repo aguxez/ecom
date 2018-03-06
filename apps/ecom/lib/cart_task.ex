@@ -15,7 +15,6 @@ defmodule Ecom.CartTask do
 
     with false <- product_in_cart(cart_products, product),
          {:ok, _} <- Accounts.create_cart_product(attrs) do
-
       {conn, :added}
     else
       true -> {conn, :already_added}
