@@ -2,7 +2,7 @@
 
 ### Template to start building an Ecommerce on Elixir and Phoenix.
 
-### Done
+#### Done
 
 1. Users context with password hashing using Argon2.
 2. Users can login and logout using Guardian.
@@ -16,14 +16,13 @@
 10. Payments
 
 ### Being worked ATM
-- **Categories**
-
+**Shipping (User addresses)**
 
 ### TODO
-1. Shipping
-2. SEO tags
-3. Wishlist
-4. Flexible configuration
+1. SEO tags
+2. Categories
+3. Flexible configuration
+4. Wishlist (Optional for now)
 
 ### Dev TODO
 - [x] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
@@ -42,7 +41,7 @@
 -> yarn
 ```
 
-Add something to  `seeds.exs` file and then `mix run priv/repo/seeds.exs`
+Add something to  `seeds.exs` and then `mix run priv/repo/seeds.exs`
 
 `iex mix -S phx.server` and go to localhost:4000
 
@@ -53,13 +52,13 @@ For local uploads, the folder being used is `/var/www/uploads/product/image/`, i
 #### Payment solution for this [commit](https://github.com/aguxez/ecom/commit/42d5ca76f69ef705113db8b04c36e5b7b997937b)
 There was a lot to think here. I wanted to take the approach of just using a simple "Pay" button from PayPal that had information on inputs on the front-end, obviously this is a security flaw and I wanted to take care of that (At this exact moment I don't have access to a 'live' PayPal token, hence I couldn't just use their API). I used WebSockets for validating the information being sent, updating the amount and redirect URL accordingly, also I put an UUID on the session to check on the redirect URI so we can validate the order and place it on the admin panel; with the session approach we don't risk getting a GET request on the payments endpoint and processing an order which wasn't paid since we validate the UUID in the parameter. To remove this, edit:
 
-1. socket.js
-2. payments_channel.ex
-3. user_socket.ex
-4. payments_controller.ex
-5. index.html.eex from the Payments folder in templates
-6. worker.ex from the `Ecom` app.
-7. pay_id.ex from the Plugs folder in the `EcomWeb` app.
+1. `socket.js`
+2. `payments_channel.ex`
+3. `user_socket.ex`
+4. `payments_controller.ex`
+5. `index.html.eex` from the Payments folder in templates
+6. `worker.ex` from the `Ecom` app.
+7. `pay_id.ex` from the Plugs folder in the `EcomWeb` app.
 
 #### `current_user/2`
 It's a helper function from `EcomWeb.Helpers` imported in the Controllers and Views
