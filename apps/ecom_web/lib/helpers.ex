@@ -24,7 +24,7 @@ defmodule EcomWeb.Helpers do
 
   # removes item from session and puts them in the db cart
   def sign_in_and_remove(conn, user, session_cart) do
-    user = Repo.preload(user, :cart)
+    user = Repo.preload(user, cart: [:products])
     user_prods = user.cart.products
     # Leaves out items already on user's cart
 
