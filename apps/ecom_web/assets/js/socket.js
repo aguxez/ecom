@@ -3,6 +3,8 @@ import {Socket} from "phoenix"
 let checker = document.querySelector("meta[name=channel_token]");
 let socket;
 
+function get_location() { (window.location.pathname + window.location.search) }
+
 if (checker !== null) {
   let token = checker.getAttribute("content");
   socket = new Socket("/socket", {params: {token: token}})
@@ -17,7 +19,7 @@ if (checker !== null) {
 
   let form = document.getElementById("paypal-form");
 
-  if (window.location.pathname == "/payments") {
+  if (get_location() == "/payments") {
     form.addEventListener("submit", event => {
       event.preventDefault();
       let ser = $("#paypal-form").serializeArray();
@@ -48,6 +50,6 @@ if (checker !== null) {
 
     form.submit();
   })
-
 }
+
 export default socket
