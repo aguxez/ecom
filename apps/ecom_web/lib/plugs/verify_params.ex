@@ -21,7 +21,7 @@ defmodule EcomWeb.Plugs.VerifyParams do
   end
 
   defp contains_field(keys, fields) do
-    Enum.all?(fields, & &1 in keys)
+    Enum.all?(fields, &(&1 in keys))
   end
 
   defp handle_response(false, conn) do

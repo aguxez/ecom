@@ -23,6 +23,7 @@ defmodule EcomWeb.PaymentsController do
 
   def index(conn, _params) do
     user = current_user(conn)
+
     fields =
       user
       |> Map.take(~w(address country city state zip_code tel_num)a)

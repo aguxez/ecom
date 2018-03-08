@@ -137,7 +137,10 @@ defmodule EcomWeb.PaymentsControllerTest do
     assert conn.status == 302
   end
 
-  test "redirect to address page when manually going to payments path and address is nil", %{conn: conn, user: user} do
+  test "redirect to address page when manually going to payments path and address is nil", %{
+    conn: conn,
+    user: user
+  } do
     conn =
       conn
       |> sign_in(user)

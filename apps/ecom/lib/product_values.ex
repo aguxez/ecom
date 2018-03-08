@@ -7,7 +7,11 @@ defmodule Ecom.ProductValues do
 
   def start_link(id) do
     user = Accounts.get_user!(id)
-    values = Enum.reduce(user.cart.products, %{}, fn product, acc -> Map.put(acc, product.id, %{value: 1}) end)
+
+    values =
+      Enum.reduce(user.cart.products, %{}, fn product, acc ->
+        Map.put(acc, product.id, %{value: 1})
+      end)
 
     Agent.start_link(fn -> values end, name: via_tuple(id))
   end

@@ -1,5 +1,7 @@
 defmodule Ecom.Worker do
-  @moduledoc false
+  @moduledoc """
+  Module that offer "helper" functions for the Logic app
+  """
 
   import Ecto.Query, only: [from: 2]
 

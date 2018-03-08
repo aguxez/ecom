@@ -3,7 +3,9 @@ defmodule EcomWeb.Helpers do
 
   import Plug.Conn
 
-  alias Ecom.{Repo, Accounts}
+  alias Ecom.Repo
+  alias Ecom.Accounts.CartProducts
+  alias Ecom.Interfaces.{AssocWorker, ProductValues}
 
   def current_user(conn) do
     user = EcomWeb.Auth.Guardian.Plug.current_resource(conn)
@@ -25,27 +27,26 @@ defmodule EcomWeb.Helpers do
   # removes item from session and puts them in the db cart
   def sign_in_and_remove(conn, user, session_cart) do
     user = Repo.preload(user, cart: [:products])
-    user_prods = user.cart.products
+
     # Leaves out items already on user's cart
-
-    push_action =
-      session_cart
-      |> Enum.map(fn {key, val} ->
-        if to_string(key) not in Map.keys(user_prods) do
-          Map.merge(user_prods, %{key => val})
-        end
-      end)
-      |> Enum.reject(&is_nil/1)
-      |> List.first()
-
-    attrs =
-      case push_action do
-        nil -> user.cart.products
-        new_value -> new_value
-      end
-
-    Accounts.update_cart(user.cart, %{products: attrs})
+    remove_from_session(session_cart, user.cart.products, user)
 
     put_session(conn, :user_cart, %{})
+  end
+
+  defp remove_from_session(cart, user_products, user) do
+    Enum.map(cart, fn {key, val} -> evaluate_product({key, val}, user_products, user) end)
+  end
+
+  defp evaluate_product({key, value}, user_products, user) do
+    ids = Enum.map(user_products, & &1.id)
+
+    if key not in ids, do: add_product_to_user(user, {key, value})
+  end
+
+  defp add_product_to_user(user, {id, value}) do
+    cart_id = user.cart.id
+    AssocWorker.add(CartProducts, %{cart_id: cart_id, product_id: id})
+    ProductValues.save_value_for(user.id, value)
   end
 end
