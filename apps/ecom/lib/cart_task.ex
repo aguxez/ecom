@@ -1,8 +1,6 @@
 defmodule Ecom.CartTask do
   @moduledoc false
 
-  # TODO: Disable add to cart button if product is already in cart
-
   alias Ecom.{Accounts, Repo, ProductValues}
   alias Ecom.Accounts.CartProducts
 
