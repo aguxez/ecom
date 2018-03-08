@@ -57,6 +57,61 @@ defmodule EcomWeb.PaymentsControllerTest do
     assert html_response(conn, 200) =~ "Total"
   end
 
+  test "redirects user to address form", %{conn: conn, user: user} do
+    conn =
+      conn
+      |> sign_in(user)
+      |> get(cart_path(conn, :process_cart, submit: "pay"))
+
+    assert redirected_to(conn) == payments_path(conn, :index, proc_first: true)
+  end
+
+  test "inserts personal information for user", %{conn: conn, user: user} do
+    attrs = %{address: "123", country: "Vzla", state: "state", city: "city", zip_code: "1210", tel_num: "+58123456"}
+
+    conn
+    |> sign_in(user)
+    |> post(payments_path(conn, :update_personal_information), user: attrs)
+
+    u = Ecom.Accounts.get_user!(user.id)
+
+    assert u.address == attrs.address
+    assert u.country == attrs.country
+    assert u.state == attrs.state
+    assert u.city == attrs.city
+    assert u.zip_code == String.to_integer(attrs.zip_code)
+    assert u.tel_num == attrs.tel_num
+  end
+
+  test "uses current address for user if it's correct", %{conn: conn, user: user} do
+    attrs = %{address: "123", country: "Vzla", state: "state", city: "city", zip_code: "1210", tel_num: "+58123456"}
+
+    conn
+    |> sign_in(user)
+    |> post(payments_path(conn, :update_personal_information), user: attrs)
+    |> post(payments_path(conn, :update_personal_information), user: %{"use_current_address" => "true"})
+
+    u = Ecom.Accounts.get_user!(user.id)
+
+    assert u.address == attrs.address
+    assert u.country == attrs.country
+    assert u.state == attrs.state
+    assert u.city == attrs.city
+    assert u.zip_code == String.to_integer(attrs.zip_code)
+    assert u.tel_num == attrs.tel_num
+  end
+
+  test "if address is invalid or nil, throw error", %{conn: conn, user: user} do
+    conn =
+      conn
+      |> sign_in(user)
+      |> post(payments_path(conn, :update_personal_information), user: %{"use_current_address" => "true"})
+
+    assert get_flash(conn, :alert) == "Address fields (Or your current address) can't be blank, please update them"
+    assert redirected_to(conn) == payments_path(conn, :index, proc_first: true)
+    assert conn.status == 302
+  end
+
   defp sign_in(conn, user) do
     post(
       conn,

@@ -31,21 +31,21 @@ defmodule Ecom.WorkerTests do
   describe "worker" do
     test "updates user with correct credentials", %{user: user} do
       attrs = %{password: "m2481369", password_confirmation: "m2481369"}
-      new_user = Worker.update_user(user, "password", attrs)
+      new_user = Worker.update_user(user, "password", attrs, :password_needed)
 
       assert {:ok, :accept} = new_user
     end
 
     test "doesn't update user with invalid curr_password", %{user: user} do
       attrs = %{password: "m2481369", password_confirmation: "m2481369"}
-      new_user = Worker.update_user(user, "passworddd", attrs)
+      new_user = Worker.update_user(user, "passworddd", attrs, :password_needed)
 
       assert {:error, :wrong_pass} = new_user
     end
 
     test "doesn't update user with invalid password attrs", %{user: user} do
       attrs = %{password: "m2481369", password_confirmation: "m24813699"}
-      new_user = Worker.update_user(user, "password", attrs)
+      new_user = Worker.update_user(user, "password", attrs, :password_needed)
 
       assert {:error, %Ecto.Changeset{}} = new_user
     end
@@ -102,6 +102,21 @@ defmodule Ecom.WorkerTests do
       action = Worker.zip_from(user.cart.products, user.id)
 
       assert [{product, "12"}] == action
+    end
+
+    ####
+
+    test "updates user information when password is not needed", %{user: user} do
+      attrs = %{address: "123"}
+      action = Worker.update_user(user, [], attrs, :no_password)
+
+      assert {:ok, :accept} = action
+    end
+
+    test "returns true if user address has an invalid field", %{user: user} do
+      action = Worker.address_has_nil_field(user)
+
+      assert true == action
     end
   end
 end

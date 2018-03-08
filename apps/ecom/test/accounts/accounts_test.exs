@@ -40,7 +40,7 @@ defmodule Ecom.AccountsTest do
     test "update_user/2 with valid data updates the users" do
       user = user_fixture(@valid_attrs)
 
-      assert {:ok, user} = Accounts.update_user(user, @update_attrs)
+      assert {:ok, user} = Accounts.update_user(user, @update_attrs, [])
       assert %User{} = user
       assert user.email == "some@updatedemail"
       assert user.username == "some updated username"
