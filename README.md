@@ -27,6 +27,8 @@
 ### Dev TODO
 - [x] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
 
+- [ ] Add amount of order and order "receipt" to Admin dashboard once a payment is done.
+
 - [ ] Do new incorporation of Paypal (Server-side with live token), right now it's being used as a client-side with a websockets solution for validation.
 
 ### Running
