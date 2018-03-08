@@ -25,11 +25,10 @@
 
   <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top" id="paypal-form">
     <input type="hidden" name="cmd" value="_xclick">
-    <input type="hidden" name="lc" value="US">
+    <input type="hidden" name="lc" value="VE">
     <input type="hidden" name="item_name" value="SmartBrush">
     <input type="hidden" name="button_subtype" value="services">
     <input type="hidden" name="no_note" value="0">
-    <input type="hidden" name="cn" value="Add special instructions to the seller:">
     <input type="hidden" name="no_shipping" value="2">
     <input type="hidden" name="rm" value="1">
     <input type="hidden" name="return" value="<%= @return %>">

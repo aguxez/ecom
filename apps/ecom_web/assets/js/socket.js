@@ -3,9 +3,9 @@ import {Socket} from "phoenix"
 let checker = document.querySelector("meta[name=channel_token]");
 let socket;
 
-function get_location() { (window.location.pathname + window.location.search) }
+function get_location() { return(window.location.pathname + window.location.search) }
 
-if (checker !== null) {
+if (checker !== null && get_location() === "/payments") {
   let token = checker.getAttribute("content");
   socket = new Socket("/socket", {params: {token: token}})
 
@@ -19,22 +19,18 @@ if (checker !== null) {
 
   let form = document.getElementById("paypal-form");
 
-  if (get_location() == "/payments") {
-    form.addEventListener("submit", event => {
-      event.preventDefault();
-      let ser = $("#paypal-form").serializeArray();
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    let ser = $("#paypal-form").serializeArray();
 
-      channel.push("form_submit", {form: ser});
-    })
-  }
+    channel.push("form_submit", {form: ser});
+  })
 
   channel.on("form_resubmit", event => {
     let hid_in = document.createElement("input");
     let hid_in2 = document.createElement("input");
 
     $("input[name='amount']").remove();
-
-    console.log(event.form)
 
     hid_in.setAttribute("type", "hidden");
     hid_in.setAttribute("name", event.form.first.name);
