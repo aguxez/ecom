@@ -3,8 +3,13 @@ defmodule Ecom.ProductValues do
 
   use Agent
 
+  alias Ecom.Accounts
+
   def start_link(id) do
-    Agent.start_link(fn -> %{} end, name: via_tuple(id))
+    user = Accounts.get_user!(id)
+    values = Enum.reduce(user.cart.products, %{}, fn product, acc -> Map.put(acc, product.id, %{value: 1}) end)
+
+    Agent.start_link(fn -> values end, name: via_tuple(id))
   end
 
   def save_value_for(id, %{} = product) do
