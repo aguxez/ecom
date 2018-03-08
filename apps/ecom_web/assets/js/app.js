@@ -1,9 +1,13 @@
 import "phoenix_html";
 import "./socket";
+import {populateCountries, populateStates} from "./countries";
+
 // Way to import 'Foundation'
 import "foundation-sites/dist/js/foundation";
 
 var SimpleMDE = require("simplemde/dist/simplemde.min.js")
+
+function get_location() { (window.location.pathname + window.location.search) }
 
 // Foundation
 $(document).foundation();
@@ -14,3 +18,7 @@ var editor = new SimpleMDE({
   autoDownloadFontAwesome: false,
 })
 
+if (get_location() == "/payments?proc_first=true") {
+  populateCountries("country", "state");
+  populateStates("country", "state");
+}
