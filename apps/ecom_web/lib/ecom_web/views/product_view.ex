@@ -23,7 +23,7 @@ defmodule EcomWeb.ProductView do
     text_and_button_action(disabled)
   end
 
-  defp disable_product?(user, conn, id) do
+  defp disable_product?(user, _conn, id) do
     user = Repo.preload(user, cart: [:products])
     product_ids = Enum.map(user.cart.products, & &1.id)
     disabled = id in product_ids
