@@ -67,7 +67,14 @@ defmodule EcomWeb.PaymentsControllerTest do
   end
 
   test "inserts personal information for user", %{conn: conn, user: user} do
-    attrs = %{address: "123", country: "Vzla", state: "state", city: "city", zip_code: "1210", tel_num: "+58123456"}
+    attrs = %{
+      address: "123",
+      country: "Vzla",
+      state: "state",
+      city: "city",
+      zip_code: "1210",
+      tel_num: "+58123456"
+    }
 
     conn
     |> sign_in(user)
@@ -84,12 +91,22 @@ defmodule EcomWeb.PaymentsControllerTest do
   end
 
   test "uses current address for user if it's correct", %{conn: conn, user: user} do
-    attrs = %{address: "123", country: "Vzla", state: "state", city: "city", zip_code: "1210", tel_num: "+58123456"}
+    attrs = %{
+      address: "123",
+      country: "Vzla",
+      state: "state",
+      city: "city",
+      zip_code: "1210",
+      tel_num: "+58123456"
+    }
 
     conn
     |> sign_in(user)
     |> post(payments_path(conn, :update_personal_information), user: attrs)
-    |> post(payments_path(conn, :update_personal_information), user: %{"use_current_address" => "true"})
+    |> post(
+      payments_path(conn, :update_personal_information),
+      user: %{"use_current_address" => "true"}
+    )
 
     u = Ecom.Accounts.get_user!(user.id)
 
@@ -105,9 +122,14 @@ defmodule EcomWeb.PaymentsControllerTest do
     conn =
       conn
       |> sign_in(user)
-      |> post(payments_path(conn, :update_personal_information), user: %{"use_current_address" => "true"})
+      |> post(
+        payments_path(conn, :update_personal_information),
+        user: %{"use_current_address" => "true"}
+      )
 
-    assert get_flash(conn, :alert) == "Address fields (Or your current address) can't be blank, please update them"
+    assert get_flash(conn, :alert) ==
+             "Address fields (Or your current address) can't be blank, please update them"
+
     assert redirected_to(conn) == payments_path(conn, :index, proc_first: true)
     assert conn.status == 302
   end

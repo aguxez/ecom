@@ -6,6 +6,7 @@ defmodule Ecom.Accounts.User do
   import Ecto.Changeset
 
   alias Ecom.Accounts.{User, Product, Cart}
+  alias Comeonin.Argon2
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
@@ -36,7 +37,10 @@ defmodule Ecom.Accounts.User do
 
   def changeset(%User{} = user, attrs, :no_password) do
     user
-    |> cast(attrs, ~w(email username address country city state zip_code tel_num)a)
+    |> cast(
+      attrs,
+      ~w(email username address country city state zip_code tel_num)a
+    )
     |> unique_constraint(:email)
     |> unique_constraint(:username)
   end
@@ -44,7 +48,11 @@ defmodule Ecom.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, ~w(email username password password_confirmation address country city state zip_code tel_num)a)
+    |> cast(
+      attrs,
+      ~w(email username password password_confirmation address country city
+      state zip_code tel_num)a
+    )
     |> validate_required(~w(email username password password_confirmation)a)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)
@@ -56,7 +64,7 @@ defmodule Ecom.Accounts.User do
   end
 
   defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
-    change(changeset, Comeonin.Argon2.add_hash(password, hash_key: :password_digest))
+    change(changeset, Argon2.add_hash(password, hash_key: :password_digest))
   end
 
   defp put_pass_hash(changeset), do: changeset

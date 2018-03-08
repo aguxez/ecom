@@ -10,7 +10,7 @@ defmodule EcomWeb.PaymentsController do
   alias Ecom.Interfaces.{Accounts, Worker}
   alias Ecom.Repo
 
-  plug :scrub_params, "user" when action in [:update_personal_information]
+  plug(:scrub_params, "user" when action in [:update_personal_information])
 
   # Fills information before sending to index
   def index(conn, %{"proc_first" => "true"}) do
@@ -59,7 +59,10 @@ defmodule EcomWeb.PaymentsController do
 
   defp handle_personal_information(conn, nil) do
     conn
-    |> put_flash(:alert, gettext("Address fields (Or your current address) can't be blank, please update them"))
+    |> put_flash(
+      :alert,
+      gettext("Address fields (Or your current address) can't be blank, please update them")
+    )
     |> redirect(to: payments_path(conn, :index, proc_first: true))
   end
 

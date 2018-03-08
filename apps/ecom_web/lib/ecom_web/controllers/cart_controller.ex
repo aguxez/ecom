@@ -13,24 +13,28 @@ defmodule EcomWeb.CartController do
   end
 
   defp show_cart(conn) do
-    curr_user = preloaded_user(conn)
+    conn
+    |> preloaded_user()
+    |> do_show_cart(conn)
+  end
 
-    if curr_user do
-      {conn, Worker.zip_from(curr_user.cart.products, curr_user.id)}
-    else
-      # If the user is not logged in then the item is added to the key ':user_cart' in session.
-      products =
-        conn
-        |> get_session(:user_cart)
-        |> Map.values()
+  defp do_show_cart(nil, conn) do
+    # If the user is not logged in then the item is added to the key ':user_cart' in session.
+    products =
+      conn
+      |> get_session(:user_cart)
+      |> Map.values()
 
-      {session_products, new_products} = Worker.zip_from(products, nil)
+    {session_products, new_products} = Worker.zip_from(products, nil)
 
-      # Puts available products into session and removes the ones which were deleted
-      conn = put_session_cart_products(conn, session_products)
+    # Puts available products into session and removes the ones which were deleted
+    conn = put_session_cart_products(conn, session_products)
 
-      {conn, new_products}
-    end
+    {conn, new_products}
+  end
+
+  defp do_show_cart(user, conn) do
+    {conn, Worker.zip_from(user.cart.products, user.id)}
   end
 
   defp put_session_cart_products(conn, session_products) do
@@ -69,29 +73,30 @@ defmodule EcomWeb.CartController do
     curr_user = preloaded_user(conn)
     new_product = Enum.map([product], &Map.put(&1, :value, 1))
 
-    if curr_user do
-      CartTask.add_to_db_cart(conn, curr_user, new_product)
-    else
-      add_to_session_cart(conn, new_product)
-    end
+    check_add_to_cart(conn, curr_user, new_product)
   end
+
+  defp check_add_to_cart(conn, nil, new_product), do: add_to_session_cart(conn, new_product)
+  defp check_add_to_cart(conn, user, product), do: CartTask.add_to_db_cart(conn, user, product)
 
   defp add_to_session_cart(conn, [product]) do
     products = get_session(conn, :user_cart)
 
     # 'product' is a list already, we need to get the first element.
-    if Map.has_key?(products, product.id) do
-      {conn, :already_added}
-    else
-      conn = put_session(conn, :user_cart, Map.merge(products, %{product.id => product}))
+    case Map.has_key?(products, product.id) do
+      true ->
+        {conn, :already_added}
 
-      {conn, :added}
+      false ->
+        map = Map.merge(products, %{product.id => product})
+        conn = put_session(conn, :user_cart, map)
+
+        {conn, :added}
     end
   end
 
   def delete_product(conn, %{"id" => id}) do
     {_user_cart, _product, product_params} = get_params_and_cart_name(conn, id)
-
     cart_op = do_delete_product(conn, product_params)
 
     case cart_op do
@@ -108,17 +113,21 @@ defmodule EcomWeb.CartController do
   end
 
   defp do_delete_product(conn, product) do
-    curr_user = preloaded_user(conn)
+    conn
+    |> preloaded_user()
+    |> check_delete_product(conn, product)
+  end
 
-    if curr_user do
-      CartTask.delete_db_cart_product(conn, curr_user, product)
-    else
-      products = get_session(conn, :user_cart)
-      new_params = Map.delete(products, product.id)
-      conn = put_session(conn, :user_cart, new_params)
+  defp check_delete_product(nil, conn, product) do
+    products = get_session(conn, :user_cart)
+    new_params = Map.delete(products, product.id)
+    conn = put_session(conn, :user_cart, new_params)
 
-      {conn, :removed}
-    end
+    {conn, :removed}
+  end
+
+  defp check_delete_product(user, conn, product) do
+    CartTask.delete_db_cart_product(conn, user, product)
   end
 
   # When the 'Save' or 'Pay' button are clicked.
@@ -136,12 +145,7 @@ defmodule EcomWeb.CartController do
     attrs = Map.drop(params, ~w(_utf8 submit))
     user_cart = get_session(conn, :user_cart)
 
-    new_conn =
-      if curr_user do
-        CartTask.db_update_cart_values(conn, curr_user, attrs)
-      else
-        session_update_cart_values(conn, user_cart, attrs)
-      end
+    new_conn = build_user_conn(conn, curr_user, user_cart, attrs)
 
     case new_conn do
       {:ok, conn} ->
@@ -154,6 +158,14 @@ defmodule EcomWeb.CartController do
         |> put_flash(:alert, gettext("There was a problem trying to save your cart"))
         |> redirect(to: cart_path(conn, :index))
     end
+  end
+
+  defp build_user_conn(conn, nil, user_cart, attrs) do
+    session_update_cart_values(conn, user_cart, attrs)
+  end
+
+  defp build_user_conn(conn, user, _cart, attrs) do
+    CartTask.db_update_cart_values(conn, user, attrs)
   end
 
   defp session_update_cart_values(conn, user_cart, products_to_update) do
