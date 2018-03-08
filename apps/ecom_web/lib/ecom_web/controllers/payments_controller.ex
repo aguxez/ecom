@@ -9,8 +9,10 @@ defmodule EcomWeb.PaymentsController do
 
   alias Ecom.Interfaces.{Accounts, Worker}
   alias Ecom.Repo
+  alias EcomWeb.Plugs.VerifyParams
 
   plug(:scrub_params, "user" when action in [:update_personal_information])
+  plug(VerifyParams, ["proc_id"] when action in [:processed])
 
   # Fills information before sending to index
   def index(conn, %{"proc_first" => "true"}) do
@@ -20,6 +22,19 @@ defmodule EcomWeb.PaymentsController do
   end
 
   def index(conn, _params) do
+    user = current_user(conn)
+    fields =
+      user
+      |> Map.take(~w(address country city state zip_code tel_num)a)
+      |> Map.values()
+
+    case nil in fields do
+      true -> redirect(conn, to: payments_path(conn, :index, proc_first: true))
+      false -> process_index(conn)
+    end
+  end
+
+  defp process_index(conn) do
     {products, total} = products_and_total(conn)
     curr_url = current_url(conn)
     return = curr_url <> "/processed?proc_id=" <> get_session(conn, :proc_id)
