@@ -7,7 +7,7 @@ import "foundation-sites/dist/js/foundation";
 
 var SimpleMDE = require("simplemde/dist/simplemde.min.js")
 
-function get_location() { (window.location.pathname + window.location.search) }
+function get_location() { return(window.location.pathname + window.location.search) }
 
 // Foundation
 $(document).foundation();
