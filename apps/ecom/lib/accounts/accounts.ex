@@ -40,8 +40,7 @@ defmodule Ecom.Accounts do
   def get_user!(id) do
     User
     |> Repo.get!(id)
-    |> Repo.preload(:products)
-    |> Repo.preload(:cart)
+    |> Repo.preload(cart: [:products], products: [])
   end
 
   @doc """
