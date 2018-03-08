@@ -6,7 +6,12 @@ defmodule Ecom.ProductValuesTest do
   alias Ecom.ProductValues
 
   setup do
-    user = insert(:user)
+    user =
+      :user
+      |> insert()
+      |> Repo.preload(cart: [:products], products: [])
+
+    insert(:cart, user_id: user.id)
     ProductValues.start_link(user.id)
 
     {:ok, user: user}

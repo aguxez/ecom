@@ -4,8 +4,6 @@ defmodule EcomWeb.PaymentsControllerTest do
   use EcomWeb.ConnCase
 
   setup do
-    bypass = Bypass.open()
-
     user =
       :user
       |> build()
@@ -14,10 +12,12 @@ defmodule EcomWeb.PaymentsControllerTest do
 
     insert(:cart, user_id: user.id)
 
-    {:ok, bypass: bypass, user: user}
+    {:ok, user: user}
   end
 
   test "session variables get set on payments index", %{conn: conn, user: user} do
+    user = update_address(user)
+
     conn =
       conn
       |> sign_in(user)
@@ -35,9 +35,10 @@ defmodule EcomWeb.PaymentsControllerTest do
       conn
       |> recycle()
       |> sign_in(user)
-      |> get(payments_path(conn, :processed), proc_id: proc)
+      |> get(payments_path(conn, :processed, proc_id: proc))
 
     assert get_flash(conn, :success) == "Payment made!"
+    assert redirected_to(conn) == page_path(conn, :index)
   end
 
   test "redirects to login page if user isn't logged in", %{conn: conn} do
@@ -48,6 +49,8 @@ defmodule EcomWeb.PaymentsControllerTest do
   end
 
   test "doesn't redirect if there's a user logged in", %{conn: conn, user: user} do
+    user = update_address(user)
+
     conn =
       conn
       |> sign_in(user)
@@ -134,6 +137,15 @@ defmodule EcomWeb.PaymentsControllerTest do
     assert conn.status == 302
   end
 
+  test "redirect to address page when manually going to payments path and address is nil", %{conn: conn, user: user} do
+    conn =
+      conn
+      |> sign_in(user)
+      |> get(payments_path(conn, :index))
+
+    assert redirected_to(conn) == payments_path(conn, :index, proc_first: true)
+  end
+
   defp sign_in(conn, user) do
     post(
       conn,
@@ -142,5 +154,17 @@ defmodule EcomWeb.PaymentsControllerTest do
     )
   end
 
-  # defp conn_url(port), do: "http://localhost:#{port}/payments"
+  defp update_address(user) do
+    attrs = %{
+      address: "123",
+      country: "Vzla",
+      state: "state",
+      city: "city",
+      zip_code: "1210",
+      tel_num: "+58123456"
+    }
+
+    {:ok, user} = Ecom.Accounts.update_user(user, attrs, :no_password)
+    user
+  end
 end
