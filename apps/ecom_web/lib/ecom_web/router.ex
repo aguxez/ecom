@@ -52,9 +52,15 @@ defmodule EcomWeb.Router do
     # User account
     post("/account/:id", AccountController, :update)
     resources("/account", AccountController, only: [:index, :update])
+
+    # Payments
     resources("/payments", PaymentsController, only: [:index, :create])
     get("/payments/processed", PaymentsController, :processed)
     get("/payments/cancelled", PaymentsController, :cancelled)
+
+    # TODO: Look into why this need two routes
+    post("/payments/update_personal", PaymentsController, :update_personal_information)
+    put("/payments/update_personal", PaymentsController, :update_personal_information)
   end
 
   scope "/site_settings", EcomWeb do

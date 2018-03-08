@@ -17,6 +17,12 @@ defmodule Ecom.Accounts.User do
     field(:username, :string)
     field(:password_digest, :string)
     field(:is_admin, :boolean, default: false)
+    field(:address, :string)
+    field(:country, :string)
+    field(:city, :string)
+    field(:state, :string)
+    field(:zip_code, :integer)
+    field(:tel_num, :string)
 
     # Virtuals
     field(:password, :string, virtual: true)
@@ -28,10 +34,17 @@ defmodule Ecom.Accounts.User do
     timestamps()
   end
 
+  def changeset(%User{} = user, attrs, :no_password) do
+    user
+    |> cast(attrs, ~w(email username address country city state zip_code tel_num)a)
+    |> unique_constraint(:email)
+    |> unique_constraint(:username)
+  end
+
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, ~w(email username password password_confirmation)a)
+    |> cast(attrs, ~w(email username password password_confirmation address country city state zip_code tel_num)a)
     |> validate_required(~w(email username password password_confirmation)a)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)

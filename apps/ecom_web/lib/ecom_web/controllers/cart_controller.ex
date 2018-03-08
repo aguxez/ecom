@@ -180,7 +180,7 @@ defmodule EcomWeb.CartController do
   end
 
   defp check_before_payment(conn, _user) do
-    redirect(conn, to: payments_path(conn, :index))
+    redirect(conn, to: payments_path(conn, :index, proc_first: true))
   end
 
   # More used privs

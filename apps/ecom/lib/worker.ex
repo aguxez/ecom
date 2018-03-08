@@ -7,9 +7,9 @@ defmodule Ecom.Worker do
   alias Ecom.Accounts.{User, Product, Cart, CartProducts}
   alias Ecom.{Repo, Accounts, ProductValues}
 
-  def update_user(user, params_password, attrs) do
+  def update_user(user, params_password, attrs, :password_needed) do
     with true <- Argon2.checkpw(params_password, user.password_digest),
-         {:ok, %User{}} <- Accounts.update_user(user, attrs) do
+         {:ok, %User{}} <- Accounts.update_user(user, attrs, []) do
       {:ok, :accept}
     else
       false ->
@@ -17,6 +17,13 @@ defmodule Ecom.Worker do
 
       {:error, changeset} ->
         {:error, changeset}
+    end
+  end
+
+  def update_user(user, _, attrs, :no_password) do
+    case Accounts.update_user(user, attrs, :no_password) do
+      {:ok, %User{}} -> {:ok, :accept}
+      {:error, changeset} -> {:error, changeset}
     end
   end
 
@@ -60,6 +67,7 @@ defmodule Ecom.Worker do
     end
   end
 
+  # When a payment is complete.
   def empty_user_cart(user, sess_proc_id, param_proc_id) do
     with true <- sess_proc_id == param_proc_id,
          :ok <- remove_user_products(user.cart.id, user.cart.products) do
@@ -70,6 +78,7 @@ defmodule Ecom.Worker do
     end
   end
 
+  # Removes association when a product is deleted.
   defp remove_user_products(cart_id, products) do
     Enum.each(products, fn product ->
       query =
@@ -112,5 +121,16 @@ defmodule Ecom.Worker do
       end)
 
     {session_products, new_products}
+  end
+
+  # Check personal information about a user
+  def address_has_nil_field(user) do
+    # Check if field is nil
+    user_attrs =
+      user
+      |> Map.take(~w(address country city zip_code)a)
+      |> Map.values()
+
+    nil in user_attrs
   end
 end

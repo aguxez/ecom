@@ -1,12 +1,23 @@
 defmodule EcomWeb.PaymentsController do
   @moduledoc false
 
+  # TODO: Make address form more dynamic
+
   use EcomWeb, :controller
 
   require Logger
 
-  alias Ecom.Interfaces.Worker
+  alias Ecom.Interfaces.{Accounts, Worker}
   alias Ecom.Repo
+
+  plug :scrub_params, "user" when action in [:update_personal_information]
+
+  # Fills information before sending to index
+  def index(conn, %{"proc_first" => "true"}) do
+    changeset = Accounts.change_user(%Ecom.Accounts.User{})
+
+    render(conn, "shipping.html", changeset: changeset)
+  end
 
   def index(conn, _params) do
     {products, total} = products_and_total(conn)
@@ -22,6 +33,51 @@ defmodule EcomWeb.PaymentsController do
     )
   end
 
+  def update_personal_information(conn, %{"user" => params}) do
+    check_update_params(conn, params)
+  end
+
+  defp check_update_params(conn, %{"use_current_address" => "true"}) do
+    user = current_user(conn)
+
+    # Checking if selected "use current address" but there are nil fields
+    case Worker.address_has_nil_field(user) do
+      true -> handle_personal_information(conn, nil)
+      false -> redirect(conn, to: payments_path(conn, :index))
+    end
+  end
+
+  defp check_update_params(conn, params) do
+    values = Map.values(params)
+    personal_values = Map.drop(params, ["use_current_address"])
+
+    case nil in values do
+      true -> handle_personal_information(conn, nil)
+      false -> handle_personal_information(conn, personal_values)
+    end
+  end
+
+  defp handle_personal_information(conn, nil) do
+    conn
+    |> put_flash(:alert, gettext("Address fields (Or your current address) can't be blank, please update them"))
+    |> redirect(to: payments_path(conn, :index, proc_first: true))
+  end
+
+  defp handle_personal_information(conn, params) do
+    user = current_user(conn)
+
+    case Worker.update_user(user, [], params, :no_password) do
+      {:ok, :accept} ->
+        redirect(conn, to: payments_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:warning, gettext("There are some errors in your submission"))
+        |> render("shipping.html", changeset: changeset)
+    end
+  end
+
+  # Gets products and total for checkout
   defp products_and_total(conn) do
     curr_user =
       conn

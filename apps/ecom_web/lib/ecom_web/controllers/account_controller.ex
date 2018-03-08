@@ -23,7 +23,7 @@ defmodule EcomWeb.AccountController do
       password_confirmation: user_params["new_password_confirmation"]
     }
 
-    case Worker.update_user(user, user_params["password"], attrs) do
+    case Worker.update_user(user, user_params["password"], attrs, :password_needed) do
       {:ok, :accept} ->
         conn
         |> put_flash(:success, gettext("Account updated successfully"))

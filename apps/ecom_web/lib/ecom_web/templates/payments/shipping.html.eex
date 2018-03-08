@@ -1,0 +1,49 @@
+<h2> Fill your shipping information</h2>
+<div>
+  <%= form_for @changeset, payments_path(@conn, :update_personal_information), fn f -> %>
+    <%= label f, :use_current_address do %>
+      <%= gettext("Use your current address") %>
+      <%= checkbox f, :use_current_address %>
+    <% end %>
+
+    <div>
+      <%= label f, :address do %>
+        <%= gettext("Address") %>
+        <%= text_input f, :address %>
+        <%= error_tag f, :address %>
+      <% end %>
+
+      <%= label f, :country do %>
+        <%= gettext("Country") %>
+        <%= select f, :country, [], id: "country" %>
+        <%= error_tag f, :country %>
+      <% end %>
+
+      <%= label f, :state do %>
+        <%= gettext("State") %>
+        <%= select f, :state, [], id: "state" %>
+        <%= error_tag f, :state %>
+      <% end %>
+
+      <%= label f, :city do %>
+        <%= gettext("City") %>
+        <%= text_input f, :city %>
+        <%= error_tag f, :city %>
+      <% end %>
+
+      <%= label f, :zip_code do %>
+        <%= gettext("ZIP Code") %>
+        <%= number_input f, :zip_code %>
+        <%= error_tag f, :zip_code %>
+      <% end %>
+
+      <%= label f, :tel_num do %>
+        <%= gettext("Telephone Number") %>
+        <%= telephone_input f, :tel_num %>
+        <%= error_tag f, :tel_num %>
+      <% end %>
+    </div>
+
+    <%= submit gettext("Use address"), class: "button success" %>
+  <% end %>
+</div>

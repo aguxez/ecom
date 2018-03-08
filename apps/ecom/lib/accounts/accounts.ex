@@ -74,7 +74,13 @@ defmodule Ecom.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_user(%User{} = user, attrs) do
+  def update_user(%User{} = user, attrs, :no_password) do
+    user
+    |> User.changeset(attrs, :no_password)
+    |> Repo.update()
+  end
+
+  def update_user(%User{} = user, attrs, []) do
     user
     |> User.changeset(attrs)
     |> Repo.update()
