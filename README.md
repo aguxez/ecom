@@ -19,10 +19,11 @@
 **Shipping (User addresses)**
 
 ### TODO
-1. SEO tags
-2. Categories
-3. Flexible configuration
-4. Wishlist (Optional for now)
+1. Orders
+2. SEO tags
+3. Categories
+4. Flexible configuration
+5. Wishlist (Optional for now)
 
 ### Dev TODO
 - [x] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
