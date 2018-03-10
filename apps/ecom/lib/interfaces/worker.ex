@@ -11,4 +11,6 @@ defmodule Ecom.Interfaces.Worker do
   defdelegate after_payment(user, proc_id, param), to: Worker
   defdelegate zip_from(products, id), to: Worker
   defdelegate address_has_nil_field(user), to: Worker
+  defdelegate update_product(product, params), to: Worker
+  defdelegate delete_product(product), to: Worker
 end

@@ -67,10 +67,8 @@ defmodule EcomWeb.AdminController do
   end
 
   def update_product(conn, %{"id" => id, "product" => product_params}) do
-    product = Accounts.get_product!(id)
-
-    case Accounts.update_product(product, product_params) do
-      {:ok, %Ecom.Accounts.Product{} = product} ->
+    case Worker.update_product(id, product_params) do
+      {:ok, product} ->
         conn
         |> put_flash(:success, gettext("Product updated successfully"))
         |> redirect(to: product_path(conn, :show, product.id))
@@ -83,15 +81,13 @@ defmodule EcomWeb.AdminController do
   end
 
   def delete_product(conn, %{"id" => id}) do
-    product = Accounts.get_product!(id)
-
-    case Accounts.delete_product(product) do
-      {:ok, %Ecom.Accounts.Product{}} ->
+    case Worker.delete_product(id) do
+      {:ok, :deleted} ->
         conn
         |> put_flash(:success, gettext("Product deleted successfully"))
         |> redirect(to: admin_path(conn, :index))
 
-      {:error, _} ->
+      {:error, :unable_to_deleted} ->
         conn
         |> put_flash(:warning, gettext("There was a problem trying to delete your product"))
         |> redirect(to: admin_path(conn, :index))

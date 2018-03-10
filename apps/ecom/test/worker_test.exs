@@ -134,5 +134,23 @@ defmodule Ecom.WorkerTests do
       assert {:error, :invalid_proc_id} = action
       refute user.cart.products == []
     end
+
+    test "updates product", %{product: product} do
+      action = Worker.update_product(product.id, %{quantity: 12})
+      product = Accounts.get_product!(product.id)
+
+      assert {:ok, %Product{}} = action
+      assert product.quantity == 12
+    end
+
+    test "deletes product", %{product: product} do
+      action = Worker.delete_product(product.id)
+
+      assert {:ok, :deleted} = action
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_product!(product.id)
+      end
+    end
   end
 end

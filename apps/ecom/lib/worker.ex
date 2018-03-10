@@ -1,6 +1,6 @@
 defmodule Ecom.Worker do
   @moduledoc """
-  Module that offer "helper" functions for the Logic app
+  Module that offer does Logic functions work.
   """
 
   import Ecto.Query, only: [from: 2]
@@ -159,5 +159,23 @@ defmodule Ecom.Worker do
       |> Map.values()
 
     nil in user_attrs
+  end
+
+  def update_product(id, params) do
+    product = Accounts.get_product!(id)
+
+    case Accounts.update_product(product, params) do
+      {:ok, %Product{} = product} -> {:ok, product}
+      {:error, changeset} -> {:error, changeset}
+    end
+  end
+
+  def delete_product(id) do
+    product = Accounts.get_product!(id)
+
+    case Accounts.delete_product(product) do
+      {:ok, %Product{}} -> {:ok, :deleted}
+      {:error, _} -> {:error, :unable_to_delete}
+    end
   end
 end
