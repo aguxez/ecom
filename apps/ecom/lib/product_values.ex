@@ -28,6 +28,10 @@ defmodule Ecom.ProductValues do
     Agent.update(via_tuple(id), fn x -> Map.delete(x, product_id) end)
   end
 
+  def clean_state_for(id) do
+    Agent.update(via_tuple(id), fn _ -> %{} end)
+  end
+
   defp via_tuple(name) do
     {:via, Registry, {:product_values, name}}
   end

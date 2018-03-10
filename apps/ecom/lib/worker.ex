@@ -92,6 +92,31 @@ defmodule Ecom.Worker do
     end)
   end
 
+  # Empties user cart, clean ProductValues state, removes quantity from product
+  def after_payment(user, sess_proc_id, param_proc_id) do
+    case empty_user_cart(user, sess_proc_id, param_proc_id) do
+      {:ok, :empty} ->
+        do_post_payment_process(user)
+
+        {:ok, :empty}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  defp do_post_payment_process(%{id: id}) do
+    values = ProductValues.get_all_values(id)
+
+    Enum.each(values, fn {id, map} ->
+      product = Accounts.get_product!(id)
+      attrs = %{quantity: product.quantity - map.value}
+      Accounts.update_product(product, attrs)
+    end)
+
+    ProductValues.clean_state_for(id)
+  end
+
   # Zips product and value into a tuple
   def zip_from(products, nil) do
     # Get the valid products for the session (If a product was deleted)

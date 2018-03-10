@@ -121,7 +121,7 @@ defmodule EcomWeb.PaymentsController do
       |> current_user()
       |> Repo.preload(cart: [:products])
 
-    case Worker.empty_user_cart(user, session_proc_id, param_proc_id) do
+    case Worker.after_payment(user, session_proc_id, param_proc_id) do
       {:ok, :empty} ->
         conn
         |> put_flash(:success, gettext("Payment made!"))
