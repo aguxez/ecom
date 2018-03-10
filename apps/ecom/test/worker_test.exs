@@ -3,7 +3,7 @@ defmodule Ecom.WorkerTests do
 
   use Ecom.DataCase
 
-  alias Ecom.{Repo, Worker, ProductValues}
+  alias Ecom.{Accounts, Repo, Worker, ProductValues}
   alias Ecom.Accounts.{User, Product}
 
   setup do
@@ -14,12 +14,12 @@ defmodule Ecom.WorkerTests do
       |> insert()
 
     cart = insert(:cart, user_id: user.id)
+    product = insert(:product, user_id: user.id)
 
     ProductValues.start_link(user.id)
 
     product_params = params_for(:product, user_id: user.id)
     user_params = params_for(:user)
-    product = insert(:product, user_id: user.id)
 
     insert(:cart_products, product_id: product.id, cart_id: cart.id)
 
@@ -117,6 +117,22 @@ defmodule Ecom.WorkerTests do
       action = Worker.address_has_nil_field(user)
 
       assert true == action
+    end
+
+    test "does proper cleanup after payment", %{user: user} do
+      action = Worker.after_payment(user, "12", "12")
+      user = Accounts.get_user!(user.id)
+
+      assert {:ok, :empty} = action
+      assert user.cart.products == []
+    end
+
+    test "returns error when proc_id is not valid", %{user: user} do
+      action = Worker.after_payment(user, "12", "1")
+      user = Accounts.get_user!(user.id)
+
+      assert {:error, :invalid_proc_id} = action
+      refute user.cart.products == []
     end
   end
 end
