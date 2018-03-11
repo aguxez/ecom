@@ -6,14 +6,18 @@ defmodule EcomWeb.Plugs.Locale do
   def init(_opts), do: nil
 
   def call(conn, _opts) do
-    case conn.params["lang"] || get_session(conn, :locale) do
-      nil ->
-        conn
+    conn
+    |> get_session(:locale)
+    |> put_locale?(conn)
+  end
 
-      locale ->
-        Gettext.put_locale(Gettext, locale)
+  defp put_locale?(nil, conn) do
+    conn
+  end
 
-        put_session(conn, :locale, locale)
-    end
+  defp put_locale?(locale, conn) do
+    Gettext.put_locale(Gettext, locale)
+
+    put_session(conn, :locale, locale)
   end
 end

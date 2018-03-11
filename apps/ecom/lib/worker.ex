@@ -108,25 +108,22 @@ defmodule Ecom.Worker do
   defp do_post_payment_process(%{id: id}) do
     values = ProductValues.get_all_values(id)
 
-    Enum.each(values, fn {id, map} ->
-      product = Accounts.get_product!(id)
-      attrs = %{quantity: product.quantity - map.value}
-      Accounts.update_product(product, attrs)
-    end)
+    Enum.each(values, fn {id, map} -> modify_product_quantity(id, map.value) end)
 
     ProductValues.clean_state_for(id)
+  end
+
+  defp modify_product_quantity(id, value) do
+    product = Accounts.get_product!(id)
+    attrs = %{quantity: product.quantity - value}
+
+    Accounts.update_product(product, attrs)
   end
 
   # Zips product and value into a tuple
   def zip_from(products, nil) do
     # Get the valid products for the session (If a product was deleted)
-    valid_prods =
-      Enum.reduce(products, [], fn product, acc ->
-        case Repo.get(Product, product.id) do
-          nil -> acc
-          _ -> acc ++ [product]
-        end
-      end)
+    valid_prods = get_valid_products(products)
 
     do_zip_from(valid_prods)
   end
@@ -139,6 +136,15 @@ defmodule Ecom.Worker do
       if product.id == id, do: {product, val.value}
     end
     |> Enum.reject(&is_nil/1)
+  end
+
+  defp get_valid_products(products) do
+    Enum.reduce(products, [], fn product, acc ->
+      case Repo.get(Product, product.id) do
+        nil -> acc
+        _ -> acc ++ [product]
+      end
+    end)
   end
 
   defp do_zip_from(session_products) do

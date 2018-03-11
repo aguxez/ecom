@@ -10,10 +10,9 @@ defmodule EcomWeb.Plugs.CartPlug do
   def call(conn, _opts) do
     user_cart = get_session(conn, :user_cart)
 
-    if user_cart do
-      conn
-    else
-      put_session(conn, :user_cart, %{})
-    end
+    put_user_cart?(user_cart, conn)
   end
+
+  defp put_user_cart?(nil, conn), do: put_session(conn, :user_cart, %{})
+  defp put_user_cart?(_user_cart, conn), do: conn
 end
