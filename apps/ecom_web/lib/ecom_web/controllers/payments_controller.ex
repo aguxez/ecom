@@ -1,8 +1,6 @@
 defmodule EcomWeb.PaymentsController do
   @moduledoc false
 
-  # TODO: Make address form more dynamic
-
   use EcomWeb, :controller
 
   require Logger
