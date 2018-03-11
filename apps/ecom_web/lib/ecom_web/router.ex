@@ -1,12 +1,20 @@
 defmodule EcomWeb.Router do
   use EcomWeb, :router
 
+  @csp """
+  default-src 'self'; \
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypalobjects.com https://www.paypal.com https://use.fontawesome.com; \
+  style-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+  connect-src ws://localhost:4000/; \
+  img-src 'self' 'unsafe-inline' https://www.sandbox.paypal.com/; \
+  """
+
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
     plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    plug(:put_secure_browser_headers, %{"content-security-policy" => @csp})
     plug(EcomWeb.Plugs.Locale)
     plug(EcomWeb.Plugs.CartPlug)
     plug(EcomWeb.Plugs.PayID)

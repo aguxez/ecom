@@ -24,3 +24,4 @@ seeds.exs
 .elixir_ls
 .iex.exs
 cover
+.sobelow
