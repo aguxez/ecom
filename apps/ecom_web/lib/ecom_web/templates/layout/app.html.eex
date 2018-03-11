@@ -25,7 +25,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
     <%= if current_user(@conn) do %>
-      <%= tag :meta, name: "channel_token", content: Phoenix.Token.sign(@conn, "user", current_user(@conn).id) %>
+      <%= tag :meta, name: "channel_token", content: Phoenix.Token.sign(EcomWeb.Endpoint, "some_salt", current_user(@conn).id) %>
     <% end %>
   </head>
 

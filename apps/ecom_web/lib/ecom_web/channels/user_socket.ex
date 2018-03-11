@@ -25,7 +25,7 @@ defmodule EcomWeb.UserSocket do
   # performing token verification on connect.
   def connect(%{"token" => token}, socket) do
     # Max age of 2 weeks
-    case Phoenix.Token.verify(socket, "user", token, max_age: 1_209_600) do
+    case Phoenix.Token.verify(EcomWeb.Endpoint, "some_salt", token, max_age: 1_209_600) do
       {:ok, user_id} ->
         socket = assign(socket, :user, Accounts.get_user!(user_id))
         {:ok, socket}

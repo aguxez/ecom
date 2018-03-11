@@ -9,7 +9,7 @@ defmodule EcomWeb.PaymentsChannel do
   def join("payments:" <> token, _, socket) do
     %{id: id} = socket.assigns[:user]
 
-    with {:ok, user_id} <- Phoenix.Token.verify(socket, "user auth", token, max_age: 1_209_600),
+    with {:ok, user_id} <- Phoenix.Token.verify(EcomWeb.Endpoint, "some_salt", token, max_age: 1_209_600),
          true <- id == user_id || Application.get_env(:ecom_web, :env) == :dev do
       {:ok, socket}
     else
