@@ -3,9 +3,8 @@ defmodule EcomWeb.Helpers do
 
   import Plug.Conn
 
-  alias Ecom.Repo
-  alias Ecom.Accounts.CartProducts
-  alias Ecom.Interfaces.{AssocWorker, ProductValues}
+  alias Ecom.{Accounts, Repo}
+  alias Ecom.Interfaces.{ProductValues}
 
   def current_user(conn) do
     user = EcomWeb.Auth.Guardian.Plug.current_resource(conn)
@@ -46,7 +45,7 @@ defmodule EcomWeb.Helpers do
 
   defp add_product_to_user(user, {id, value}) do
     cart_id = user.cart.id
-    AssocWorker.add(CartProducts, %{cart_id: cart_id, product_id: id})
+    Accounts.create_cart_product(%{cart_id: cart_id, product_id: id})
     ProductValues.save_value_for(user.id, value)
   end
 end
