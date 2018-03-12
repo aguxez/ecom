@@ -6,7 +6,7 @@ defmodule Ecom.Worker do
   import Ecto.Query, only: [from: 2]
 
   alias Comeonin.Argon2
-  alias Ecom.Accounts.{User, Product, Cart, CartProducts}
+  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder}
   alias Ecom.{Repo, Accounts, ProductValues}
 
   def update_user(user, params_password, attrs, :password_needed) do
@@ -84,7 +84,7 @@ defmodule Ecom.Worker do
   defp remove_user_products(cart_id, products) do
     Enum.each(products, fn product ->
       query =
-        from(p in CartProducts, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
+        from(p in CartProduct, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
 
       query
       |> Repo.one()

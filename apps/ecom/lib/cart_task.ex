@@ -2,7 +2,7 @@ defmodule Ecom.CartTask do
   @moduledoc false
 
   alias Ecom.{Accounts, Repo, ProductValues}
-  alias Ecom.Accounts.CartProducts
+  alias Ecom.Accounts.CartProduct
 
   def add_to_db_cart(conn, user, [product]) do
     cart_products = user.cart.products
@@ -27,7 +27,7 @@ defmodule Ecom.CartTask do
 
   #######
   def delete_db_cart_product(conn, %{id: user_id}, %{id: product_id}) do
-    product = Repo.get_by(CartProducts, product_id: product_id)
+    product = Repo.get_by(CartProduct, product_id: product_id)
 
     case Accounts.delete_cart_product(product) do
       {:ok, _} ->

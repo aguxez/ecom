@@ -5,14 +5,14 @@ defmodule Ecom.Accounts.Order do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User, Product, Order, ProductOrders}
+  alias Ecom.Accounts.{User, Product, Order, ProductOrder}
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
   schema "orders" do
     belongs_to(:user, User)
 
-    many_to_many(:products, Product, join_through: ProductOrders)
+    many_to_many(:products, Product, join_through: ProductOrder)
 
     timestamps()
   end

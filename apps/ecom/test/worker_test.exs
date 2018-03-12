@@ -21,7 +21,7 @@ defmodule Ecom.WorkerTests do
     product_params = params_for(:product, user_id: user.id)
     user_params = params_for(:user)
 
-    insert(:cart_products, product_id: product.id, cart_id: cart.id)
+    insert(:cart_product, product_id: product.id, cart_id: cart.id)
 
     user = Repo.preload(user, cart: [:products])
 

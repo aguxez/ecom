@@ -1,4 +1,4 @@
-defmodule Ecom.Repo.Migrations.CreateCartProductsTable do
+defmodule Ecom.Repo.Migrations.CreateCartProductTable do
   use Ecto.Migration
 
   def change do

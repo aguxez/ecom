@@ -12,7 +12,7 @@ defmodule EcomWeb.Channels.PaymentsChannelTest do
     cart = insert(:cart, user_id: user.id)
     token = Phoenix.Token.sign(EcomWeb.Endpoint, "auth_salt", user.id)
 
-    insert(:cart_products, cart_id: cart.id, product_id: product.id)
+    insert(:cart_product, cart_id: cart.id, product_id: product.id)
 
     ProductValues.start_link(user.id)
 

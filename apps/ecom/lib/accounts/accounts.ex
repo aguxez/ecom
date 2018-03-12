@@ -6,7 +6,7 @@ defmodule Ecom.Accounts do
   import Ecto.Query, warn: false
 
   alias Ecom.Repo
-  alias Ecom.Accounts.{User, Product, Cart, CartProducts}
+  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder}
 
   @doc """
   Returns the list of users.
@@ -252,37 +252,104 @@ defmodule Ecom.Accounts do
     Cart.changeset(cart, %{})
   end
 
-  ########## CartProducts
+  ########## CartProduct
 
   def list_cart_products do
-    CartProducts
+    CartProduct
     |> Repo.all()
     |> Repo.preload([:cart, :product])
   end
 
   def get_cart_product!(id) do
-    CartProducts
+    CartProduct
     |> Repo.get!(id)
     |> Repo.preload([:cart, :product])
   end
 
   def create_cart_product(attrs \\ %{}) do
-    %CartProducts{}
-    |> CartProducts.changeset(attrs)
+    %CartProduct{}
+    |> CartProduct.changeset(attrs)
     |> Repo.insert()
   end
 
-  def update_cart_product(%CartProducts{} = cart_products, attrs) do
+  def update_cart_product(%CartProduct{} = cart_products, attrs) do
     cart_products
-    |> CartProducts.changeset(attrs)
+    |> CartProduct.changeset(attrs)
     |> Repo.update()
   end
 
-  def delete_cart_product(%CartProducts{} = cart_products) do
+  def delete_cart_product(%CartProduct{} = cart_products) do
     Repo.delete(cart_products)
   end
 
-  def change_cart_product(%CartProducts{} = cart_products) do
-    CartProducts.changeset(cart_products, %{})
+  def change_cart_product(%CartProduct{} = cart_products) do
+    CartProduct.changeset(cart_products, %{})
+  end
+
+  #### Order
+  def list_orders do
+    Order
+    |> Repo.all()
+    |> Repo.preload([:products, :user])
+  end
+
+  def get_order!(id) do
+    Order
+    |> Repo.get!(id)
+    |> Repo.preload([:products, :user])
+  end
+
+  def create_order(attrs \\ %{}) do
+    %Order{}
+    |> Order.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_order(%Order{} = order, attrs) do
+    order
+    |> Order.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_order(%Order{} = order) do
+    Repo.delete(order)
+  end
+
+  def change_order(%Order{} = order) do
+    Order.changeset(order, %{})
+  end
+
+  #### ProductOrder
+
+  def list_product_orders do
+    ProductOrder
+    |> Repo.all()
+    |> Repo.preload([:order, :product])
+  end
+
+  def get_product_order!(id) do
+    ProductOrder
+    |> Repo.get!(id)
+    |> Repo.preload([:order, :product])
+  end
+
+  def create_product_order(attrs \\ %{}) do
+    %ProductOrder{}
+    |> ProductOrder.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_product_order(%ProductOrder{} = product_order, attrs) do
+    product_order
+    |> ProductOrder.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_product_order(%ProductOrder{} = product_order) do
+    Repo.delete(product_order)
+  end
+
+  def change_product_order(%ProductOrder{} = product_order) do
+    ProductOrder.changeset(product_order, %{})
   end
 end

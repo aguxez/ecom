@@ -191,4 +191,99 @@ defmodule Ecom.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_product(product)
     end
   end
+
+  describe "orders" do
+    alias Ecom.Accounts.Order
+
+    setup do
+      user = insert(:user)
+      order = insert(:order, user_id: user.id)
+
+      {:ok, order: order, user: user}
+    end
+
+    test "list_products returns a list of all orders", %{order: order}  do
+      order = Repo.preload(order, [:products, :user])
+      assert Accounts.list_orders() == [order]
+    end
+
+    test "get_order! returns order with valid id", %{order: order} do
+      assert Accounts.get_order!(order.id) == Repo.preload(order, [:products, :user])
+    end
+
+    test "create_order creates order with valid attrs", %{user: user} do
+      order_attrs = params_for(:order, user_id: user.id)
+
+      assert {:ok, order} = Accounts.create_order(order_attrs)
+      assert %Order{} = order
+      assert order.user_id == user.id
+    end
+
+    test "update_order update order with valid attrs", %{order: order} do
+      action = Accounts.update_order(order, %{})
+
+      assert {:ok, order} = action
+      assert %Order{} = order
+    end
+
+    test "delete_order deletes an order", %{order: order} do
+      action = Accounts.delete_order(order)
+
+      assert {:ok, _} = action
+    end
+
+    test "change_order returns changeset", %{order: order} do
+      action = Accounts.change_order(order)
+
+      assert %Ecto.Changeset{} = action
+    end
+  end
+
+  describe "product_orders" do
+    alias Ecom.Accounts.ProductOrder
+
+    setup do
+      user = insert(:user)
+      order = insert(:order, user_id: user.id)
+      product = insert(:product, user_id: user.id)
+      product_order = insert(:product_order, product_id: product.id, order_id: order.id)
+
+      {:ok, user: user, product_order: product_order, order: order, product: product}
+    end
+
+    test "list_product_orders returns a list of product orders", %{product_order: p_order} do
+      p_order = Repo.preload(p_order, [:product, :order])
+      assert Accounts.list_product_orders() == [p_order]
+    end
+
+    test "get_product_order! returns a product order by id", %{product_order: p_order} do
+      assert Accounts.get_product_order!(p_order.id) == Repo.preload(p_order, [:product, :order])
+    end
+
+    test "create_product_order creates a product order", %{order: order, product: product} do
+      p_order_attrs = params_for(:product_order, order_id: order.id, product_id: product.id)
+
+      assert {:ok, product_order} = Accounts.create_product_order(p_order_attrs)
+      assert %ProductOrder{} = product_order
+      assert product_order.product_id == product.id
+      assert product_order.order_id == order.id
+    end
+
+    test "update_product_order updates product order", %{product: product, order: order, product_order: p_order} do
+      action = Accounts.update_product_order(p_order, %{product_id: product.id, order_id: order.id})
+
+      assert {:ok, p_order} = action
+      assert %ProductOrder{} = p_order
+    end
+
+    test "delete_product_order deletes product oder", %{product_order: p_order} do
+      assert {:ok, %ProductOrder{}} = Accounts.delete_product_order(p_order)
+    end
+
+    test "change_product_order returns product order changeset", %{product_order: p_order} do
+      action = Accounts.change_product_order(p_order)
+
+      assert %Ecto.Changeset{} = action
+    end
+  end
 end
