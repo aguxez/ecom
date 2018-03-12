@@ -10,11 +10,11 @@ defmodule EcomWeb.PaymentsChannel do
     %{id: id} = socket.assigns[:user]
 
     with {:ok, user_id} <-
-           Phoenix.Token.verify(EcomWeb.Endpoint, "some_salt", token, max_age: 1_209_600),
+           Phoenix.Token.verify(EcomWeb.Endpoint, "auth_salt", token, max_age: 1_209_600),
          true <- id == user_id || Application.get_env(:ecom_web, :env) == :dev do
       {:ok, socket}
     else
-      {:error, _} -> :error
+      {:error, r} -> {:error, r}
       false -> {:error, "Wrong channel"}
     end
   end

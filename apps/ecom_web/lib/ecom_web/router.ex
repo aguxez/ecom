@@ -31,7 +31,7 @@ defmodule EcomWeb.Router do
 
   defp put_user_auth_token(conn, _) do
     if curr_user = current_user(conn) do
-      token = Phoenix.Token.sign(conn, "user auth", curr_user.id)
+      token = Phoenix.Token.sign(conn, "auth_salt", curr_user.id)
       assign(conn, :user_token, token)
     else
       conn
