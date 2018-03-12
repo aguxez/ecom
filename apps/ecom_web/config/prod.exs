@@ -1,7 +1,6 @@
 use Mix.Config
 
-config :ecom_web, EcomWeb.Endpoint,
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+config :ecom_web, EcomWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 config :ecom_web, EcomWeb.Endpoint,
   load_from_system_env: true,

@@ -202,7 +202,7 @@ defmodule Ecom.AccountsTest do
       {:ok, order: order, user: user}
     end
 
-    test "list_products returns a list of all orders", %{order: order}  do
+    test "list_products returns a list of all orders", %{order: order} do
       order = Repo.preload(order, [:products, :user])
       assert Accounts.list_orders() == [order]
     end
@@ -269,8 +269,13 @@ defmodule Ecom.AccountsTest do
       assert product_order.order_id == order.id
     end
 
-    test "update_product_order updates product order", %{product: product, order: order, product_order: p_order} do
-      action = Accounts.update_product_order(p_order, %{product_id: product.id, order_id: order.id})
+    test "update_product_order updates product order", %{
+      product: product,
+      order: order,
+      product_order: p_order
+    } do
+      action =
+        Accounts.update_product_order(p_order, %{product_id: product.id, order_id: order.id})
 
       assert {:ok, p_order} = action
       assert %ProductOrder{} = p_order

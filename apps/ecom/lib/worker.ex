@@ -83,8 +83,7 @@ defmodule Ecom.Worker do
   # Removes association when a product is deleted.
   defp remove_user_products(cart_id, products) do
     Enum.each(products, fn product ->
-      query =
-        from(p in CartProduct, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
+      query = from(p in CartProduct, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
 
       query
       |> Repo.one()
