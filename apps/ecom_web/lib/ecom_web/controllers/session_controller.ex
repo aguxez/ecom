@@ -1,8 +1,6 @@
 defmodule EcomWeb.SessionController do
   @moduledoc false
 
-  # TODO: Check 'sign_in_and_remove' function
-
   use EcomWeb, :controller
 
   alias Ecom.Interfaces.{Accounts, Worker}
