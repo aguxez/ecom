@@ -3,16 +3,12 @@ defmodule EcomWeb.Channels.UserSocketTest do
 
   use EcomWeb.ChannelCase
 
-  alias EcomWeb.{UserSocket, PaymentsChannel}
+  alias EcomWeb.{UserSocket}
 
   setup do
     user = insert(:user)
-    token = Phoenix.Token.sign(EcomWeb.Endpoint, "some_salt", user.id)
-
-    {:ok, _, socket} =
-      ""
-      |> socket(%{user: user})
-      |> subscribe_and_join(PaymentsChannel, "payments:#{token}")
+    token = Phoenix.Token.sign(EcomWeb.Endpoint, "token_salt", user.id)
+    socket = socket("", %{user: user})
 
     {:ok, socket: socket, token: token}
   end
