@@ -4,7 +4,6 @@ defmodule Ecom.Repo.Migrations.AddCartTableToUsers do
   def change do
     create table(:carts) do
       add :user_id, references(:users, on_delete: :delete_all), null: false
-      add :products, :map, default: %{}
 
       timestamps()
     end
