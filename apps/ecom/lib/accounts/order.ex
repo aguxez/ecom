@@ -1,27 +1,24 @@
-defmodule Ecom.Accounts.Cart do
+defmodule Ecom.Accounts.Order do
   @moduledoc false
 
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User, Cart, Product, CartProducts}
+  alias Ecom.Accounts.{User, Product, Order, ProductOrders}
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
-  ##############
-
-  schema "carts" do
+  schema "orders" do
     belongs_to(:user, User)
 
-    many_to_many(:products, Product, join_through: CartProducts)
+    many_to_many(:products, Product, join_through: ProductOrders)
 
     timestamps()
   end
 
-  @doc false
-  def changeset(%Cart{} = cart, attrs) do
-    cart
+  def changeset(%Order{} = order, attrs) do
+    order
     |> cast(attrs, ~w(user_id)a)
     |> foreign_key_constraint(:user_id)
     |> validate_required(:user_id)

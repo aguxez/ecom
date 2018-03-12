@@ -115,7 +115,7 @@ defmodule Ecom.AccountsTest do
       product =
         :product
         |> insert(user_id: user.id)
-        |> Repo.preload(:user)
+        |> Repo.preload([:user, :carts, :orders])
 
       assert Accounts.list_products() == [product]
     end
@@ -126,7 +126,7 @@ defmodule Ecom.AccountsTest do
       product =
         :product
         |> insert(user_id: user.id)
-        |> Repo.preload(:user)
+        |> Repo.preload([:user, :carts, :orders])
 
       assert Accounts.get_product!(product.id) == product
     end
@@ -162,7 +162,7 @@ defmodule Ecom.AccountsTest do
       product =
         :product
         |> insert(user_id: user.id)
-        |> Repo.preload(:user)
+        |> Repo.preload([:user, :orders, :carts])
 
       assert {:error, %Ecto.Changeset{}} = Accounts.update_product(product, @invalid_attrs)
       assert product == Accounts.get_product!(product.id)

@@ -17,6 +17,12 @@ defmodule Ecom.Accounts.CartProductsTest do
     attrs = %{product_id: product.id, cart_id: cart.id}
     changeset = CartProducts.changeset(%CartProducts{}, attrs)
 
-    assert %Ecto.Changeset{valid?: true} = changeset
+    assert changeset.valid?
+  end
+
+  test "changeset is invalid", %{product: product} do
+    changeset = CartProducts.changeset(%CartProducts{}, %{product_id: product.id})
+
+    refute changeset.valid?
   end
 end

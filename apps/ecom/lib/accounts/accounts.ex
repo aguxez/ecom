@@ -20,7 +20,7 @@ defmodule Ecom.Accounts do
   def list_users do
     User
     |> Repo.all()
-    |> Repo.preload([:products, :cart])
+    |> Repo.preload([:products, :cart, :orders])
   end
 
   @doc """
@@ -40,7 +40,7 @@ defmodule Ecom.Accounts do
   def get_user!(id) do
     User
     |> Repo.get!(id)
-    |> Repo.preload(cart: [:products], products: [])
+    |> Repo.preload(cart: [:products], products: [], orders: [])
   end
 
   @doc """
@@ -126,7 +126,7 @@ defmodule Ecom.Accounts do
   def list_products do
     Product
     |> Repo.all()
-    |> Repo.preload(:user)
+    |> Repo.preload([:user, :orders, :carts])
   end
 
   @doc """
@@ -146,7 +146,7 @@ defmodule Ecom.Accounts do
   def get_product!(id) do
     Product
     |> Repo.get!(id)
-    |> Repo.preload(:user)
+    |> Repo.preload([:user, :orders, :carts])
   end
 
   @doc """
@@ -221,13 +221,13 @@ defmodule Ecom.Accounts do
   def list_carts do
     Cart
     |> Repo.all()
-    |> Repo.preload(:user)
+    |> Repo.preload([:user, :products])
   end
 
   def get_cart!(id) do
     Cart
     |> Repo.get!(id)
-    |> Repo.preload(:user)
+    |> Repo.preload([:user, :products])
   end
 
   def create_cart(attrs \\ %{}) do

@@ -5,7 +5,7 @@ defmodule Ecom.Accounts.User do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User, Product, Cart}
+  alias Ecom.Accounts.{User, Product, Cart, Order}
   alias Comeonin.Argon2
 
   @derive {Poison.Encoder, except: [:__meta__]}
@@ -25,11 +25,11 @@ defmodule Ecom.Accounts.User do
     field(:zip_code, :integer)
     field(:tel_num, :string)
 
-    # Virtuals
     field(:password, :string, virtual: true)
     field(:password_confirmation, :string, virtual: true)
 
     has_many(:products, Product)
+    has_many(:orders, Order)
     has_one(:cart, Cart)
 
     timestamps()

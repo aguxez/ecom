@@ -6,7 +6,7 @@ defmodule Ecom.Accounts.Product do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User, Product, Cart, CartProducts}
+  alias Ecom.Accounts.{User, Product, Cart, CartProducts, Order, ProductOrders}
 
   @derive {Poison.Encoder, except: [:__meta__]}
 
@@ -23,6 +23,7 @@ defmodule Ecom.Accounts.Product do
     belongs_to(:user, User)
 
     many_to_many(:carts, Cart, join_through: CartProducts)
+    many_to_many(:orders, Order, join_through: ProductOrders)
 
     timestamps()
   end

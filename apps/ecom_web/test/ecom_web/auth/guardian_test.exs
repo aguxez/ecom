@@ -36,8 +36,7 @@ defmodule EcomWeb.Auth.GuardianTest do
     test "returns {:ok %User{}} tuple", %{user: user} do
       user =
         user
-        |> Repo.preload(:products)
-        |> Repo.preload(:cart)
+        |> Repo.preload([:products, :cart, :orders])
 
       assert EcomWeb.Auth.Guardian.resource_from_claims(%{"sub" => "User:#{user.id}"}) ==
                {:ok, %{user | password_confirmation: nil}}

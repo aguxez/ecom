@@ -27,6 +27,6 @@ defmodule EcomWeb.Channels.PaymentsChannelTest do
   test "user joins payments channel", %{socket: socket} do
     push(socket, "form_submit", %{"form" => %{}})
 
-    assert_broadcast "form_resubmit", %{form: _}
+    assert_broadcast("form_resubmit", %{form: _})
   end
 end
