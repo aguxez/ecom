@@ -1,4 +1,4 @@
-# Ecom
+# Ecom [![Build Status](https://travis-ci.org/aguxez/ecom.svg?branch=master)](https://travis-ci.org/aguxez/ecom)
 
 ### Template to start building an Ecommerce on Elixir and Phoenix.
 
