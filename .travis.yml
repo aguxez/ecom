@@ -6,7 +6,7 @@ otp_release:
 services:
   - postgresql
 before_script:
-  - psql -c 'create database ecom_test;' -U postgres
+  - cp config/travis.exs config/test.exs
+  - mix do, ecto.setup
 env:
-  - MIX_ENV=test
-  - REPLACE_OS_VARS=true
+  - MIX_ENV=test REPLACE_OS_VARS=true
