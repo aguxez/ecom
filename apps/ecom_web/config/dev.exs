@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :ecom_web, paypal_business_id: System.get_env("PAYPAL_BUSINESS_ID")
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -53,4 +55,4 @@ config :ecom_web, EcomWeb.Endpoint,
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
-import_config "dev.secret.exs"
+# import_config "dev.secret.exs"
