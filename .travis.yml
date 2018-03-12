@@ -7,6 +7,6 @@ services:
   - postgresql
 before_script:
   - cp apps/ecom/config/travis.exs apps/ecom/config/test.exs
-  - mix do ecto.setup
+  - mix do ecto.create, ecto.migrate
 env:
   - MIX_ENV=test REPLACE_OS_VARS=true
