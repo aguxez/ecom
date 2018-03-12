@@ -1,4 +1,4 @@
-defmodule Ecom.Accounts.CartProducts do
+defmodule Ecom.Accounts.CartProduct do
   @moduledoc false
 
   use Ecto.Schema

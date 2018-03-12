@@ -1,11 +1,11 @@
-defmodule Ecom.Accounts.ProductOrders do
+defmodule Ecom.Accounts.ProductOrder do
   @moduledoc false
 
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{Product, Order, ProductOrders}
+  alias Ecom.Accounts.{Product, Order, ProductOrder}
 
   schema "product_orders" do
     belongs_to(:product, Product)
@@ -14,7 +14,7 @@ defmodule Ecom.Accounts.ProductOrders do
     timestamps()
   end
 
-  def changeset(%ProductOrders{} = product_orders, attrs) do
+  def changeset(%ProductOrder{} = product_orders, attrs) do
     product_orders
     |> cast(attrs, ~w(product_id order_id)a)
     |> foreign_key_constraint(:product_id)
