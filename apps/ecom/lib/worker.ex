@@ -5,8 +5,11 @@ defmodule Ecom.Worker do
 
   import Ecto.Query, only: [from: 2]
 
+  require Logger
+
+  alias Ecto.Multi
   alias Comeonin.Argon2
-  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder}
+  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order}
   alias Ecom.{Repo, Accounts, ProductValues}
 
   def update_user(user, params_password, attrs, :password_needed) do
@@ -69,47 +72,76 @@ defmodule Ecom.Worker do
     end
   end
 
-  # When a payment is complete.
-  def empty_user_cart(user, sess_proc_id, param_proc_id) do
+  # Empties user cart, clean ProductValues state, removes quantity from product
+  def after_payment(user, sess_proc_id, param_proc_id) do
     with true <- sess_proc_id == param_proc_id,
-         :ok <- remove_user_products(user.cart.id, user.cart.products) do
+         {:ok, :order_created} <- create_order(user),
+         {:ok, :empty} <- empty_user_cart(user) do
+      post_payment_process(user)
+
       {:ok, :empty}
     else
+      {:error, reason} -> {:error, reason}
       false -> {:error, :invalid_proc_id}
+    end
+  end
+
+  defp empty_user_cart(user) do
+    case remove_user_products(user.cart.id, user.cart.products) do
+      :ok -> {:ok, :empty}
       {:error, _changeset} -> {:error, :unable_to_empty}
     end
   end
 
   # Removes association when a product is deleted.
   defp remove_user_products(cart_id, products) do
-    Enum.each(products, fn product ->
-      query = from(p in CartProduct, where: [cart_id: ^cart_id], where: [product_id: ^product.id])
+    p_ids = Enum.map(products, & &1.id)
+    query = from(p in CartProduct, where: [cart_id: ^cart_id], where: p.product_id in ^p_ids)
 
-      query
-      |> Repo.one()
-      |> Repo.delete()
-    end)
+    Repo.delete_all(query)
+
+    :ok
   end
 
-  # Empties user cart, clean ProductValues state, removes quantity from product
-  def after_payment(user, sess_proc_id, param_proc_id) do
-    case empty_user_cart(user, sess_proc_id, param_proc_id) do
-      {:ok, :empty} ->
-        do_post_payment_process(user)
-
-        {:ok, :empty}
-
-      {:error, error} ->
-        {:error, error}
-    end
-  end
-
-  defp do_post_payment_process(%{id: id}) do
+  defp post_payment_process(%{id: id}) do
     values = ProductValues.get_all_values(id)
 
     Enum.each(values, fn {id, map} -> modify_product_quantity(id, map.value) end)
 
     ProductValues.clean_state_for(id)
+  end
+
+  def create_order(user) do
+    products = user.cart.products
+
+    order_transaction(user, products)
+  end
+
+  defp order_transaction(user, products) do
+    Multi.new()
+    |> Multi.insert(:order, Order.changeset(%Order{}, %{user_id: user.id}))
+    |> Multi.run(:product_order, fn %{order: order} ->
+      p_list =
+        Enum.map(products, fn product ->
+          Accounts.create_product_order(%{product_id: product.id, order_id: order.id})
+        end)
+
+      items = for {_, item} <- p_list, do: item
+
+      {:ok, items}
+    end)
+    |> evaluate_transaction()
+  end
+
+  defp evaluate_transaction(transaction) do
+    case Repo.transaction(transaction) do
+      {:ok, _} ->
+        {:ok, :order_created}
+
+      {:error, _operation, failed_value, _changes} ->
+        Logger.warn("[FAILED TO INSERT VALUE]: #{inspect(failed_value)} INTO ORDERS")
+        {:error, :unable_to_create_order}
+    end
   end
 
   defp modify_product_quantity(id, value) do

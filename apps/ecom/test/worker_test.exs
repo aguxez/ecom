@@ -3,8 +3,10 @@ defmodule Ecom.WorkerTests do
 
   use Ecom.DataCase
 
+  import Ecto.Query, only: [from: 2]
+
   alias Ecom.{Accounts, Repo, Worker, ProductValues}
-  alias Ecom.Accounts.{User, Product}
+  alias Ecom.Accounts.{User, Product, Order}
 
   setup do
     user =
@@ -23,7 +25,7 @@ defmodule Ecom.WorkerTests do
 
     insert(:cart_product, product_id: product.id, cart_id: cart.id)
 
-    user = Repo.preload(user, cart: [:products])
+    user = Repo.preload(user, cart: [:products], products: [], orders: [])
 
     {:ok, user: user, product_params: product_params, user_params: user_params, product: product}
   end
@@ -86,16 +88,6 @@ defmodule Ecom.WorkerTests do
 
     ####
 
-    test "empties user cart on correct proc_id", %{user: user, product: product} do
-      user = Repo.preload(user, :cart)
-      action = Worker.empty_user_cart(user, "123", "123")
-
-      assert {:ok, :empty} = action
-      assert user.cart.products == [product]
-    end
-
-    ####
-
     test "query returns correct products as tuples", %{user: user, product: product} do
       ProductValues.save_value_for(user.id, %{id: product.id, value: "12"})
 
@@ -127,14 +119,6 @@ defmodule Ecom.WorkerTests do
       assert user.cart.products == []
     end
 
-    test "returns error when proc_id is not valid", %{user: user} do
-      action = Worker.after_payment(user, "12", "1")
-      user = Accounts.get_user!(user.id)
-
-      assert {:error, :invalid_proc_id} = action
-      refute user.cart.products == []
-    end
-
     test "updates product", %{product: product} do
       action = Worker.update_product(product.id, %{quantity: 12})
       product = Accounts.get_product!(product.id)
@@ -151,6 +135,38 @@ defmodule Ecom.WorkerTests do
       assert_raise Ecto.NoResultsError, fn ->
         Accounts.get_product!(product.id)
       end
+    end
+
+    ####
+
+    test "create_order creates order", %{user: user} do
+      action = Worker.create_order(user)
+      user = Accounts.get_user!(user.id)
+
+      assert {:ok, :order_created} = action
+      assert Accounts.list_orders() == Repo.preload(user.orders, [:products, :user])
+      assert length(Accounts.list_product_orders()) == 1
+    end
+
+    test "empties user cart and creates order", %{user: user} do
+      action = Worker.after_payment(user, "12", "12")
+      user = Accounts.get_user!(user.id)
+
+      order =
+        Repo.one(from(o in Order, where: o.user_id == ^user.id, preload: [:products, :user]))
+
+      assert {:ok, :empty} = action
+      assert user.cart.products == []
+      assert Accounts.list_orders() == [order]
+    end
+
+    test "returns error when proc_id is not valid", %{user: user} do
+      action = Worker.after_payment(user, "12", "1")
+      user = Accounts.get_user!(user.id)
+
+      assert {:error, :invalid_proc_id} = action
+      assert length(user.cart.products) == 1
+      refute user.cart.products == []
     end
   end
 end
