@@ -66,7 +66,6 @@ defmodule EcomWeb.Router do
     get("/payments/processed", PaymentsController, :processed)
     get("/payments/cancelled", PaymentsController, :cancelled)
 
-    # TODO: Look into why this need two routes
     post("/payments/update_personal", PaymentsController, :update_personal_information)
     put("/payments/update_personal", PaymentsController, :update_personal_information)
   end
@@ -82,6 +81,8 @@ defmodule EcomWeb.Router do
     post("/product", AdminController, :create_product)
     put("/product/:id", AdminController, :update_product)
     delete("/product/:id", AdminController, :delete_product)
+
+    resources("/orders", OrdersController, only: [:index, :show])
   end
 
   scope "/pub", EcomWeb do

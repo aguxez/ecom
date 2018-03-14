@@ -1,0 +1,18 @@
+<h2>Orders</h2>
+<div>
+  <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <%= for order <- @orders do %>
+          <tr>
+            <td> <%= link order.id, to: orders_path(@conn, :show, order.id) %> </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>

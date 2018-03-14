@@ -1,0 +1,23 @@
+<div>
+  <h2> <%= gettext("Details") %> </h2>
+
+  <div class="grid-x grid-margin-x">
+    <div class="small-6 cell">
+      <h4> <%= gettext("Product") %> </h4>
+
+      <%= for product <- @order.products do %>
+        Name: <%= product.name %> <br />
+        Price: <%= product.price %> <br />
+      <% end %>
+    </div>
+
+    <div class="small-6 cell">
+      <h4> <%= gettext("User") %> </h4>
+
+      Username: <%= @order.user.username %> <br />
+      Email: <%= @order.user.email %> <br />
+      Address: <%= @order.user.address || "Not specified" %> <br />
+      Country: <%= @order.user.country || "Not specified" %> <br />
+    </div>
+  </div>
+</div>

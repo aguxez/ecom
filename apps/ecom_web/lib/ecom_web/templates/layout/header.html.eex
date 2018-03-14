@@ -46,6 +46,10 @@
           <h5>
             <%= link gettext("Add product"), to: admin_path(@conn, :new_product) %>
           </h5>
+
+          <h5>
+            <%= link gettext("Orders"), to: orders_path(@conn, :index) %>
+          </h5>
         </div>
       <% end %>
       <!-- END ADMIN SECTION -->
