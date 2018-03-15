@@ -46,7 +46,9 @@ defmodule Ecom.Factory do
   def product_order_factory do
     %ProductOrder{
       order_id: build(:order),
-      product_id: build(:product)
+      product_id: build(:product),
+      values: [%{"2" => 12}],
+      completed: false
     }
   end
 

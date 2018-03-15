@@ -12,7 +12,7 @@ defmodule Ecom.Accounts.Order do
   schema "orders" do
     belongs_to(:user, User)
 
-    many_to_many(:products, Product, join_through: ProductOrder)
+    has_many(:products, ProductOrder)
 
     timestamps()
   end
