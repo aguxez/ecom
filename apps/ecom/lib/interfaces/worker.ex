@@ -13,4 +13,5 @@ defmodule Ecom.Interfaces.Worker do
   defdelegate update_product(product, params), to: Worker
   defdelegate delete_product(product), to: Worker
   defdelegate mass_update_orders(data), to: Worker
+  defdelegate orders_query(status), to: Worker
 end

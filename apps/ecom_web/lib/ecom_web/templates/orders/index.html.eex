@@ -1,38 +1,139 @@
 <h2>Orders</h2>
 <div>
-  <%= form_tag orders_path(@conn, :change_status), method: "get", id: "orders_status_form" do %>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Status</th>
-          <th>Change Status</th>
-        </tr>
-      </thead>
+  <ul class="tabs" data-tabs id="orders-tabs">
+    <li class="tabs-title is-active">
+      <a href="#orders-panel1" aria-selected="true"><strong> <%= gettext("Pending") %> </strong></a>
+    </li>
 
-      <tbody>
-        <%= for order <- @orders do %>
-          <tr>
-            <td>
-              <%= link order.id, to: orders_path(@conn, :show, order.id) %>
-            </td>
+    <li class="tabs-title">
+      <a href="#orders-panel2"><strong> <%= gettext("Completed") %> </strong></a>
+    </li>
 
-            <td>
-              <%= String.capitalize(order.status) %>
-            </td>
+    <li class="tabs-title">
+      <a href="#orders-panel3"><strong> <%= gettext("Denied") %> </strong></a>
+    </li>
+  </ul>
 
-            <td>
-              <select id="order_status" name="<%= order.id %>">
-                <option value="pending"> <%= gettext("Pending") %> </option>
-                <option value="completed"><%= gettext("Completed") %> </option>
-                <option value="denied"> <%= gettext("Denied") %> </option>
-              </select>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="tabs-content" data-tabs-content="orders-tabs">
+    <%# PENDING ORDERS %>
+    <div class="tabs-panel is-active" id="orders-panel1">
+      <%= form_tag orders_path(@conn, :change_status), method: "get", id: "orders_status_form" do %>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Change Status</th>
+            </tr>
+          </thead>
 
-    <%= submit gettext("Update orders"), class: "button success" %>
-  <% end %>
+          <tbody>
+            <%= for order <- @pending_orders do %>
+              <tr>
+                <td>
+                  <%= link order.id, to: orders_path(@conn, :show, order.id) %>
+                </td>
+
+                <td>
+                  <%= String.capitalize(order.status) %>
+                </td>
+
+                <td>
+                  <select id="pending_orders_status" name="<%= order.id %>">
+                    <option value="pending"> <%= gettext("Pending") %> </option>
+                    <option value="completed"><%= gettext("Completed") %> </option>
+                    <option value="denied"> <%= gettext("Denied") %> </option>
+                  </select>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= submit gettext("Update orders"), class: "button success" %>
+      <% end %>
+    </div>
+    <%# END PENDING ORDERS %>
+
+    <%# COMPLETED ORDERS %>
+    <div class="tabs-panel" id="orders-panel2">
+      <%= form_tag orders_path(@conn, :change_status), method: "get", id: "orders_status_form" do %>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Change Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= for order <- @completed_orders do %>
+              <tr>
+                <td>
+                  <%= link order.id, to: orders_path(@conn, :show, order.id) %>
+                </td>
+
+                <td>
+                  <%= String.capitalize(order.status) %>
+                </td>
+
+                <td>
+                  <select id="completed_orders_status" name="<%= order.id %>">
+                    <option value="pending"> <%= gettext("Pending") %> </option>
+                    <option value="completed"><%= gettext("Completed") %> </option>
+                    <option value="denied"> <%= gettext("Denied") %> </option>
+                  </select>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= submit gettext("Update orders"), class: "button success" %>
+      <% end %>
+    </div>
+    <%# END COMPLETED ORDERS %>
+
+    <%# DENIED ORDERS %>
+    <div class="tabs-panel" id="orders-panel3">
+      <%= form_tag orders_path(@conn, :change_status), method: "get", id: "orders_status_form" do %>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Change Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= for order <- @denied_orders do %>
+              <tr>
+                <td>
+                  <%= link order.id, to: orders_path(@conn, :show, order.id) %>
+                </td>
+
+                <td>
+                  <%= String.capitalize(order.status) %>
+                </td>
+
+                <td>
+                  <select id="denied_orders_status" name="<%= order.id %>">
+                    <option value="pending"> <%= gettext("Pending") %> </option>
+                    <option value="completed"><%= gettext("Completed") %> </option>
+                    <option value="denied"> <%= gettext("Denied") %> </option>
+                  </select>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= submit gettext("Update orders"), class: "button success" %>
+      <% end %>
+    </div>
+    <%# END DENIED ORDERS %>
+  </div>
+
 </div>

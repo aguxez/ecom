@@ -14,9 +14,11 @@ defmodule EcomWeb.OrdersController do
   )
 
   def index(conn, _params) do
-    orders = Accounts.list_orders()
+    pending_orders = Worker.orders_query("pending")
+    completed_orders = Worker.orders_query("completed")
+    denied_orders = Worker.orders_query("denied")
 
-    render(conn, "index.html", orders: orders)
+    render(conn, "index.html", pending_orders: pending_orders, completed_orders: completed_orders, denied_orders: denied_orders)
   end
 
   def show(conn, %{"id" => id}) do

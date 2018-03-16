@@ -3,7 +3,7 @@ defmodule Ecom.Worker do
   Module that offer does Logic functions work.
   """
 
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query
 
   require Logger
 
@@ -245,5 +245,11 @@ defmodule Ecom.Worker do
     |> evaluate_transaction(:updated, :unable_to_update)
   rescue
     Ecto.NoResultsError -> {:error, :unable_to_update}
+  end
+
+  def orders_query(status) do
+    Order
+    |> where(status: ^status)
+    |> Repo.all()
   end
 end
