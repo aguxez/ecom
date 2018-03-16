@@ -15,22 +15,22 @@
 9. Shopping cart added. Users can add, edit, remove products, when an unlogged user logs in, the items that are NOT in the user's db cart are added and the session cart is deleted.
 10. Payments
 11. Shipping (User addresses)
+12. Orders
 
 ### Being worked ATM
-**Orders**
+**Categories**
 
 ### TODO
 1. SEO tags
-2. Categories
-3. Flexible configuration
-4. Wishlist (Optional for now)
+2. Flexible configuration
+3. Wishlist (Optional for now)
 
 ### Dev TODO
 - [x] There's a bug where `Repo.preload/2` raises an ArgumentError on tests; specifically "cannot load `[]` as type :map for field `products` in schema Ecom.Accounts.Cart" but it works on dev.
 
 - [x] Do proper cleanup when payment is made (Value state, Product quantity, etc...)
 
-- [ ] Add amount of order and order "receipt" to Admin dashboard once a payment is done.
+- [x] Add amount of order and order "receipt" to Admin dashboard once a payment is done.
 
 - [ ] Do new incorporation of Paypal (Or any other payment gateway, honestly), right now it's being used as a client-side with a websockets solution for validation.
 
