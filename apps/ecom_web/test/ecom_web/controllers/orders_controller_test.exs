@@ -7,6 +7,7 @@ defmodule EcomWeb.OrdersControllerTest do
 
   setup do
     user = insert(:user)
+
     user =
       user
       |> Ecto.Changeset.change(%{is_admin: true})
@@ -30,6 +31,7 @@ defmodule EcomWeb.OrdersControllerTest do
 
   test "show renders an order", %{conn: conn, order: order, user: user} do
     order = Repo.preload(order, [:user, :products])
+
     conn =
       conn
       |> sign_in(user)
@@ -42,6 +44,7 @@ defmodule EcomWeb.OrdersControllerTest do
 
   test "mass_updates given orders", %{conn: conn, user: user} do
     orders = insert_list(4, :order, user_id: user.id)
+
     attrs =
       for order <- orders, into: %{} do
         # Worker receives ids as integers already
@@ -60,6 +63,7 @@ defmodule EcomWeb.OrdersControllerTest do
 
   test "returns error on mass_update_orders", %{conn: conn, user: user} do
     attrs = %{1 => "completed"}
+
     conn =
       conn
       |> sign_in(user)

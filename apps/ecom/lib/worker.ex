@@ -243,7 +243,6 @@ defmodule Ecom.Worker do
       {:ok, items}
     end)
     |> evaluate_transaction(:updated, :unable_to_update)
-
   rescue
     Ecto.NoResultsError -> {:error, :unable_to_update}
   end

@@ -172,6 +172,7 @@ defmodule Ecom.WorkerTests do
     test "mass_updates orders", %{user: user} do
       orders = insert_list(4, :order, user_id: user.id)
       statuses = ~w(pending completed denied)
+
       attrs =
         for order <- orders, into: %{} do
           # Worker receives ids as integers already

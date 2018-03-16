@@ -10,8 +10,8 @@ defmodule Ecom.Accounts.Order do
   @derive {Poison.Encoder, except: [:__meta__]}
 
   schema "orders" do
-    field :status, :string, default: "pending"
-    field :values, {:array, :map}, default: []
+    field(:status, :string, default: "pending")
+    field(:values, {:array, :map}, default: [])
 
     belongs_to(:user, User)
 
