@@ -1,18 +1,38 @@
 <h2>Orders</h2>
 <div>
-  <table>
+  <%= form_tag orders_path(@conn, :change_status), method: "get", id: "orders_status_form" do %>
+    <table>
       <thead>
         <tr>
           <th>ID</th>
+          <th>Status</th>
+          <th>Change Status</th>
         </tr>
       </thead>
 
       <tbody>
         <%= for order <- @orders do %>
           <tr>
-            <td> <%= link order.id, to: orders_path(@conn, :show, order.id) %> </td>
+            <td>
+              <%= link order.id, to: orders_path(@conn, :show, order.id) %>
+            </td>
+
+            <td>
+              <%= String.capitalize(order.status) %>
+            </td>
+
+            <td>
+              <select id="order_status" name="<%= order.id %>">
+                <option value="pending"> <%= gettext("Pending") %> </option>
+                <option value="completed"><%= gettext("Completed") %> </option>
+                <option value="denied"> <%= gettext("Denied") %> </option>
+              </select>
+            </td>
           </tr>
         <% end %>
       </tbody>
     </table>
+
+    <%= submit gettext("Update orders"), class: "button success" %>
+  <% end %>
 </div>

@@ -43,8 +43,8 @@
     </table>
 
     <%= if length(@products) > 0 do %>
-      <%= submit "Guardar", class: "button success", name: "submit", value: "save" %>
-      <%= submit "Pagar", class: "button success", name: "submit", value: "pay" %>
+      <%= submit gettext("Guardar"), class: "button success", name: "submit", value: "save" %>
+      <%= submit gettext("Pagar"), class: "button success", name: "submit", value: "pay" %>
     <% end %>
   <% end %>
 </div>

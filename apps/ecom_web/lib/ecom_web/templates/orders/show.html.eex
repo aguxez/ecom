@@ -6,18 +6,23 @@
       <h4> <%= gettext("Product") %> </h4>
 
       <%= for product <- @order.products do %>
-        Name: <%= product.name %> <br />
-        Price: <%= product.price %> <br />
+        <strong>Name:</strong> <%= link product.name, to: product_path(@conn, :show, product.id) %> <br />
+        <strong>Price:</strong> $<%= product.price %> <br />
+        <strong>Amount bought:</strong> <%= value_for(product.id, @order.values) %> <br />
+        <strong>Total: </strong> $<%= value_for(product.id, @order.values) * product.price %> <br /><br />
       <% end %>
+
+      <strong>Grand Total: </strong> $<%= @total %>
     </div>
 
     <div class="small-6 cell">
       <h4> <%= gettext("User") %> </h4>
 
       Username: <%= @order.user.username %> <br />
-      Email: <%= @order.user.email %> <br />
+      Email: <%= link @order.user.email, to: "mailto:" <> @order.user.email %> <br />
       Address: <%= @order.user.address || "Not specified" %> <br />
       Country: <%= @order.user.country || "Not specified" %> <br />
+      Phone: <%= link @order.user.tel_num, to: "tel:" <> @order.user.tel_num %>
     </div>
   </div>
 </div>
