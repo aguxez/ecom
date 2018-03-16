@@ -6,7 +6,7 @@ otp_release:
 services:
   - postgresql
 addons:
-  - postgresql: "9.4"
+  - postgresql: "9.6"
 before_script:
   - cp apps/ecom/config/travis.exs apps/ecom/config/test.exs
   - mix do ecto.create, ecto.migrate
