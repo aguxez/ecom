@@ -10,9 +10,16 @@ defmodule Ecom.Factory do
       email: sequence(:email, &"email-#{&1}@example.com"),
       username: sequence(:username, &"user-#{&1}name"),
       password: "passwordd",
-      password_confirmation: "passwordd"
+      password_confirmation: "passwordd",
+      country: "Some country",
+      state: "some state",
+      city: "Some city",
+      zip_code: random(90_000..100_000),
+      tel_num: random(45_247_548_585..95_254_568_415)
     }
   end
+
+  defp random(range), do: range |> Enum.random() |> to_string()
 
   def product_factory do
     %Product{
@@ -39,16 +46,16 @@ defmodule Ecom.Factory do
 
   def order_factory do
     %Order{
-      user_id: build(:user)
+      user_id: build(:user),
+      values: [%{"2" => 12}],
+      status: "pending"
     }
   end
 
   def product_order_factory do
     %ProductOrder{
       order_id: build(:order),
-      product_id: build(:product),
-      values: [%{"2" => 12}],
-      completed: false
+      product_id: build(:product)
     }
   end
 

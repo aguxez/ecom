@@ -168,5 +168,27 @@ defmodule Ecom.WorkerTests do
       assert length(user.cart.products) == 1
       refute user.cart.products == []
     end
+
+    test "mass_updates orders", %{user: user} do
+      orders = insert_list(4, :order, user_id: user.id)
+      statuses = ~w(pending completed denied)
+      attrs =
+        for order <- orders, into: %{} do
+          # Worker receives ids as integers already
+          {order.id, Enum.random(statuses)}
+        end
+
+      action = Worker.mass_update_orders(attrs)
+      rand_order = Enum.random(orders)
+
+      assert {:ok, :updated} = action
+      assert rand_order.status in statuses
+    end
+
+    test "returns {:error, :unable_to_update} on mass_updates orders" do
+      action = Worker.mass_update_orders(%{3 => "completed"})
+
+      assert {:error, :unable_to_update} = action
+    end
   end
 end

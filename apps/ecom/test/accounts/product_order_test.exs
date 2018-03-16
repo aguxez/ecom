@@ -26,9 +26,4 @@ defmodule Ecom.Accounts.ProductOrderTest do
 
     refute changeset.valid?
   end
-
-  test "product_order returns correct fields", %{product_order: p_order} do
-    assert p_order.values == [%{"2" => 12}]
-    assert p_order.completed == false
-  end
 end

@@ -118,29 +118,42 @@ defmodule Ecom.Worker do
   end
 
   defp order_transaction(user, products) do
+    values = get_product_values(user.id)
+    attrs = %{user_id: user.id, values: [values], status: "pending"}
+
     Multi.new()
-    |> Multi.insert(:order, Order.changeset(%Order{}, %{user_id: user.id}))
+    |> Multi.insert(:order, Order.changeset(%Order{}, attrs))
     |> Multi.run(:product_order, fn %{order: order} ->
       p_list =
         Enum.map(products, fn product ->
-          Accounts.create_product_order(%{product_id: product.id, order_id: order.id})
+          attrs = %{product_id: product.id, order_id: order.id}
+
+          Accounts.create_product_order(attrs)
         end)
 
       items = for {_, item} <- p_list, do: item
 
       {:ok, items}
     end)
-    |> evaluate_transaction()
+    |> evaluate_transaction(:order_created, :unable_to_create_order)
   end
 
-  defp evaluate_transaction(transaction) do
+  defp get_product_values(id) do
+    values = ProductValues.get_all_values(id)
+
+    for {id, value} <- values, into: %{} do
+      {id, value.value}
+    end
+  end
+
+  defp evaluate_transaction(transaction, success_msg, error_msg) do
     case Repo.transaction(transaction) do
       {:ok, _} ->
-        {:ok, :order_created}
+        {:ok, success_msg}
 
       {:error, _operation, failed_value, _changes} ->
         Logger.warn("[FAILED TO INSERT VALUE]: #{inspect(failed_value)} INTO ORDERS")
-        {:error, :unable_to_create_order}
+        {:error, error_msg}
     end
   end
 
@@ -214,5 +227,24 @@ defmodule Ecom.Worker do
       {:ok, %Product{}} -> {:ok, :deleted}
       {:error, _} -> {:error, :unable_to_delete}
     end
+  end
+
+  def mass_update_orders(data) do
+    Multi.new()
+    |> Multi.run(:order, fn _ ->
+      action =
+        Enum.map(data, fn {id, new_status} ->
+          order = Accounts.get_order!(id)
+          Accounts.update_order(order, %{status: new_status})
+        end)
+
+      items = for {_, item} <- action, do: item
+
+      {:ok, items}
+    end)
+    |> evaluate_transaction(:updated, :unable_to_update)
+
+  rescue
+    Ecto.NoResultsError -> {:error, :unable_to_update}
   end
 end

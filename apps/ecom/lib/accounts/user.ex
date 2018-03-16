@@ -30,6 +30,7 @@ defmodule Ecom.Accounts.User do
 
     has_many(:products, Product)
     has_many(:orders, Order)
+
     has_one(:cart, Cart)
 
     timestamps()
