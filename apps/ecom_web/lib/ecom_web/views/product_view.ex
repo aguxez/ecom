@@ -38,4 +38,19 @@ defmodule EcomWeb.ProductView do
   defp text_and_button_action(false) do
     %{text: gettext("Add to your cart"), disabled: false}
   end
+
+  # HTML tags
+  def title("index.html", _assigns) do
+    "Explore our products | Ecom"
+  end
+  def title("show.html", %{conn: conn}) do
+    title = String.slice(conn.assigns.product.name, 0..35)
+    title <> "..." <> " | Ecom"
+  end
+
+  def description("show.html", %{conn: conn}) do
+    description = String.slice(conn.assigns.product.description, 0..150)
+
+    description <> "..." <> " | Ecom"
+  end
 end

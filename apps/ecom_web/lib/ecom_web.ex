@@ -47,6 +47,9 @@ defmodule EcomWeb do
 
       # Global helpers
       import EcomWeb.Helpers
+
+      # Seo defs
+      use EcomWeb.SEO.Defaults
     end
   end
 

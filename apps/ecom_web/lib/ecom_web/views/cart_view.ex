@@ -9,4 +9,6 @@ defmodule EcomWeb.CartView do
     product = Accounts.get_product!(id)
     product.quantity
   end
+
+  def title("index.html", _assigns), do: "Your cart | Ecom"
 end
