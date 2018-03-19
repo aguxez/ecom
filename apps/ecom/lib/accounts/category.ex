@@ -10,7 +10,7 @@ defmodule Ecom.Accounts.Category do
   schema "categories" do
     field(:name, :string, null: false)
 
-    has_many(:products, Product)
+    has_many(:products, Product, on_delete: :delete_all)
 
     timestamps()
   end

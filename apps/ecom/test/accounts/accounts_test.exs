@@ -252,4 +252,45 @@ defmodule Ecom.AccountsTest do
       assert %Ecto.Changeset{} = action
     end
   end
+
+  describe "categories" do
+    alias Ecom.Accounts.Category
+
+    test "list_categories returns a list of all categories" do
+      Enum.each(Accounts.list_categories(), &Accounts.delete_category(&1))
+      category = insert(:category)
+
+      assert Accounts.list_categories() == [Repo.preload(category, :products)]
+    end
+
+    test "get_category! returns a category", %{category: category} do
+      assert Accounts.get_category!(category.id) == Repo.preload(category, [:products])
+    end
+
+    test "create_category creates a new category" do
+      category = Accounts.create_category(%{name: "some category"})
+
+      assert {:ok, %Category{}} = category
+    end
+
+    test "update_category updates given category", %{category: category} do
+      action = Accounts.update_category(category, %{name: "other name"})
+
+      assert {:ok, %Category{} = cate} = action
+      assert cate.name == "other name"
+    end
+
+    test "delete_category deletes given category", %{category: category} do
+      action = Accounts.delete_category(category)
+
+      assert {:ok, %Category{}} = action
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_category!(category.id) end
+    end
+
+    test "change_category creates changeset for given category", %{category: category} do
+      action = Accounts.change_category(category)
+
+      assert %Ecto.Changeset{} = action
+    end
+  end
 end
