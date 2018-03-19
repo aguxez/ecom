@@ -15,7 +15,7 @@
       <tbody>
         <%= for product <- @products do %>
           <tr>
-            <td> <%= img_tag(Ecom.Uploaders.Image.url({product.image, product})) %> </td>
+            <td> <%= img_tag(Ecom.Uploaders.Image.url({product.image, product}, :thumb)) %> </td>
             <td> <%= link product.name, to: product_path(@conn, :show, product.id) %> </td>
           </tr>
         <% end %>

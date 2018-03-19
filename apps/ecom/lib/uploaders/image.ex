@@ -17,8 +17,8 @@ defmodule Ecom.Uploaders.Image do
   end
 
   # Define a thumbnail transformation:
-  def transform(:thumb, _) do
-    {:convert, "-strip -thumbnail 250x250^ -gravity center -extent 250x250 -format png", :png}
+  def transform(:thumb, _file) do
+    {:convert, "-strip -thumbnail 250x250", :png}
   end
 
   # Override the persisted filenames:

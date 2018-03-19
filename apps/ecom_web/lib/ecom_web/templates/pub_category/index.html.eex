@@ -12,7 +12,7 @@
           <%= for product <- @products do %>
             <div class="cell">
               <div class="card">
-                <%= img_tag(Ecom.Uploaders.Image.url({product.image, product})) %>
+                <%= img_tag(Ecom.Uploaders.Image.url({product.image, product}, :thumb)) %>
 
                 <%= link to: product_path(@conn, :show, product.id) do %>
                   <div class="card-section">
