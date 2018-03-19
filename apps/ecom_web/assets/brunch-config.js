@@ -49,6 +49,7 @@ exports.config = {
           'node_modules/foundation-sites/scss',
           'node_modules/normalize-scss/sass',
           'node_modules/font-awesome/scss',
+          'node_modules/motion-ui/src'
         ]
       }
     },

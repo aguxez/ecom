@@ -1,3 +1,11 @@
 .error-text {
   color: #cc4b37;
 }
+
+ul.orbit-container {
+  height: auto !important;
+}
+li.orbit-slide {
+  max-height: none !important;
+}
+

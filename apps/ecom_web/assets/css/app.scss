@@ -1,6 +1,9 @@
 /* This file is for your main application css. */
 @import "foundation";
 @import "custom";
+@import "motion-ui";
 
 @include foundation-everything;
 @include foundation-xy-grid-classes;
+@include motion-ui-transitions;
+@include motion-ui-animations;
