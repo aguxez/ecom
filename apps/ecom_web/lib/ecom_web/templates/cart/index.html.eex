@@ -1,50 +1,54 @@
 <div>
-  <%= form_tag cart_path(@conn, :process_cart), method: "get", id: "cart-form" do %>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Total</th>
-          <th></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <%= for {product, value} <- @products do %>
+  <%= if length(@products) > 0 do %>
+    <%= form_tag cart_path(@conn, :process_cart), method: "get", id: "cart-form" do %>
+      <table>
+        <thead>
           <tr>
-            <td>
-              <%= link product.name, to: product_path(@conn, :show, product.id) %>
-            </td>
-
-            <td>
-              <%= product.price %>
-            </td>
-
-            <td>
-              <%= content_tag(:input, "", type: "number", name: product.id, value: value || 1, min: 1, max: product_quantity(product.id)) %>
-            </td>
-
-            <td>
-              <%= product.price * value %>
-            </td>
-
-            <td>
-              <%= link to: cart_path(@conn, :delete_product, product.id), method: :delete,
-                  data: [confirm: gettext("Are you sure?")] do %>
-
-                <%= content_tag(:span, "", class: "fas fa-trash-alt") %>
-              <% end %>
-            </td>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
 
-    <%= if length(@products) > 0 do %>
+        <tbody>
+          <%= for {product, value} <- @products do %>
+            <tr>
+              <td>
+                <%= link product.name, to: product_path(@conn, :show, product.id) %>
+              </td>
+
+              <td>
+                <%= product.price %>
+              </td>
+
+              <td>
+                <%= content_tag(:input, "", type: "number", name: product.id, value: value || 1, min: 1, max: product_quantity(product.id)) %>
+              </td>
+
+              <td>
+                <%= product.price * value %>
+              </td>
+
+              <td>
+                <%= link to: cart_path(@conn, :delete_product, product.id), method: :delete,
+                    data: [confirm: gettext("Are you sure?")] do %>
+
+                  <%= content_tag(:span, "", class: "fas fa-trash-alt") %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+
       <%= submit gettext("Guardar"), class: "button success", name: "submit", value: "save" %>
       <%= submit gettext("Pagar"), class: "button success", name: "submit", value: "pay" %>
     <% end %>
+
+  <% else %>
+    <%= render "empty_cart.html" %>
   <% end %>
 </div>

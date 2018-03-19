@@ -1,0 +1,3 @@
+<section>
+  <h2> <%= gettext("Your cart is empty, add some products so they can show up here!") %> </h2>
+</section>

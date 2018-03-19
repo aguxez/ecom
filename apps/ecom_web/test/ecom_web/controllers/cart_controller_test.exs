@@ -74,6 +74,13 @@ defmodule EcomWeb.CartControllerTest do
     assert html_response(conn, 200) =~ "1"
   end
 
+  test "when cart is empty show a message", %{conn: conn} do
+    conn = get(conn, cart_path(conn, :index))
+
+    assert conn.status == 200
+    assert html_response(conn, 200) =~ "Your cart is empty"
+  end
+
   defp do_post(conn, product) do
     post(
       conn,
