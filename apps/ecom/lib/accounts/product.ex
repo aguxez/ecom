@@ -6,7 +6,16 @@ defmodule Ecom.Accounts.Product do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder, Category, ProductImage}
+  alias Ecom.Accounts.{
+    User,
+    Product,
+    Cart,
+    CartProduct,
+    Order,
+    ProductOrder,
+    Category,
+    ProductImage
+  }
 
   @derive {Poison.Encoder, except: [:__meta__]}
 

@@ -6,7 +6,17 @@ defmodule Ecom.Accounts do
   import Ecto.Query, warn: false
 
   alias Ecom.Repo
-  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder, Category, ProductImage}
+
+  alias Ecom.Accounts.{
+    User,
+    Product,
+    Cart,
+    CartProduct,
+    Order,
+    ProductOrder,
+    Category,
+    ProductImage
+  }
 
   @doc """
   Returns the list of users.
