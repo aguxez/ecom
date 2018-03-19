@@ -87,7 +87,13 @@ defmodule EcomWeb.AdminControllerTest do
     test "users can't create products", %{user: user, conn: conn, category: category} do
       # TODO: For some reason after posting the 'current_resource' has the user as
       # an admin which is not what we want since they're posting data when they shouldn't.
-      attrs = %{name: "some name", description: "Some desc", quantity: "12", user_id: user.id, category_id: category.id}
+      attrs = %{
+        name: "some name",
+        description: "Some desc",
+        quantity: "12",
+        user_id: user.id,
+        category_id: category.id
+      }
 
       conn =
         conn

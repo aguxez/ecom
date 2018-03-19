@@ -10,6 +10,7 @@ defmodule Ecom.AccountsTest do
     user = insert(:user)
     order = insert(:order, user_id: user.id)
     category = insert(:category)
+
     product =
       :product
       |> insert(user_id: user.id, category_id: category.id)
@@ -17,7 +18,8 @@ defmodule Ecom.AccountsTest do
 
     product_order = insert(:product_order, product_id: product.id, order_id: order.id)
 
-    {:ok, user: user, product_order: product_order, order: order, product: product, category: category}
+    {:ok,
+     user: user, product_order: product_order, order: order, product: product, category: category}
   end
 
   describe "users" do
@@ -128,7 +130,9 @@ defmodule Ecom.AccountsTest do
 
       product = insert(:product, user_id: user.id, category_id: category.id)
 
-      assert Accounts.list_products() == [Repo.preload(product, [:carts, :orders, :user, :category])]
+      assert Accounts.list_products() == [
+               Repo.preload(product, [:carts, :orders, :user, :category])
+             ]
     end
 
     test "get_product!/1 returns the product with given id", %{product: product} do
@@ -146,8 +150,13 @@ defmodule Ecom.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_product(@invalid_attrs)
     end
 
-    test "update_product/2 with valid data updates the product", %{category: category, product: product} do
-      assert {:ok, product} = Accounts.update_product(product, %{@update_attrs | category_id: category.id})
+    test "update_product/2 with valid data updates the product", %{
+      category: category,
+      product: product
+    } do
+      assert {:ok, product} =
+               Accounts.update_product(product, %{@update_attrs | category_id: category.id})
+
       assert %Product{} = product
       assert product.name == "some updated name"
     end

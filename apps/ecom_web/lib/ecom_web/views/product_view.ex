@@ -43,6 +43,7 @@ defmodule EcomWeb.ProductView do
   def title("index.html", _assigns) do
     "Explore our products | Ecom"
   end
+
   def title("show.html", %{conn: conn}) do
     title = String.slice(conn.assigns.product.name, 0..35)
     title <> "..." <> " | Ecom"

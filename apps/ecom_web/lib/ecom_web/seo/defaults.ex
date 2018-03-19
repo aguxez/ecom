@@ -13,7 +13,7 @@ defmodule EcomWeb.SEO.Defaults do
 
       def meta(_, _), do: "Default meta"
 
-      defoverridable [title: 2, meta: 2, description: 2]
+      defoverridable title: 2, meta: 2, description: 2
     end
   end
 end
