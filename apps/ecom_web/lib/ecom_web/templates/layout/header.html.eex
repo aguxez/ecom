@@ -6,8 +6,12 @@
         <%= link gettext("Home"), to: "/" %>
       </h5>
 
-      <!-- LOGGED-IN USER -->
+      <h5>
+        <%= link gettext("Products"), to: pub_category_path(@conn, :index) %>
+      </h5>
+
       <%= if @user !== nil do %>
+        <!-- LOGGED-IN USER -->
         <div>
           <h4>
             Logged-in as <strong> <%= @user.username %> </strong>
@@ -21,6 +25,9 @@
             <%= link gettext("Account"), to: account_path(@conn, :index) %>
           </h5>
         </div>
+      <!-- END LOGGED-IN USER -->
+
+      <%# NOT LOGGED IN %>
       <% else %>
         <div>
           <h5>
@@ -32,12 +39,12 @@
           </h5>
         </div>
       <% end %>
-      <!-- END LOGGED-IN USER -->
+      <%# END NOT LOGGED IN %>
     </div>
 
-    <div class="text-center cell">
-      <!-- ADMIN SECTION -->
-      <%= if @user !== nil && @user.is_admin do %>
+    <%= if @user !== nil && @user.is_admin do %>
+      <%# ADMIN SECTION %>
+      <div class="text-center cell">
         <div>
           <h5>
             <%= link gettext("Admin panel"), to: admin_path(@conn, :index) %>
@@ -55,11 +62,11 @@
             <%= link gettext("Orders"), to: orders_path(@conn, :index) %>
           </h5>
         </div>
-      <% end %>
-      <!-- END ADMIN SECTION -->
-    </div>
+      </div>
+      <%# END ADMIN SECTION %>
+    <% end %>
 
-    <div class="cell">
+    <div class="text-center cell">
       <!-- CART -->
       <h5> <%= link gettext("Cart"), to: cart_path(@conn, :index) %> </h5>
       <!-- END CART -->
