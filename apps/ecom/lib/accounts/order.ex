@@ -11,11 +11,11 @@ defmodule Ecom.Accounts.Order do
 
   schema "orders" do
     field(:status, :string, default: "pending")
-    field(:values, {:array, :map}, default: [])
+    field(:values, {:array, :map})
 
     belongs_to(:user, User)
 
-    many_to_many(:products, Product, join_through: ProductOrder)
+    many_to_many(:products, Product, join_through: ProductOrder, on_delete: :delete_all)
 
     timestamps()
   end

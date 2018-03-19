@@ -7,7 +7,8 @@ defmodule Ecom.Accounts.ProductOrderTest do
 
   setup do
     user = insert(:user)
-    product = insert(:product, user_id: user.id)
+    category = insert(:category)
+    product = insert(:product, user_id: user.id, category_id: category.id)
     order = insert(:order, user_id: user.id)
     product_order = insert(:product_order, product_id: product.id, order_id: order.id)
 

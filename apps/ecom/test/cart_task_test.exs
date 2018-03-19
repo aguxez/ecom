@@ -7,7 +7,8 @@ defmodule Ecom.CartTaskTest do
 
   setup do
     user = insert(:user)
-    product = insert(:product, user_id: user.id)
+    category = insert(:category)
+    product = insert(:product, user_id: user.id, category_id: category.id)
     cart = insert(:cart, user_id: user.id)
     user = Repo.preload(user, cart: [:products])
 

@@ -10,7 +10,8 @@ defmodule EcomWeb.ProductControllerTest do
       |> encrypt_password("password")
       |> insert()
 
-    product = insert(:product, user_id: user.id)
+    category = insert(:category)
+    product = insert(:product, user_id: user.id, category_id: category.id)
 
     {:ok, product: product, conn: build_conn()}
   end

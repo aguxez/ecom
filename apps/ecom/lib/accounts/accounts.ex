@@ -6,7 +6,7 @@ defmodule Ecom.Accounts do
   import Ecto.Query, warn: false
 
   alias Ecom.Repo
-  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder}
+  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder, Category}
 
   @doc """
   Returns the list of users.
@@ -126,7 +126,7 @@ defmodule Ecom.Accounts do
   def list_products do
     Product
     |> Repo.all()
-    |> Repo.preload([:user, :orders, :carts])
+    |> Repo.preload([:user, :orders, :carts, :category])
   end
 
   @doc """
@@ -146,7 +146,7 @@ defmodule Ecom.Accounts do
   def get_product!(id) do
     Product
     |> Repo.get!(id)
-    |> Repo.preload([:user, :orders, :carts])
+    |> Repo.preload([:user, :orders, :carts, :category])
   end
 
   @doc """
@@ -351,5 +351,39 @@ defmodule Ecom.Accounts do
 
   def change_product_order(%ProductOrder{} = product_order) do
     ProductOrder.changeset(product_order, %{})
+  end
+
+  ####
+
+  def list_categories do
+    Category
+    |> Repo.all()
+    |> Repo.preload(:products)
+  end
+
+  def get_category!(id) do
+    Category
+    |> Repo.get!(id)
+    |> Repo.preload(:products)
+  end
+
+  def create_category(attrs \\ %{}) do
+    %Category{}
+    |> Category.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_category(%Category{} = category, attrs) do
+    category
+    |> Category.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_category(%Category{} = category) do
+    Repo.delete(category)
+  end
+
+  def change_category(%Category{} = category) do
+    Category.changeset(category, %{})
   end
 end

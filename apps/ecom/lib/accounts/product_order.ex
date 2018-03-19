@@ -16,9 +16,9 @@ defmodule Ecom.Accounts.ProductOrder do
 
   def changeset(%ProductOrder{} = product_orders, attrs) do
     product_orders
-    |> cast(attrs, ~w(product_id order_id)a)
+    |> cast(attrs, [:product_id, :order_id])
     |> foreign_key_constraint(:product_id)
     |> foreign_key_constraint(:order_id)
-    |> validate_required(~w(product_id order_id)a)
+    |> validate_required([:product_id, :order_id])
   end
 end

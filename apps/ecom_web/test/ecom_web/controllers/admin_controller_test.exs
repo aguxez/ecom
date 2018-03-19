@@ -9,6 +9,8 @@ defmodule EcomWeb.AdminControllerTest do
 
   describe "admin panel" do
     setup do
+      category = insert(:category)
+
       user =
         :user
         |> build()
@@ -23,7 +25,7 @@ defmodule EcomWeb.AdminControllerTest do
         |> Changeset.change(is_admin: true)
         |> Repo.update!()
 
-      {:ok, conn: build_conn(), admin: admin_user, user: user}
+      {:ok, conn: build_conn(), admin: admin_user, user: user, category: category}
     end
 
     test "path exists", %{conn: conn} do
@@ -62,13 +64,14 @@ defmodule EcomWeb.AdminControllerTest do
     end
 
     # @tag :skip
-    test "admin can create new product", %{admin: user, conn: conn} do
+    test "admin can create new product", %{admin: user, conn: conn, category: category} do
       attrs = %{
         name: "some name",
         description: "some description",
         quantity: "12",
         user_id: user.id,
-        price: 5
+        price: 5,
+        category_id: category.id
       }
 
       conn =
@@ -81,10 +84,10 @@ defmodule EcomWeb.AdminControllerTest do
     end
 
     # @tag :skip
-    test "users can't create products", %{user: user, conn: conn} do
+    test "users can't create products", %{user: user, conn: conn, category: category} do
       # TODO: For some reason after posting the 'current_resource' has the user as
       # an admin which is not what we want since they're posting data when they shouldn't.
-      attrs = %{name: "some name", description: "Some desc", quantity: "12", user_id: user.id}
+      attrs = %{name: "some name", description: "Some desc", quantity: "12", user_id: user.id, category_id: category.id}
 
       conn =
         conn

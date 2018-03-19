@@ -16,11 +16,12 @@ defmodule Ecom.WorkerTests do
       |> insert()
 
     cart = insert(:cart, user_id: user.id)
-    product = insert(:product, user_id: user.id)
+    category = insert(:category)
+    product = insert(:product, user_id: user.id, category_id: category.id)
 
     ProductValues.start_link(user.id)
 
-    product_params = params_for(:product, user_id: user.id)
+    product_params = params_for(:product, user_id: user.id, category_id: category.id)
     user_params = params_for(:user)
 
     insert(:cart_product, product_id: product.id, cart_id: cart.id)

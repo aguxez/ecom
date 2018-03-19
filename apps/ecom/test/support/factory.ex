@@ -3,7 +3,7 @@ defmodule Ecom.Factory do
 
   use ExMachina.Ecto, repo: Ecom.Repo
 
-  alias Ecom.Accounts.{User, Cart, Product, CartProduct, Order, ProductOrder}
+  alias Ecom.Accounts.{User, Cart, Product, CartProduct, Order, ProductOrder, Category}
 
   def user_factory do
     %User{
@@ -27,7 +27,8 @@ defmodule Ecom.Factory do
       description: "Some product description",
       user_id: build(:user),
       quantity: Enum.random(1..100),
-      price: Enum.random(1..10)
+      price: Enum.random(1..10),
+      category_id: build(:category)
     }
   end
 
@@ -56,6 +57,12 @@ defmodule Ecom.Factory do
     %ProductOrder{
       order_id: build(:order),
       product_id: build(:product)
+    }
+  end
+
+  def category_factory do
+    %Category{
+      name: sequence(:name, &"category#{&1}")
     }
   end
 

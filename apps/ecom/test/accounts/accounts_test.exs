@@ -6,6 +6,20 @@ defmodule Ecom.AccountsTest do
   alias Ecom.Accounts.User
   alias Ecom.{Accounts, Repo}
 
+  setup do
+    user = insert(:user)
+    order = insert(:order, user_id: user.id)
+    category = insert(:category)
+    product =
+      :product
+      |> insert(user_id: user.id, category_id: category.id)
+      |> Repo.preload([:user, :carts, :orders, :category])
+
+    product_order = insert(:product_order, product_id: product.id, order_id: order.id)
+
+    {:ok, user: user, product_order: product_order, order: order, product: product, category: category}
+  end
+
   describe "users" do
     @valid_attrs %{
       email: "email@email.com",
@@ -84,7 +98,8 @@ defmodule Ecom.AccountsTest do
       name: "some updated name",
       description: "some updated desc",
       quantity: 11,
-      price: 2
+      price: 2,
+      category_id: 1
     }
     @invalid_attrs %{name: nil}
 
@@ -107,35 +122,23 @@ defmodule Ecom.AccountsTest do
       Repo.preload(product, :user)
     end
 
-    test "list_products/0 returns all products" do
-      user = insert(:user)
-      # More products where being listed when they didn't need to.
-      Enum.each(Accounts.list_products(), fn x -> Accounts.delete_product(x) end)
+    test "list_products/0 returns all products", %{user: user, category: category} do
+      # More products were being listed when they didn't need to.
+      Enum.each(Accounts.list_products(), &Accounts.delete_product(&1))
 
-      product =
-        :product
-        |> insert(user_id: user.id)
-        |> Repo.preload([:user, :carts, :orders])
+      product = insert(:product, user_id: user.id, category_id: category.id)
 
-      assert Accounts.list_products() == [product]
+      assert Accounts.list_products() == [Repo.preload(product, [:carts, :orders, :user, :category])]
     end
 
-    test "get_product!/1 returns the product with given id" do
-      user = insert(:user)
-
-      product =
-        :product
-        |> insert(user_id: user.id)
-        |> Repo.preload([:user, :carts, :orders])
+    test "get_product!/1 returns the product with given id", %{product: product} do
+      product = Accounts.get_product!(product.id)
 
       assert Accounts.get_product!(product.id) == product
     end
 
-    test "create_product/1 with valid data creates a product" do
-      # 'product_fixture' calls Accounts.create_product/1
-      user = insert(:user)
-
-      assert {:ok, %Product{} = product} = {:ok, insert(:product, user_id: user.id)}
+    test "create_product/1 with valid data creates a product", %{product: product} do
+      assert {:ok, %Product{} = product} = {:ok, product}
       assert product.name == "Some product name"
     end
 
@@ -143,64 +146,31 @@ defmodule Ecom.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_product(@invalid_attrs)
     end
 
-    test "update_product/2 with valid data updates the product" do
-      user = insert(:user)
-
-      product =
-        :product
-        |> insert(user_id: user.id)
-        |> Repo.preload(:user)
-
-      assert {:ok, product} = Accounts.update_product(product, @update_attrs)
+    test "update_product/2 with valid data updates the product", %{category: category, product: product} do
+      assert {:ok, product} = Accounts.update_product(product, %{@update_attrs | category_id: category.id})
       assert %Product{} = product
       assert product.name == "some updated name"
     end
 
-    test "update_product/2 with invalid data returns error changeset" do
-      user = insert(:user)
-
-      product =
-        :product
-        |> insert(user_id: user.id)
-        |> Repo.preload([:user, :orders, :carts])
+    test "update_product/2 with invalid data returns error changeset", %{product: product} do
+      product = Accounts.get_product!(product.id)
 
       assert {:error, %Ecto.Changeset{}} = Accounts.update_product(product, @invalid_attrs)
       assert product == Accounts.get_product!(product.id)
     end
 
-    test "delete_product/1 deletes the product" do
-      user = insert(:user)
-
-      product =
-        :product
-        |> insert(user_id: user.id)
-        |> Repo.preload(:user)
-
+    test "delete_product/1 deletes the product", %{product: product} do
       assert {:ok, %Product{}} = Accounts.delete_product(product)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_product!(product.id) end
     end
 
-    test "change_product/1 returns a product changeset" do
-      user = insert(:user)
-
-      product =
-        :product
-        |> insert(user_id: user.id)
-        |> Repo.preload(:user)
-
+    test "change_product/1 returns a product changeset", %{product: product} do
       assert %Ecto.Changeset{} = Accounts.change_product(product)
     end
   end
 
   describe "orders" do
     alias Ecom.Accounts.Order
-
-    setup do
-      user = insert(:user)
-      order = insert(:order, user_id: user.id)
-
-      {:ok, order: order, user: user}
-    end
 
     test "list_products returns a list of all orders", %{order: order} do
       order = Repo.preload(order, [:products, :user])
@@ -241,15 +211,6 @@ defmodule Ecom.AccountsTest do
 
   describe "product_orders" do
     alias Ecom.Accounts.ProductOrder
-
-    setup do
-      user = insert(:user)
-      order = insert(:order, user_id: user.id)
-      product = insert(:product, user_id: user.id)
-      product_order = insert(:product_order, product_id: product.id, order_id: order.id)
-
-      {:ok, user: user, product_order: product_order, order: order, product: product}
-    end
 
     test "list_product_orders returns a list of product orders", %{product_order: p_order} do
       p_order = Repo.preload(p_order, [:product, :order])

@@ -5,7 +5,7 @@ defmodule Ecom.Accounts.CartProduct do
 
   import Ecto.Changeset
 
-  alias Ecom.Accounts.{Product, Cart}
+  alias Ecom.Accounts.{Product, Cart, CartProduct}
 
   schema "cart_products" do
     belongs_to(:product, Product)
@@ -15,7 +15,7 @@ defmodule Ecom.Accounts.CartProduct do
     timestamps()
   end
 
-  def changeset(%__MODULE__{} = struct, attrs) do
+  def changeset(%CartProduct{} = struct, attrs) do
     struct
     |> cast(attrs, ~w(product_id cart_id)a)
     |> foreign_key_constraint(:product_id)

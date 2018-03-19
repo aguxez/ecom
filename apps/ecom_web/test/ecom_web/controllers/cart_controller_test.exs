@@ -16,8 +16,9 @@ defmodule EcomWeb.CartControllerTest do
 
     insert(:cart, user_id: user.id)
 
+    category = insert(:category)
     # The product we're going to add
-    product = insert(:product, user_id: user.id)
+    product = insert(:product, user_id: user.id, category_id: category.id)
 
     {:ok, conn: conn, product: product, user: user}
   end
