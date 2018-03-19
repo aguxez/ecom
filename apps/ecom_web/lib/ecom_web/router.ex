@@ -101,5 +101,7 @@ defmodule EcomWeb.Router do
     get("/cart/process_cart", CartController, :process_cart)
     post("/cart", CartController, :add_to_cart)
     delete("/cart/:id", CartController, :delete_product)
+
+    resources("/c", PubCategoryController, only: [:index])
   end
 end

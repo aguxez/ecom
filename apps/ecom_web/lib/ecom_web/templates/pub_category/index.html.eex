@@ -1,0 +1,30 @@
+<div class="grid-container">
+  <div class="grid-x grid-margin-x">
+    <div class="small-4">
+      <h2> Filters </h2>
+    </div>
+
+    <div class="small-8">
+      <h2> placeholder </h2>
+
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x small-up-2">
+          <%= for product <- @products do %>
+            <div class="cell">
+              <div class="card">
+                <%= img_tag(Ecom.Uploaders.Image.url({product.image, product})) %>
+
+                <%= link to: product_path(@conn, :show, product.id) do %>
+                  <div class="card-section">
+                    <h4> <%= String.slice(product.name, 0..10) <> "..." %> </h4>
+                    <h4> <%= String.slice(product.description, 0..50) <> "..." %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
