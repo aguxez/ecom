@@ -17,4 +17,6 @@ defmodule Ecom.Interfaces.Accounts do
   defdelegate delete_product(id), to: Accounts
   defdelegate list_orders(), to: Accounts
   defdelegate get_order!(id), to: Accounts
+  defdelegate change_category(category), to: Accounts
+  defdelegate list_categories(), to: Accounts
 end

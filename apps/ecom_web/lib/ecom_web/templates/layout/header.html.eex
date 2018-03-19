@@ -48,6 +48,10 @@
           </h5>
 
           <h5>
+            <%= link gettext("Add category"), to: category_path(@conn, :new) %>
+          </h5>
+
+          <h5>
             <%= link gettext("Orders"), to: orders_path(@conn, :index) %>
           </h5>
         </div>

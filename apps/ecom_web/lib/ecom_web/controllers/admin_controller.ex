@@ -38,11 +38,13 @@ defmodule EcomWeb.AdminController do
   # Products
   def new_product(conn, _params) do
     changeset = Accounts.change_product(%Ecom.Accounts.Product{})
+    categories = list_categories_for_select()
 
-    render(conn, "new_product.html", changeset: changeset)
+    render(conn, "new_product.html", changeset: changeset, categories: categories)
   end
 
   def create_product(conn, %{"product" => product_params}) do
+    categories = list_categories_for_select()
     user = current_user(conn)
     params = Map.merge(product_params, %{"user_id" => user.id})
 
@@ -55,8 +57,14 @@ defmodule EcomWeb.AdminController do
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))
-        |> render("new_product.html", changeset: changeset)
+        |> render("new_product.html", changeset: changeset, categories: categories)
     end
+  end
+
+  defp list_categories_for_select do
+    categories = Accounts.list_categories()
+
+    for category <- categories, do: [key: category.name, value: category.id]
   end
 
   def edit_product(conn, %{"id" => id}) do

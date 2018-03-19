@@ -1,0 +1,35 @@
+<%# AVAILABLE CATEGORIES MENU %>
+<ul class="vertical menu accordion-menu" data-accordion-menu>
+  <li>
+    <a href="#"> <%= gettext("Available categories") %> </a>
+    <ul class="menu vertical nested">
+      <%= for category <- @categories do %>
+        <li> <%= link category, to: "#" %> </li>
+      <% end %>
+    </ul>
+  </li>
+</ul>
+<%# END AVAILABLE CATEGORIES MENU %>
+
+
+<%# CREATE CATEGORY FORM %>
+<%= form_for @changeset, category_path(@conn, :create), fn f -> %>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <div class="text-center">
+        <h3> <%= gettext("Create a category") %> </h3>
+      </div>
+
+      <div class="small-12 cell">
+        <%= label f, :name do %>
+          <%= gettext("Name") %>
+          <%= text_input f, :name %>
+          <%= error_tag f, :name %>
+        <% end %>
+      </div>
+
+      <%= submit gettext("Create"), class: "button success" %>
+    </div>
+  </div>
+<% end %>
+<%# END CREATE CATEGORY %>

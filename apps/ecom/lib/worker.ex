@@ -9,7 +9,7 @@ defmodule Ecom.Worker do
 
   alias Ecto.Multi
   alias Comeonin.Argon2
-  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order}
+  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, Category}
   alias Ecom.{Repo, Accounts, ProductValues}
 
   def update_user(user, params_password, attrs, :password_needed) do
@@ -34,7 +34,7 @@ defmodule Ecom.Worker do
 
   def create_product(user, params) do
     with :ok <- Bodyguard.permit(Product, :create_products, user),
-         {:ok, %Product{} = product} = Accounts.create_product(params) do
+         {:ok, %Product{} = product} <- Accounts.create_product(params) do
       {:ok, product}
     else
       {:error, changeset} -> {:error, changeset}
@@ -251,5 +251,12 @@ defmodule Ecom.Worker do
     Order
     |> where(status: ^status)
     |> Repo.all()
+  end
+
+  def create_category(params) do
+    case Accounts.create_category(params) do
+      {:ok, %Category{}} -> {:ok, :created}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 end

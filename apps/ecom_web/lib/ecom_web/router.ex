@@ -83,6 +83,8 @@ defmodule EcomWeb.Router do
 
     get("/orders/change_status", OrdersController, :change_status)
     resources("/orders", OrdersController, only: [:index, :show])
+
+    resources("/category", CategoryController, only: [:new, :create])
   end
 
   scope "/pub", EcomWeb do

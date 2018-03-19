@@ -192,5 +192,19 @@ defmodule Ecom.WorkerTests do
 
       assert {:error, :unable_to_update} = action
     end
+
+    ####
+
+    test "creates category" do
+      action = Worker.create_category(%{name: "Some category"})
+
+      assert {:ok, :created} = action
+    end
+
+    test "doesn't create category on bad input" do
+      action = Worker.create_category(%{something: :else})
+
+      assert {:error, %Ecto.Changeset{}} = action
+    end
   end
 end
