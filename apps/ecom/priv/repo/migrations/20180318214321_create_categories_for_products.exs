@@ -8,5 +8,9 @@ defmodule Ecom.Repo.Migrations.CreateCategoriesForProducts do
 
       timestamps()
     end
+
+    alter table(:products) do
+      add :category_id, references(:categories)
+    end
   end
 end
