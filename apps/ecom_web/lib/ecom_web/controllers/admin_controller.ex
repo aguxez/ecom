@@ -54,6 +54,11 @@ defmodule EcomWeb.AdminController do
         |> put_flash(:success, gettext("Product created successfully"))
         |> redirect(to: product_path(conn, :show, product.id))
 
+      {:error, :unable_to_create} ->
+        conn
+        |> put_flash(:alert, gettext("We couldn't create your product"))
+        |> redirect(to: product_path(conn, :new))
+
       {:error, changeset} ->
         conn
         |> put_flash(:alert, gettext("There was a problem trying to add your product"))

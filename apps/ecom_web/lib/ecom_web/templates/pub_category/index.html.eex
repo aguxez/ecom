@@ -12,7 +12,24 @@
           <%= for product <- @products do %>
             <div class="cell">
               <div class="card">
-                <%= img_tag(Ecom.Uploaders.Image.url({product.image, product}, :thumb)) %>
+                <div class="orbit" role="region" aria-label="Product images" data-orbit data-use-m-u-i="false" data-options="autoPlay:false;">
+                <div class="orbit-wrapper">
+                  <div class="orbit-controls">
+                    <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+                    <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+                  </div>
+                </div>
+
+                <ul class="orbit-container">
+                  <%= for file <- product.product_images do %>
+                    <li class="orbit-slide">
+                      <figure class="orbit-figure">
+                        <%= img_tag(Ecom.Uploaders.Image.url({file.image, product}, :thumb), class: "orbit-image") %>
+                      </figure>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
 
                 <%= link to: product_path(@conn, :show, product.id) do %>
                   <div class="card-section">

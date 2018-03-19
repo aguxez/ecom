@@ -18,7 +18,7 @@ defmodule Ecom.Uploaders.Image do
 
   # Define a thumbnail transformation:
   def transform(:thumb, _file) do
-    {:convert, "-strip -thumbnail 250x250", :png}
+    {:convert, "-strip -thumbnail 300x300"}
   end
 
   # Override the persisted filenames:
@@ -28,11 +28,11 @@ defmodule Ecom.Uploaders.Image do
 
   # Override the storage directory:
   def storage_dir(_version, {_file, scope}) do
-    "/var/www/uploads/product/image/#{scope.user_id}"
+    "/var/www/uploads/product/image/#{scope.product_id}"
   end
 
   def request_dir(_version, {_file, scope}) do
-    "uploads/#{scope.user_id}"
+    "uploads/#{scope.id}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded

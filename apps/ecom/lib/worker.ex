@@ -32,13 +32,35 @@ defmodule Ecom.Worker do
     end
   end
 
-  def create_product(user, params) do
+  def create_product(user, %{"image" => images} = params) do
     with :ok <- Bodyguard.permit(Product, :create_products, user),
-         {:ok, %Product{} = product} <- Accounts.create_product(params) do
+         {:ok, %Product{} = product} <- Accounts.create_product(params),
+         {:ok, :created} <- create_product_images(product.id, images) do
       {:ok, product}
     else
+      {:error, :unable_to_create} -> {:error, :unable_to_create}
       {:error, changeset} -> {:error, changeset}
     end
+  end
+
+  defp create_product_images(id, images) do
+    id
+    |> product_image_transaction(images)
+    |> evaluate_transaction(:created, :unable_to_create)
+  end
+
+  defp product_image_transaction(product_id, images) do
+    Multi.new()
+    |> Multi.run(:product_image, fn _ ->
+      action =
+        Enum.map(images, fn image ->
+          Accounts.create_product_image(%{product_id: product_id, image: image})
+        end)
+
+      items = for {_, item} <- action, do: item
+
+      {:ok, items}
+    end)
   end
 
   def sign_in(username, password) do

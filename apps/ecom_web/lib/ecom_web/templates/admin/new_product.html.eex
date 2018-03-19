@@ -28,7 +28,7 @@
 
       <div class="small-12 cell">
         <%= label f, :image do %>
-          <%= file_input f, :image %>
+          <%= file_input f, :image, multiple: true %>
           <%= error_tag f, :image %>
         <% end %>
       </div>

@@ -6,7 +6,7 @@ defmodule Ecom.Accounts do
   import Ecto.Query, warn: false
 
   alias Ecom.Repo
-  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder, Category}
+  alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, ProductOrder, Category, ProductImage}
 
   @doc """
   Returns the list of users.
@@ -126,7 +126,7 @@ defmodule Ecom.Accounts do
   def list_products do
     Product
     |> Repo.all()
-    |> Repo.preload([:user, :orders, :carts, :category])
+    |> Repo.preload([:user, :orders, :carts, :category, :product_images])
   end
 
   @doc """
@@ -146,7 +146,7 @@ defmodule Ecom.Accounts do
   def get_product!(id) do
     Product
     |> Repo.get!(id)
-    |> Repo.preload([:user, :orders, :carts, :category])
+    |> Repo.preload([:user, :orders, :carts, :category, :product_images])
   end
 
   @doc """
@@ -385,5 +385,13 @@ defmodule Ecom.Accounts do
 
   def change_category(%Category{} = category) do
     Category.changeset(category, %{})
+  end
+
+  ####
+
+  def create_product_image(attrs) do
+    %ProductImage{}
+    |> ProductImage.changeset(attrs)
+    |> Repo.insert()
   end
 end
