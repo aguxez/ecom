@@ -57,13 +57,17 @@ defmodule Ecom.WorkerTests do
 
     test "creates product when user is admin", %{user: user, product_params: product} do
       changeset = Ecto.Changeset.change(user, %{is_admin: true})
+      product = for {k, v} <- product, into: %{}, do: {to_string(k), v}
+      params = Map.merge(img_fixture(), product)
       {:ok, user} = Repo.update(changeset)
 
-      assert {:ok, %Product{}} = Worker.create_product(user, product)
+      assert {:ok, %Product{}} = Worker.create_product(user, params)
     end
 
     test "can't create product if not admin", %{user: user, product_params: product} do
-      assert {:error, :unauthorized} = Worker.create_product(user, product)
+      product = for {k, v} <- product, into: %{}, do: {to_string(k), v}
+      params = Map.merge(img_fixture(), product)
+      assert {:error, :unauthorized} = Worker.create_product(user, params)
     end
 
     ####
@@ -206,5 +210,22 @@ defmodule Ecom.WorkerTests do
 
       assert {:error, %Ecto.Changeset{}} = action
     end
+  end
+
+  defp img_fixture do
+    %{
+      "image" => [
+        %Plug.Upload{
+          content_type: "image/jpeg",
+          filename: "1a03a1f6-1050-49b1-890e-411987f302ba.jpeg",
+          path: "/tmp/plug-1521/multipart-1521484013-731865999265189-1"
+        },
+        %Plug.Upload{
+          content_type: "image/jpeg",
+          filename: "1a03a1f6-1050-49b1-890e-41198702ba.jpeg",
+          path: "/tmp/plug-1521/multipart-1521484013-741865999265189-1"
+        }
+      ]
+    }
   end
 end

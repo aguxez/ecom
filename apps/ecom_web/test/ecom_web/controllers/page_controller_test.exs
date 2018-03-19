@@ -16,7 +16,7 @@ defmodule EcomWeb.PageControllerTest do
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
     # Just the main react "div"
-    assert html_response(conn, 200) =~ "LOGGED-IN USER"
+    assert conn.status == 200
   end
 
   test "user_token gets set on assigns", %{conn: conn, user: user} do

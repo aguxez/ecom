@@ -131,7 +131,7 @@ defmodule Ecom.AccountsTest do
       product = insert(:product, user_id: user.id, category_id: category.id)
 
       assert Accounts.list_products() == [
-               Repo.preload(product, [:carts, :orders, :user, :category])
+               Repo.preload(product, [:carts, :orders, :user, :category, :product_images])
              ]
     end
 

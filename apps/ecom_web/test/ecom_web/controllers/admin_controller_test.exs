@@ -71,7 +71,14 @@ defmodule EcomWeb.AdminControllerTest do
         quantity: "12",
         user_id: user.id,
         price: 5,
-        category_id: category.id
+        category_id: category.id,
+        image: [
+          %Plug.Upload{
+            content_type: "image/jpeg",
+            filename: "1a03a1f6-1050-49b1-890e-411987f302ba.jpeg",
+            path: "/tmp/plug-1521/multipart-1521484013-731865999265189-1"
+          }
+        ]
       }
 
       conn =
@@ -83,10 +90,7 @@ defmodule EcomWeb.AdminControllerTest do
       assert conn.status == 302
     end
 
-    # @tag :skip
     test "users can't create products", %{user: user, conn: conn, category: category} do
-      # TODO: For some reason after posting the 'current_resource' has the user as
-      # an admin which is not what we want since they're posting data when they shouldn't.
       attrs = %{
         name: "some name",
         description: "Some desc",
