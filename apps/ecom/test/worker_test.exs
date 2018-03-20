@@ -89,6 +89,7 @@ defmodule Ecom.WorkerTests do
 
       assert {:ok, %User{}} = action
       assert user.cart !== nil
+      assert {:error, {:already_started, _}} = ProductValues.start_link(user.id)
     end
 
     ####

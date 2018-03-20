@@ -88,6 +88,8 @@ defmodule Ecom.Worker do
   def new_user(user_params) do
     with {:ok, user} <- Accounts.create_user(user_params),
          {:ok, %Cart{}} <- Accounts.create_cart(%{user_id: user.id}) do
+
+      ProductValues.start_link(user.id)
       {:ok, user}
     else
       {:error, changeset} -> {:error, changeset}
