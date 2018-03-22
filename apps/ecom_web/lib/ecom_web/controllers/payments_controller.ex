@@ -37,7 +37,7 @@ defmodule EcomWeb.PaymentsController do
     {products, total} = products_and_total(conn)
     curr_url = current_url(conn)
     success = curr_url <> "/processed?proc_id=" <> get_session(conn, :proc_id)
-    pending = curr_url <> "/pending"
+    pending = curr_url <> "/pending?proc_id=" <> get_session(conn, :proc_id)
     failure = curr_url <> "/failure"
 
 
@@ -54,7 +54,7 @@ defmodule EcomWeb.PaymentsController do
 
     attrs = %{items: items, back_urls: %{success: success, pending: pending, failure: failure}}
 
-    case MercadoPago.send_items(%{items: items}) do
+    case MercadoPago.send_items(attrs) do
       {:ok, link} ->
         render(
           conn,
@@ -143,28 +143,50 @@ defmodule EcomWeb.PaymentsController do
       |> current_user()
       |> Repo.preload(cart: [:products])
 
+    opts = [
+      success: gettext("Payment made!"),
+      invalid: gettext("There was a problem processing your payment!"),
+      unable: gettext("There was a problem trying to update your cart")
+    ]
+
+    after_payment(conn, user, session_proc_id, param_proc_id, opts)
+  end
+
+  defp after_payment(conn, user, session_proc_id, param_proc_id, opts) do
+    [success: success, invalid: invalid, unable: unable] = opts
+
     case Worker.after_payment(user, session_proc_id, param_proc_id) do
       {:ok, :empty} ->
         conn
-        |> put_flash(:success, gettext("Payment made!"))
+        |> put_flash(:success, success)
         |> redirect(to: page_path(conn, :index))
 
       {:error, :invalid_proc_id} ->
         conn
-        |> put_flash(:alert, gettext("There was a problem processing your payment!"))
+        |> put_flash(:alert, invalid)
         |> redirect(to: page_path(conn, :index))
 
       {:error, :unable_to_empty} ->
         conn
-        |> put_flash(:warning, gettext("There was a problem trying to update your cart"))
+        |> put_flash(:warning, unable)
         |> redirect(to: cart_path(conn, :index))
     end
   end
 
-  def pending(conn, params) do
-    conn
-    |> put_flash(:warning, gettext("Your payment is still pending"))
-    |> redirect(to: page_path(conn, :index))
+  def pending(conn, %{"proc_id" => param_proc_id}) do
+    session_proc_id = get_session(conn, :proc_id)
+    user =
+      conn
+      |> current_user()
+      |> Repo.preload(cart: [:products])
+
+    opts = [
+      success: gettext("Your payment is pending confirmation but it's placed!"),
+      invalid: gettext("There was a problem processing your payment!"),
+      unable: gettext("There was a problem trying to update your cart")
+    ]
+
+    after_payment(conn, user, session_proc_id, param_proc_id, opts)
   end
 
   def failure(conn, _params) do

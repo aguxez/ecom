@@ -70,6 +70,12 @@ defmodule EcomWeb.Router do
     put("/payments/update_personal", PaymentsController, :update_personal_information)
   end
 
+  scope "/mpago", EcomWeb do
+    pipe_through([:api])
+
+    post("/notify", PaymentsNotifyController, :payment)
+  end
+
   scope "/site_settings", EcomWeb do
     pipe_through([:browser, :authorized, :ensure_auth])
 
