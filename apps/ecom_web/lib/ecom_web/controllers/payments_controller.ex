@@ -5,7 +5,7 @@ defmodule EcomWeb.PaymentsController do
 
   require Logger
 
-  alias Ecom.Interfaces.{Accounts, Worker}
+  alias Ecom.Interfaces.{Accounts, Worker, Payments.MercadoPago}
   alias Ecom.Repo
   alias EcomWeb.Plugs.VerifyParams
 
@@ -35,16 +35,33 @@ defmodule EcomWeb.PaymentsController do
 
   defp process_index(conn) do
     {products, total} = products_and_total(conn)
-    curr_url = current_url(conn)
-    return = curr_url <> "/processed?proc_id=" <> get_session(conn, :proc_id)
 
-    render(
-      conn,
-      "index.html",
-      products: products,
-      total: total,
-      return: return
-    )
+    items =
+      for {product, value} <- products do
+        %{
+          title: product.name,
+          quantity: value,
+          unit_price: product.price,
+          category_id: "fashion",
+          currency_id: "VEF"
+        }
+      end
+
+    case MercadoPago.send_items(%{items: items}) do
+      {:ok, link} ->
+        render(
+          conn,
+          "index.html",
+          products: products,
+          total: total,
+          link: link
+        )
+
+      {:error, _} ->
+        conn
+        |> put_flash(:warning, "There was an error processing your items")
+        |> redirect(to: cart_path(conn, :index))
+    end
   end
 
   def update_personal_information(conn, %{"user" => params}) do

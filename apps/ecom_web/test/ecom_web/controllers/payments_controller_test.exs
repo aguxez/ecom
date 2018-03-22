@@ -3,7 +3,11 @@ defmodule EcomWeb.PaymentsControllerTest do
 
   use EcomWeb.ConnCase
 
+  alias Ecom.{Repo}
+
   setup do
+    bypass = Bypass.open()
+
     user =
       :user
       |> build()
@@ -11,8 +15,10 @@ defmodule EcomWeb.PaymentsControllerTest do
       |> insert()
 
     insert(:cart, user_id: user.id)
+    cate = insert(:category, name: "something")
+    product = insert(:product, user_id: user.id, category_id: cate.id)
 
-    {:ok, user: user}
+    {:ok, user: user, bypass: bypass, product: product}
   end
 
   test "session variables get set on payments index", %{conn: conn, user: user} do
@@ -168,6 +174,6 @@ defmodule EcomWeb.PaymentsControllerTest do
     }
 
     {:ok, user} = Ecom.Accounts.update_user(user, attrs, :no_password)
-    user
+    Repo.preload(user, [:cart, :products, :orders])
   end
 end
