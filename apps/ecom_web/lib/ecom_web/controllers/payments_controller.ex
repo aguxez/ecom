@@ -35,6 +35,11 @@ defmodule EcomWeb.PaymentsController do
 
   defp process_index(conn) do
     {products, total} = products_and_total(conn)
+    curr_url = current_url(conn)
+    success = curr_url <> "/processed?proc_id=" <> get_session(conn, :proc_id)
+    pending = curr_url <> "/pending"
+    failure = curr_url <> "/failure"
+
 
     items =
       for {product, value} <- products do
@@ -46,6 +51,8 @@ defmodule EcomWeb.PaymentsController do
           currency_id: "VEF"
         }
       end
+
+    attrs = %{items: items, back_urls: %{success: success, pending: pending, failure: failure}}
 
     case MercadoPago.send_items(%{items: items}) do
       {:ok, link} ->
@@ -154,7 +161,15 @@ defmodule EcomWeb.PaymentsController do
     end
   end
 
-  def cancelled(conn, _params) do
-    redirect(conn, to: page_path(conn, :index))
+  def pending(conn, params) do
+    conn
+    |> put_flash(:warning, gettext("Your payment is still pending"))
+    |> redirect(to: page_path(conn, :index))
+  end
+
+  def failure(conn, _params) do
+    conn
+    |> put_flash(:alert, gettext("We coldn't process your payment"))
+    |> redirect(to: page_path(conn, :index))
   end
 end

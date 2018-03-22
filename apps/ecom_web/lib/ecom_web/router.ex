@@ -64,7 +64,8 @@ defmodule EcomWeb.Router do
     # Payments
     resources("/payments", PaymentsController, only: [:index, :create])
     get("/payments/processed", PaymentsController, :processed)
-    get("/payments/cancelled", PaymentsController, :cancelled)
+    get("/payments/pending", PaymentsController, :pending)
+    get("/payments/failure", PaymentsController, :failure)
     post("/payments/update_personal", PaymentsController, :update_personal_information)
     put("/payments/update_personal", PaymentsController, :update_personal_information)
   end
