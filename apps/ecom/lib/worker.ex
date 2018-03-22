@@ -12,6 +12,16 @@ defmodule Ecom.Worker do
   alias Ecom.Accounts.{User, Product, Cart, CartProduct, Order, Category}
   alias Ecom.{Repo, Accounts, ProductValues}
 
+  def new_user(user_params) do
+    with {:ok, user} <- Accounts.create_user(user_params),
+         {:ok, %Cart{}} <- Accounts.create_cart(%{user_id: user.id}) do
+      ProductValues.start_link(user.id)
+      {:ok, user}
+    else
+      {:error, changeset} -> {:error, changeset}
+    end
+  end
+
   def update_user(user, params_password, attrs, :password_needed) do
     with true <- Argon2.checkpw(params_password, user.password_digest),
          {:ok, %User{}} <- Accounts.update_user(user, attrs, []) do
@@ -63,6 +73,17 @@ defmodule Ecom.Worker do
     end)
   end
 
+  defp evaluate_transaction(transaction, success_msg, error_msg) do
+    case Repo.transaction(transaction) do
+      {:ok, _} ->
+        {:ok, success_msg}
+
+      {:error, _operation, failed_value, _changes} ->
+        Logger.warn("[FAILED TO INSERT VALUE]: #{inspect(failed_value)} INTO ORDERS")
+        {:error, error_msg}
+    end
+  end
+
   def sign_in(username, password) do
     User
     |> Repo.get_by(username: username)
@@ -85,17 +106,6 @@ defmodule Ecom.Worker do
     end
   end
 
-  def new_user(user_params) do
-    with {:ok, user} <- Accounts.create_user(user_params),
-         {:ok, %Cart{}} <- Accounts.create_cart(%{user_id: user.id}) do
-
-      ProductValues.start_link(user.id)
-      {:ok, user}
-    else
-      {:error, changeset} -> {:error, changeset}
-    end
-  end
-
   # Empties user cart, clean ProductValues state, removes quantity from product
   def after_payment(user, sess_proc_id, param_proc_id) do
     with true <- sess_proc_id == param_proc_id,
@@ -108,31 +118,6 @@ defmodule Ecom.Worker do
       {:error, reason} -> {:error, reason}
       false -> {:error, :invalid_proc_id}
     end
-  end
-
-  defp empty_user_cart(user) do
-    case remove_user_products(user.cart.id, user.cart.products) do
-      :ok -> {:ok, :empty}
-      {:error, _changeset} -> {:error, :unable_to_empty}
-    end
-  end
-
-  # Removes association when a product is deleted.
-  defp remove_user_products(cart_id, products) do
-    p_ids = Enum.map(products, & &1.id)
-    query = from(p in CartProduct, where: [cart_id: ^cart_id], where: p.product_id in ^p_ids)
-
-    Repo.delete_all(query)
-
-    :ok
-  end
-
-  defp post_payment_process(%{id: id}) do
-    values = ProductValues.get_all_values(id)
-
-    Enum.each(values, fn {id, map} -> modify_product_quantity(id, map.value) end)
-
-    ProductValues.clean_state_for(id)
   end
 
   def create_order(user) do
@@ -170,15 +155,29 @@ defmodule Ecom.Worker do
     end
   end
 
-  defp evaluate_transaction(transaction, success_msg, error_msg) do
-    case Repo.transaction(transaction) do
-      {:ok, _} ->
-        {:ok, success_msg}
-
-      {:error, _operation, failed_value, _changes} ->
-        Logger.warn("[FAILED TO INSERT VALUE]: #{inspect(failed_value)} INTO ORDERS")
-        {:error, error_msg}
+  defp empty_user_cart(user) do
+    case remove_user_products(user.cart.id, user.cart.products) do
+      :ok -> {:ok, :empty}
+      {:error, _changeset} -> {:error, :unable_to_empty}
     end
+  end
+
+  # Removes association when a product is deleted.
+  defp remove_user_products(cart_id, products) do
+    p_ids = Enum.map(products, & &1.id)
+    query = from(p in CartProduct, where: [cart_id: ^cart_id], where: p.product_id in ^p_ids)
+
+    Repo.delete_all(query)
+
+    :ok
+  end
+
+  defp post_payment_process(%{id: id}) do
+    values = ProductValues.get_all_values(id)
+
+    Enum.each(values, fn {id, map} -> modify_product_quantity(id, map.value) end)
+
+    ProductValues.clean_state_for(id)
   end
 
   defp modify_product_quantity(id, value) do
