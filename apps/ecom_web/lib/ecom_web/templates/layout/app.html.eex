@@ -20,7 +20,7 @@
     <link rel="apple-touch-icon" href="images/logo.png">
 
     <!-- Paypal -->
-    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <%# <script src="https://www.paypalobjects.com/api/checkout.js"></script> %>
 
     <!-- FontAwesome -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
