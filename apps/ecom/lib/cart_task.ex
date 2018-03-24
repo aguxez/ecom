@@ -28,7 +28,7 @@ defmodule Ecom.CartTask do
   end
 
   #######
-  def delete_db_cart_product(conn, %{id: user_id}, %{id: product_id}) do
+  def delete_db_cart_product(conn, %{id: user_id, cart: cart}, %{id: product_id}) do
     query = from(c in CartProduct, where: [cart_id: ^cart.id], where: [product_id: ^product_id])
     product = Repo.one(query)
 
