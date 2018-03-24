@@ -99,7 +99,7 @@ defmodule Ecom.WorkerTests do
 
       action = Worker.zip_from(user.cart.products, user.id)
 
-      assert [{product, "12"}] == action
+      assert [{Repo.preload(product, :product_images), "12"}] == action
     end
 
     ####

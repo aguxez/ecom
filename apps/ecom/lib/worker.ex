@@ -200,7 +200,7 @@ defmodule Ecom.Worker do
 
     for product <- products,
         {id, val} <- values do
-      if product.id == id, do: {product, val.value}
+      if product.id == id, do: {Repo.preload(product, :product_images), val.value}
     end
     |> Enum.reject(&is_nil/1)
   end
