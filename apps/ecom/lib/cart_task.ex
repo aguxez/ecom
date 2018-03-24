@@ -1,6 +1,8 @@
 defmodule Ecom.CartTask do
   @moduledoc false
 
+  import Ecto.Query, only: [from: 2]
+
   alias Ecom.{Accounts, Repo, ProductValues}
   alias Ecom.Accounts.CartProduct
 
