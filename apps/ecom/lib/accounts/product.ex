@@ -31,7 +31,7 @@ defmodule Ecom.Accounts.Product do
     belongs_to(:user, User)
     belongs_to(:category, Category)
 
-    has_many(:product_images, ProductImage)
+    has_many(:product_images, ProductImage, on_delete: :delete_all)
 
     many_to_many(:orders, Order, join_through: ProductOrder, on_delete: :delete_all)
     many_to_many(:carts, Cart, join_through: CartProduct)
