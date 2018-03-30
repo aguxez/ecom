@@ -10,6 +10,9 @@ defmodule Ecom.CartTask do
     cart_products = user.cart.products
     attrs = %{product_id: product.id, cart_id: user.cart.id}
 
+    # Checks if the user has started a process
+    ProductValues.start_link(user.id)
+
     # Save the value of the product
     ProductValues.save_value_for(user.id, product)
 
