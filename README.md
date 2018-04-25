@@ -18,7 +18,7 @@
 12. Orders
 
 ### Being worked ATM
-**Categories**
+**Nothing at the moment**
 
 ### TODO
 1. SEO tags
